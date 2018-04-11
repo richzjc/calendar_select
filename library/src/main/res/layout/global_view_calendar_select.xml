@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/define"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="25dp"
+        android:text="自定义时间"
+        android:textColor="#999999"
+        android:textSize="14sp"
+        />
+
+    <LinearLayout
+        android:id="@+id/time_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        >
+
+        <TextView
+            android:id="@+id/left_time"
+            style="@style/global_style_select_time"/>
+
+        <TextView
+            android:id="@+id/right_time"
+            style="@style/global_style_select_time"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="日"/>
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="一"/>
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="二"/>
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="三"/>
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="四"/>
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="五"/>
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="六"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/day_mode_color_e6e6e6"
+        />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:paddingBottom="10dp"
+        android:scrollbars="none"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/day_mode_divider_color"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/clear"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/day_mode_background_color"
+            android:gravity="center"
+            android:text="清除"
+            android:textColor="@color/day_mode_text_color"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/day_mode_text_color_1482f0"
+            android:gravity="center"
+            android:text="完成"
+            android:textColor="#ffffff"
+            android:textSize="14sp"/>
+    </LinearLayout>
+</merge>

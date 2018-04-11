@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="calendarSelect">
+        <attr name="select_type">
+            <enum name="single" value="1" />
+            <enum name="mult" value="2" />
+        </attr>
+        <attr name="locate_position">
+            <enum name="start" value="0" />
+            <enum name="today" value="1" />
+            <enum name="end" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

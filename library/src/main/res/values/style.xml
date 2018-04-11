@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="global_style_select_time">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/day_mode_text_color</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/global_drawable_select_time</item>
+    </style>
+
+    <style name="global_style_week">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/day_mode_text_color_999999</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+</resources>
