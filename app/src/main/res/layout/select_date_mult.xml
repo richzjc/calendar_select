@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.rich.library.CalendarSelectView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/calendar_select"
+    android:clickable="true"
+    android:visibility="gone"
+    app:locate_position="today"
+    app:select_type="mult">
+
+</com.rich.library.CalendarSelectView>

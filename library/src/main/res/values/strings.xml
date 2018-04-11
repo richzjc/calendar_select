@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">library</string>
+    <string name="outer_title">%1$s年%2$s月</string>
 </resources>
