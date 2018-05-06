@@ -7,8 +7,10 @@
 # 效果图
 
 ![](device-2018-04-17-000757.png)
-![](device-2018-04-17-000859.gif)
-![](device-2018-04-17-000939.gif)
+
+<video id="video" controls="" preload="none">
+      <source id="mp4" src="single.mp4" type="video/mp4"/>
+    </video>
 
 #下载
 
