@@ -8,10 +8,7 @@
 
 ![](device-2018-04-17-000757.png)
 
-<video id="video" controls="" preload="none">
-      <source id="mp4" src="single.mp4" type="video/mp4"/>
-    </video>
-
+[单选日期](file:///single.mp4)
 #下载
 
     implementation 'com.richzjc:calendar_select:1.0.0'
