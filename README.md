@@ -6,8 +6,6 @@
 
 # 效果图
 
-![](device-2018-04-17-000757.png)
-
 ![](single.gif)
 
 ![](mult.gif)
