@@ -1,15 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.jakewharton.butterknife'
-apply plugin: 'com.novoda.bintray-release'
-
-publish {
-    userOrg = 'richzjc'
-    groupId = 'com.richzjc'
-    artifactId = 'calendar_select'
-    publishVersion = '1.0.0'
-    desc = 'a calendar_select library'
-    website = 'https://github.com/richzjc/calendar_select'
-}
 
 android {
     compileSdkVersion 27
@@ -33,15 +23,6 @@ android {
         }
     }
 
-}
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.5.0'
-    }
 }
 
 dependencies {
