@@ -11,4 +11,6 @@
             <enum name="end" value="2" />
         </attr>
     </declare-styleable>
+
+    <item name="view_flipper"  type="id"/>
 </resources>
