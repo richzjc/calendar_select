@@ -7,7 +7,10 @@ import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.rich.library.DayTimeEntity;
 import com.rich.library.R;
+
+import java.util.Calendar;
 
 public class CalendarSelectNewView extends RelativeLayout {
 
@@ -30,7 +33,7 @@ public class CalendarSelectNewView extends RelativeLayout {
     }
 
 
-    private void init(Context context){
+    private void init(Context context) {
         viewFlipper = new CalendarViewFlipper(context);
         viewFlipper.setId(R.id.view_flipper);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, dip2px(241f));
@@ -51,15 +54,19 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-
         return super.dispatchTouchEvent(ev);
     }
 
-    public void show(){
+    public void show() {
 
     }
 
-    public void hide(){
+    public void hide() {
 
+    }
+
+
+    public void setCalendarRange(Calendar startCalendar, Calendar endCalendar) {
+        viewFlipper.setcalendarRange(startCalendar, endCalendar);
     }
 }

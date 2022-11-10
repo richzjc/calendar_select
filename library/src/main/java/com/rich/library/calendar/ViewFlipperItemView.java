@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 
 import com.rich.library.R;
 
+import java.util.Calendar;
+
 public class ViewFlipperItemView extends FrameLayout {
     public ViewFlipperItemView(Context context) {
         super(context);
@@ -33,6 +35,10 @@ public class ViewFlipperItemView extends FrameLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.global_view_calendar_flipper_item, this, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addView(view, params);
+    }
+
+
+    public void bindData(Calendar calendar) {
 
     }
 }

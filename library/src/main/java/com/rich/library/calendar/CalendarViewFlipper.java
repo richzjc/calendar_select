@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ViewFlipper;
 
+import java.util.Calendar;
+
 public class CalendarViewFlipper extends ViewFlipper {
 
     private int musicSize = 2;
@@ -203,5 +205,24 @@ public class CalendarViewFlipper extends ViewFlipper {
                 }
                 break;
         }
+    }
+
+
+    public void setcalendarRange(Calendar startCalendar, Calendar endCalendar) {
+        Calendar currentCalendar = Calendar.getInstance();
+        int year = currentCalendar.get(Calendar.YEAR);
+        int startYear = startCalendar.get(Calendar.YEAR);
+        int endYear = endCalendar.get(Calendar.YEAR);
+
+        int month = currentCalendar.get(Calendar.MONTH);
+        int startMonth = startCalendar.get(Calendar.MONTH);
+        int endMonth = endCalendar.get(Calendar.MONTH);
+
+        boolean flag1 = (year >= startYear) && (year <= endYear);
+        boolean flag2 = (month >= startMonth) && (month <= endMonth);
+        if (flag1 && flag2)
+            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar);
+        else
+            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar);
     }
 }
