@@ -25,6 +25,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     private final float SLIDE_ANGLE = 45;
     private boolean isVerticleScroll;
     private boolean isFirstMove;
+    private int duration = 200;
 
 
     public CalendarViewFlipper(Context context) {
@@ -164,15 +165,17 @@ public class CalendarViewFlipper extends ViewFlipper {
             case MotionEvent.ACTION_UP:
                 final boolean isNext = dx < 0;
 
-                if (pageOffset > 0.2) {
+                if (pageOffset > 0.1) {
                     //切换
                     ValueAnimator animator = ValueAnimator.ofFloat(dx, isNext ? -flipper_width : flipper_width);
+                    animator.setDuration(duration);
                     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
                             getCurrentView().setTranslationX((Float) animation.getAnimatedValue());
                             getOtherView().setTranslationX((Float) animation.getAnimatedValue() + (isNext ? flipper_width : -flipper_width));
                             if (Math.abs((float) animation.getAnimatedValue()) == flipper_width) {
+                                getCurrentView().setTranslationY(0);
                                 if (isNext) {
                                     nextItem(mCurrentItem + 1);
                                     showNext();
@@ -187,6 +190,7 @@ public class CalendarViewFlipper extends ViewFlipper {
                 } else {
                     //回弹
                     ValueAnimator animator = ValueAnimator.ofFloat(dx, 0);
+                    animator.setDuration(duration);
                     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         @Override
                         public void onAnimationUpdate(ValueAnimator animation) {
