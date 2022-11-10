@@ -39,11 +39,13 @@ public class CalendarViewFlipper extends ViewFlipper {
     private Calendar endCalendar;
 
     private int currentMode = MODE_MONTH;
-    private Calendar currentCalendar;
     private DayTimeEntity selectEntity;
     private int selectWeekNumOfMonth;
     private Map<String, List<DayTimeEntity>> daytimeMap;
 
+    private Calendar curCalendar;
+    private Calendar preCalendar;
+    private Calendar nextCalendar;
 
     public CalendarViewFlipper(Context context) {
         super(context);
@@ -155,15 +157,18 @@ public class CalendarViewFlipper extends ViewFlipper {
             }
         }
 
-        if (!isVerticleScroll)
-            responseOnTouch(ev, ev.getX() - downX > 0);
+        if (!isVerticleScroll) {
+            if (ev.getX() - downX > 0 && checkHasPre())
+                responseOnTouch(ev, ev.getX() - downX > 0);
+            else if (ev.getX() - downX < 0 && checkHasNext()) {
+                responseOnTouch(ev, ev.getX() - downX > 0);
+            }
+        }
         return true;
     }
 
 
     public void responseOnTouch(MotionEvent event, boolean isRightScroll) {
-        //TODO 如果月份到了最后一个月份，或者周到了最后 一个月的最后 一周 则不响应， 还有向前
-
         float dx = event.getX() - originalX;
 
         float pageOffset = Math.abs(dx) / flipper_width;
@@ -175,8 +180,10 @@ public class CalendarViewFlipper extends ViewFlipper {
                 getCurrentView().setTranslationX(dx);
                 if (dx > 0) {
                     getOtherView().setTranslationX(dx - flipper_width);
+                    ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
                 } else {
                     getOtherView().setTranslationX(dx + flipper_width);
+                    ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -200,6 +207,8 @@ public class CalendarViewFlipper extends ViewFlipper {
                                     previousItem(mCurrentItem - 1);
                                     showPrevious();
                                 }
+
+                                initCurCalendar(((ViewFlipperItemView) getCurrentView()).curBindCalendar);
                             }
                         }
                     });
@@ -223,8 +232,64 @@ public class CalendarViewFlipper extends ViewFlipper {
     }
 
 
+    private void initCurCalendar(Calendar curCalendar) {
+        this.curCalendar = curCalendar;
+        Calendar preCalendar = Calendar.getInstance();
+        preCalendar.setTimeInMillis(curCalendar.getTimeInMillis());
+        preCalendar.add(Calendar.MONTH, -1);
+        this.preCalendar = preCalendar;
+        Calendar nextCalendar = Calendar.getInstance();
+        nextCalendar.setTimeInMillis(curCalendar.getTimeInMillis());
+        nextCalendar.add(Calendar.MONTH, 1);
+        this.nextCalendar = nextCalendar;
+    }
+
+    private boolean checkHasPre() {
+        //TODO 需要区分是月还是周
+        Calendar currentCalendar = ((ViewFlipperItemView) getCurrentView()).curBindCalendar;
+        if (currentCalendar == null || startCalendar == null || endCalendar == null)
+            return false;
+
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
+        tempCalendar.add(Calendar.MONTH, -1);
+        int tempYear = tempCalendar.get(Calendar.YEAR);
+        int startYear = startCalendar.get(Calendar.YEAR);
+
+        int tempMonth = tempCalendar.get(Calendar.MONTH);
+        int startMonth = startCalendar.get(Calendar.MONTH);
+
+        if ((tempYear < startYear) || (tempYear == startYear && tempMonth < startMonth))
+            return false;
+        else
+            return true;
+    }
+
+
+    private boolean checkHasNext() {
+        //TODO 需要区分是月还是周
+        Calendar currentCalendar = ((ViewFlipperItemView) getCurrentView()).curBindCalendar;
+        if (currentCalendar == null || startCalendar == null || endCalendar == null)
+            return false;
+
+        Calendar tempCalendar = Calendar.getInstance();
+        tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
+        tempCalendar.add(Calendar.MONTH, -1);
+        int tempYear = tempCalendar.get(Calendar.YEAR);
+        int endYear = endCalendar.get(Calendar.YEAR);
+
+        int tempMonth = tempCalendar.get(Calendar.MONTH);
+        int endMonth = endCalendar.get(Calendar.MONTH);
+
+        if ((tempYear > endYear) || (tempYear == endYear && tempMonth > endMonth))
+            return false;
+        else
+            return true;
+    }
+
+
     public void setcalendarRange(Calendar startCalendar, Calendar endCalendar) {
-        if(daytimeMap == null)
+        if (daytimeMap == null)
             daytimeMap = new HashMap<>();
 
         this.startCalendar = startCalendar;
@@ -238,10 +303,10 @@ public class CalendarViewFlipper extends ViewFlipper {
 
         if (curTime >= startTime && curTime <= endTime) {
             ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
-            this.currentCalendar = currentCalendar;
+            initCurCalendar(currentCalendar);
         } else {
             ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
-            this.currentCalendar = startCalendar;
+            initCurCalendar(startCalendar);
         }
     }
 }

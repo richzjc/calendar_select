@@ -35,6 +35,8 @@ public class ViewFlipperItemView extends FrameLayout {
     private View sixView;
     private View fiveView;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+    //TODO 看看这个地方是否可以优化的， 是不是每次进来都是需要刷新数据的
+    public Calendar curBindCalendar;
 
     public ViewFlipperItemView(Context context) {
         super(context);
@@ -69,82 +71,99 @@ public class ViewFlipperItemView extends FrameLayout {
 
 
     public void bindData(Calendar calendar, int mode, int selectWeekNumOfMonth, Map<String, List<DayTimeEntity>> map) {
-        CalendarNewUtil.initAllDayTimeEntity(map, calendar);
-
-        Calendar newCalendar = Calendar.getInstance();
-        newCalendar.setTimeInMillis(calendar.getTimeInMillis());
-        int weekCount = CalendarNewUtil.getWeekCountOfMonth(newCalendar);
-
-        if (weekCount == 5) {
-            fiveView.setVisibility(View.VISIBLE);
-            fiveLL.setVisibility(View.VISIBLE);
-            sixView.setVisibility(View.GONE);
-            sixLL.setVisibility(View.GONE);
-        } else if (weekCount == 6) {
-            fiveView.setVisibility(View.VISIBLE);
-            fiveLL.setVisibility(View.VISIBLE);
-            sixView.setVisibility(View.VISIBLE);
-            sixLL.setVisibility(View.VISIBLE);
-        } else {
-            fiveView.setVisibility(View.GONE);
-            fiveLL.setVisibility(View.GONE);
-            sixView.setVisibility(View.GONE);
-            sixLL.setVisibility(View.GONE);
+        ((TextView)findViewById(R.id.month)).setText(format.format(calendar.getTime()));
+        boolean flag = false;
+        if (curBindCalendar == null)
+            flag = true;
+        else {
+            int bindYear = curBindCalendar.get(Calendar.YEAR);
+            int bindMonth = curBindCalendar.get(Calendar.MONTH);
+            int curYear = calendar.get(Calendar.YEAR);
+            int curMonth = calendar.get(Calendar.MONTH);
+            if (bindYear == curYear && curMonth == curYear)
+                flag = false;
+            else
+                flag = true;
         }
+        if (flag) {
+            CalendarNewUtil.initAllDayTimeEntity(map, calendar);
+            curBindCalendar = calendar;
 
+            Calendar newCalendar = Calendar.getInstance();
+            newCalendar.setTimeInMillis(calendar.getTimeInMillis());
+            int weekCount = CalendarNewUtil.getWeekCountOfMonth(newCalendar);
 
-        String key = format.format(calendar.getTime());
-        List<DayTimeEntity> list = map.get(key);
-        int listSize = list.size();
-        int firstStartIndex = CalendarNewUtil.firstStartIndex(newCalendar);
-        int totalCount = 0;
-
-        for (int i = firstStartIndex; i < 7; i++) {
-            if (totalCount < listSize) {
-                ((TextView) firstLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
-                totalCount ++;
+            if (weekCount == 5) {
+                fiveView.setVisibility(View.VISIBLE);
+                fiveLL.setVisibility(View.VISIBLE);
+                sixView.setVisibility(View.GONE);
+                sixLL.setVisibility(View.GONE);
+            } else if (weekCount == 6) {
+                fiveView.setVisibility(View.VISIBLE);
+                fiveLL.setVisibility(View.VISIBLE);
+                sixView.setVisibility(View.VISIBLE);
+                sixLL.setVisibility(View.VISIBLE);
+            } else {
+                fiveView.setVisibility(View.GONE);
+                fiveLL.setVisibility(View.GONE);
+                sixView.setVisibility(View.GONE);
+                sixLL.setVisibility(View.GONE);
             }
-        }
 
-        for (int i = 0; i < 7; i++) {
-            if (totalCount < listSize) {
-                ((TextView) secondLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
-                totalCount ++;
+
+            String key = format.format(calendar.getTime());
+            List<DayTimeEntity> list = map.get(key);
+            int listSize = list.size();
+            int firstStartIndex = CalendarNewUtil.firstStartIndex(newCalendar);
+            int totalCount = 0;
+
+            for (int i = firstStartIndex; i < 7; i++) {
+                if (totalCount < listSize) {
+                    ((TextView) firstLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
+                    totalCount++;
+                }
             }
-        }
 
-        for (int i = 0; i < 7; i++) {
-            if (totalCount < listSize) {
-                ((TextView) thirdLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
-                totalCount ++;
+            for (int i = 0; i < 7; i++) {
+                if (totalCount < listSize) {
+                    ((TextView) secondLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
+                    totalCount++;
+                }
             }
-        }
 
-        for (int i = 0; i < 7; i++) {
-            if (totalCount < listSize) {
-                ((TextView) forthLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
-                totalCount ++;
+            for (int i = 0; i < 7; i++) {
+                if (totalCount < listSize) {
+                    ((TextView) thirdLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
+                    totalCount++;
+                }
             }
-        }
 
-        for (int i = 0; i < 7; i++) {
-            if (totalCount < listSize) {
-                ((TextView) fiveLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
-                totalCount ++;
+            for (int i = 0; i < 7; i++) {
+                if (totalCount < listSize) {
+                    ((TextView) forthLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
+                    totalCount++;
+                }
             }
-        }
 
-        for (int i = 0; i < 7; i++) {
-            if (totalCount < listSize) {
-                ((TextView) sixLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
-                totalCount ++;
+            for (int i = 0; i < 7; i++) {
+                if (totalCount < listSize) {
+                    ((TextView) fiveLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
+                    totalCount++;
+                }
             }
-        }
 
-        if (mode == MODE_MONTH) {
+            for (int i = 0; i < 7; i++) {
+                if (totalCount < listSize) {
+                    ((TextView) sixLL.getChildAt(i)).setText(String.valueOf(list.get(totalCount).day));
+                    totalCount++;
+                }
+            }
 
-        } else if (mode == MODE_WEEK) {
+            if (mode == MODE_MONTH) {
 
+            } else if (mode == MODE_WEEK) {
+
+            }
         }
     }
 }
