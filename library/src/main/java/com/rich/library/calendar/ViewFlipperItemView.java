@@ -71,7 +71,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
 
     public void bindData(Calendar calendar, int mode, int selectWeekNumOfMonth, Map<String, List<DayTimeEntity>> map) {
-        ((TextView)findViewById(R.id.month)).setText(format.format(calendar.getTime()));
+        ((TextView) findViewById(R.id.month)).setText(format.format(calendar.getTime()));
         boolean flag = false;
         if (curBindCalendar == null)
             flag = true;
@@ -80,7 +80,7 @@ public class ViewFlipperItemView extends FrameLayout {
             int bindMonth = curBindCalendar.get(Calendar.MONTH);
             int curYear = calendar.get(Calendar.YEAR);
             int curMonth = calendar.get(Calendar.MONTH);
-            if (bindYear == curYear && curMonth == curYear)
+            if (bindYear == curYear && curMonth == bindMonth)
                 flag = false;
             else
                 flag = true;
@@ -116,6 +116,17 @@ public class ViewFlipperItemView extends FrameLayout {
             int listSize = list.size();
             int firstStartIndex = CalendarNewUtil.firstStartIndex(newCalendar);
             int totalCount = 0;
+
+            DayTimeEntity first = list.get(0);
+            DayTimeEntity last = list.get(listSize - 1);
+
+            Calendar firstCalendar = Calendar.getInstance();
+            firstCalendar.set(Calendar.YEAR, first.year);
+            firstCalendar.set(Calendar.MONTH, first.month);
+            firstCalendar.set(Calendar.DAY_OF_YEAR, first.day);
+            for(int i = 0; i < firstStartIndex; i++){
+
+            }
 
             for (int i = firstStartIndex; i < 7; i++) {
                 if (totalCount < listSize) {
