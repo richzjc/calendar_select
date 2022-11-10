@@ -12,17 +12,20 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ViewFlipper;
 
-public class CalendarViewFlipper  extends ViewFlipper {
+public class CalendarViewFlipper extends ViewFlipper {
 
     private int musicSize = 2;
     private int mCurrentItem = 0;
     private float originalX;//ACTION_DOWN事件发生时的手指坐标
     private int flipper_width = 0;
 
-    private boolean isMove;
     private float downX = 0f;
     private float downY = 0f;
     private float touchSlop = 10;
+    private final float SLIDE_ANGLE = 45;
+    private boolean isVerticleScroll;
+    private boolean isFirstMove;
+
 
     public CalendarViewFlipper(Context context) {
         super(context);
@@ -44,14 +47,13 @@ public class CalendarViewFlipper  extends ViewFlipper {
     private void setUpViews() {
         removeAllViews();
         ViewFlipperItemView itemView = new ViewFlipperItemView(getContext());
-        itemView.setBackgroundColor(Color.RED);
+        itemView.setBackgroundColor(Color.BLUE);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(itemView, params);
 
         ViewFlipperItemView itemView1 = new ViewFlipperItemView(getContext());
         FrameLayout.LayoutParams params1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(itemView1, params1);
-        showPrevious();
     }
 
     //获取上一个下标
@@ -86,34 +88,63 @@ public class CalendarViewFlipper  extends ViewFlipper {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (flipper_width == 0)
             flipper_width = getWidth();
+    }
 
-        Log.e("@@@", "width0 = " + getMeasuredWidth());
-        Log.e("@@@", "width1 = " + getMeasuredHeight());
+
+    private boolean checkIsVerticle(MotionEvent ev) {
+        float moveX = ev.getX();
+
+        float moveY = ev.getY();
+
+        float xDiff = Math.abs(moveX - downX);
+
+        float yDiff = Math.abs(moveY - downY);
+
+        double squareRoot = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+
+        //滑动的角度
+
+        int yAngle = Math.round((float) (Math.asin(yDiff / squareRoot) / Math.PI * 180));
+
+        int xAngle = Math.round((float) (Math.asin(xDiff / squareRoot) / Math.PI * 180));
+
+        boolean isMeetSlidingYAngle = yAngle > SLIDE_ANGLE;//滑动角度是否大于45du
+
+        boolean isMeetSlidingXAngle = xAngle > SLIDE_ANGLE;//滑动角度是否大于45du
+
+        boolean isSlideUp = moveY < downY && isMeetSlidingYAngle;
+
+        boolean isSlideDown = moveY > downY && isMeetSlidingYAngle;
+        return isSlideUp || isSlideDown;
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            isMove = false;
+            getOtherView().setVisibility(View.VISIBLE);
+            getCurrentView().setVisibility(View.VISIBLE);
             originalX = ev.getX();
             downX = ev.getX();
             downY = ev.getY();
+            isVerticleScroll = false;
+            isFirstMove = true;
         }
-        if (isMove) {
+
+        if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+            if (isFirstMove) {
+                isFirstMove = false;
+                isVerticleScroll = checkIsVerticle(ev);
+            }
+        }
+
+        if (!isVerticleScroll)
             responseOnTouch(ev, ev.getX() - downX > 0);
-            return true;
-        } else {
-            return super.dispatchTouchEvent(ev);
-        }
+        return true;
     }
 
 
     public void responseOnTouch(MotionEvent event, boolean isRightScroll) {
-        if (isRightScroll && mCurrentItem == 0)
-            return;
-
-        if (!isRightScroll && mCurrentItem == 1)
-            return;
+        //TODO 如果月份到了最后一个月份，或者周到了最后 一个月的最后 一周 则不响应， 还有向前
 
         float dx = event.getX() - originalX;
 
@@ -124,8 +155,6 @@ public class CalendarViewFlipper  extends ViewFlipper {
                 break;
             case MotionEvent.ACTION_MOVE:
                 getCurrentView().setTranslationX(dx);
-                getOtherView().setVisibility(VISIBLE);
-
                 if (dx > 0) {
                     getOtherView().setTranslationX(dx - flipper_width);
                 } else {
@@ -144,8 +173,6 @@ public class CalendarViewFlipper  extends ViewFlipper {
                             getCurrentView().setTranslationX((Float) animation.getAnimatedValue());
                             getOtherView().setTranslationX((Float) animation.getAnimatedValue() + (isNext ? flipper_width : -flipper_width));
                             if (Math.abs((float) animation.getAnimatedValue()) == flipper_width) {
-                                Log.e("mCurrentItem", mCurrentItem + "");
-
                                 if (isNext) {
                                     nextItem(mCurrentItem + 1);
                                     showNext();
@@ -172,22 +199,5 @@ public class CalendarViewFlipper  extends ViewFlipper {
                 }
                 break;
         }
-    }
-
-    public void showNextWithAnimation() {
-        ValueAnimator animator = ValueAnimator.ofFloat(0, -getWidth());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                getCurrentView().setTranslationX((Float) animation.getAnimatedValue());
-                getOtherView().setVisibility(VISIBLE);
-                getOtherView().setTranslationX((Float) animation.getAnimatedValue() + getWidth());
-                if (Math.abs((float) animation.getAnimatedValue()) == getWidth()) {
-                    nextItem(mCurrentItem + 1);
-                    showNext();
-                }
-            }
-        });
-        animator.start();
     }
 }
