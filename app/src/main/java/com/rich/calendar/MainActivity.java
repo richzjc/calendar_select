@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.rich.library.calendar.CalendarNewUtil;
+
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        CalendarNewUtil.getWeekCountOfMonth(Calendar.getInstance());
                         Intent intent = new Intent(MainActivity.this, CalendarSelectAcitivity.class);
                         intent.putExtra("flag", "calendar_new");
                         startActivity(intent);

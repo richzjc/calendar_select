@@ -12,7 +12,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ViewFlipper;
 
+import com.rich.library.DayTimeEntity;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CalendarViewFlipper extends ViewFlipper {
 
@@ -23,11 +28,21 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     private float downX = 0f;
     private float downY = 0f;
-    private float touchSlop = 10;
     private final float SLIDE_ANGLE = 45;
     private boolean isVerticleScroll;
     private boolean isFirstMove;
     private int duration = 200;
+
+    public static final int MODE_WEEK = 1;
+    public static final int MODE_MONTH = 2;
+    private Calendar startCalendar;
+    private Calendar endCalendar;
+
+    private int currentMode = MODE_MONTH;
+    private Calendar currentCalendar;
+    private DayTimeEntity selectEntity;
+    private int selectWeekNumOfMonth;
+    private Map<String, List<DayTimeEntity>> daytimeMap;
 
 
     public CalendarViewFlipper(Context context) {
@@ -209,20 +224,24 @@ public class CalendarViewFlipper extends ViewFlipper {
 
 
     public void setcalendarRange(Calendar startCalendar, Calendar endCalendar) {
+        if(daytimeMap == null)
+            daytimeMap = new HashMap<>();
+
+        this.startCalendar = startCalendar;
+        this.endCalendar = endCalendar;
+
         Calendar currentCalendar = Calendar.getInstance();
-        int year = currentCalendar.get(Calendar.YEAR);
-        int startYear = startCalendar.get(Calendar.YEAR);
-        int endYear = endCalendar.get(Calendar.YEAR);
 
-        int month = currentCalendar.get(Calendar.MONTH);
-        int startMonth = startCalendar.get(Calendar.MONTH);
-        int endMonth = endCalendar.get(Calendar.MONTH);
+        long startTime = startCalendar.getTimeInMillis();
+        long endTime = endCalendar.getTimeInMillis();
+        long curTime = currentCalendar.getTimeInMillis();
 
-        boolean flag1 = (year >= startYear) && (year <= endYear);
-        boolean flag2 = (month >= startMonth) && (month <= endMonth);
-        if (flag1 && flag2)
-            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar);
-        else
-            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar);
+        if (curTime >= startTime && curTime <= endTime) {
+            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
+            this.currentCalendar = currentCalendar;
+        } else {
+            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
+            this.currentCalendar = startCalendar;
+        }
     }
 }
