@@ -35,5 +35,15 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+        findViewById(R.id.calendar_new)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, CalendarSelectAcitivity.class);
+                        intent.putExtra("flag", "calendar_new");
+                        startActivity(intent);
+                    }
+                });
     }
 }

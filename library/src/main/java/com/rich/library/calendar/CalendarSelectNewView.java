@@ -1,6 +1,7 @@
 package com.rich.library.calendar;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -37,8 +38,8 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         content = new FrameLayout(getContext());
         RelativeLayout.LayoutParams contentParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        contentParams.addRule(R.id.view_flipper, RelativeLayout.ALIGN_BOTTOM);
-        contentParams.topMargin = dip2px(-20f);
+        contentParams.topMargin = dip2px(220f);
+        content.setBackgroundColor(Color.RED);
         addView(content, contentParams);
     }
 

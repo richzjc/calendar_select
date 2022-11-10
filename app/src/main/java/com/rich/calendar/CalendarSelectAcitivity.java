@@ -14,6 +14,8 @@ public class CalendarSelectAcitivity extends AppCompatActivity {
         String flag = getIntent().getStringExtra("flag");
         if(TextUtils.equals(flag, "single"))
             setContentView(R.layout.select_date_single);
+       else if(TextUtils.equals(flag, "calendar_new"))
+           setContentView(R.layout.select_date_calendar_new);
         else
             setContentView(R.layout.select_date_mult);
     }

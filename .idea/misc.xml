@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3765625" />
+        <entry key="app/src/main/res/layout/select_date_calendar_new.xml" value="0.3765625" />
+        <entry key="app/src/main/res/layout/select_date_mult.xml" value="0.3765625" />
+        <entry key="library/src/main/res/layout/global_recycler_item_inner.xml" value="0.3880208333333333" />
+        <entry key="library/src/main/res/layout/global_recycler_item_outer.xml" value="0.3880208333333333" />
+        <entry key="library/src/main/res/layout/global_view_calendar_flipper_item.xml" value="0.3880208333333333" />
+        <entry key="library/src/main/res/layout/global_view_calendar_select.xml" value="0.3880208333333333" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />

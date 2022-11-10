@@ -38,4 +38,20 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         />
+
+    <TextView
+        android:id="@+id/calendar_new"
+        android:layout_width="match_parent"
+        android:background="#000000"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:text="calendarNew"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        />
 </LinearLayout>
