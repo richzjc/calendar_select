@@ -161,16 +161,16 @@ public class CalendarViewFlipper extends ViewFlipper {
 
         if (!isVerticleScroll) {
             if (ev.getX() - downX > 0 && checkHasPre())
-                responseOnTouch(ev, ev.getX() - downX > 0);
+                responseOnTouch(ev);
             else if (ev.getX() - downX < 0 && checkHasNext()) {
-                responseOnTouch(ev, ev.getX() - downX > 0);
+                responseOnTouch(ev);
             }
         }
         return true;
     }
 
 
-    public void responseOnTouch(MotionEvent event, boolean isRightScroll) {
+    public void responseOnTouch(MotionEvent event) {
         float dx = event.getX() - originalX;
 
         float pageOffset = Math.abs(dx) / flipper_width;
@@ -276,7 +276,7 @@ public class CalendarViewFlipper extends ViewFlipper {
 
         Calendar tempCalendar = Calendar.getInstance();
         tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
-        tempCalendar.add(Calendar.MONTH, -1);
+        tempCalendar.add(Calendar.MONTH, +1);
         int tempYear = tempCalendar.get(Calendar.YEAR);
         int endYear = endCalendar.get(Calendar.YEAR);
 
