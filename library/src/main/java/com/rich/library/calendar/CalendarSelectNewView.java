@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationSet;
@@ -176,13 +177,14 @@ public class CalendarSelectNewView extends RelativeLayout {
         int maxTransY = itemView.getMaxTranslateY();
         int itemTransY = itemView.getFlipperTransLateY();
         float realContentTransY = contentTranslateY + px;
-        if (Math.abs(realContentTransY) > maxTransY)
+        if (realContentTransY < -maxTransY)
             realContentTransY = -maxTransY;
         else if (realContentTransY > 0)
             realContentTransY = 0;
 
         content.setTranslationY(realContentTransY);
         handleView.setTranslationY(realContentTransY);
+
     }
 
     public void show() {
