@@ -6,6 +6,7 @@ import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,12 +129,16 @@ public class ViewFlipperItemView extends FrameLayout {
             if (weekCount == 5) {
                 for (int i = lastEndIndex; i > 0; i--) {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    ((TextView) fiveLL.getChildAt(7 - i)).setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                    TextView tv =  ((TextView) fiveLL.getChildAt(7 - i));
+                   tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                   tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 }
             } else if (weekCount == 6) {
                 for (int i = lastEndIndex; i > 0; i--) {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    ((TextView) sixLL.getChildAt(7 - i)).setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                    TextView tv = ((TextView) sixLL.getChildAt(7 - i));
+                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                    tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 }
             }
 
@@ -145,7 +150,9 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < firstStartIndex; i++) {
                 firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
-                ((TextView) firstLL.getChildAt(firstStartIndex - 1 - i)).setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
+                TextView tv = ((TextView) firstLL.getChildAt(firstStartIndex - 1 - i));
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+                tv.setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
             }
 
             for (int i = firstStartIndex; i < 7; i++) {

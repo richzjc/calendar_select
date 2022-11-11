@@ -73,6 +73,8 @@ public class CalendarViewFlipper extends ViewFlipper {
 
         ViewFlipperItemView itemView1 = new ViewFlipperItemView(getContext());
         FrameLayout.LayoutParams params1 = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        itemView1.setVisibility(View.INVISIBLE);
+        itemView1.setTranslationX(Util.getScreenWidth(getContext()));
         addView(itemView1, params1);
     }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="day_mode_text_color1_333333">#333333</color>
+    <color name="day_mode_text_color2_666666">#666666</color>
+    <color name="day_mode_text_color3_999999">#999999</color>
+    <color name="day_mode_text_color4_999999">#999999</color>
+
+    <!--已读模式text-->
+    <color name="day_mode_has_read_808080">#808080</color>
+    <!--搜索框背景-->
+    <color name="day_mode_search_bg_f0f0f0">#f0f0f0</color>
+    <!--主题蓝色-->
+    <color name="day_mode_theme_color_1478f0">#1478f0</color>
+    <!--红涨绿跌-->
+    <color name="day_mode_fall_down_color_2ab168">#2ab168</color>
+    <color name="day_mode_fall_down_color_2ab168_transparent">#332ab168</color>
+    <color name="day_mode_rise_up_red_color_ff5959">#ff5959</color>
+    <color name="day_mode_rise_up_red_color_ff5959_transparent">#33ff5959</color>
+
+    <!--分隔线 细线-->
+    <color name="day_mode_divide_line_color_e6e6e6">#e6e6e6</color>
+    <color name="day_mode_divide_line_color_e6e6e6_to_303030">#e6e6e6</color>
+    <!--分隔线 宽线-->
+    <color name="day_mode_divide_block_color_f8f8f8">#f8f8f8</color>
+
+    <!--按钮按压色值-->
+    <color name="day_mode_press_color_f8f8f8">#f8f8f8</color>
+
+    <!--二级按钮背景色值)-->
+    <color name="day_mode_second_btn_bg_color_f6f6f6">#f6f6f6</color>
+
+    <!--背景色值-->
+    <color name="day_mode_background_color1_ffffff">#ffffff</color>
+    <color name="day_mode_background_color2_f6f6f6">#f6f6f6</color>
+    <color name="day_mode_background_color_dddddd">#dddddd</color>
+    <color name="day_mode_backgroud_color_cccccc">#cccccc</color>
+
+    <!--阴影-->
+    <color name="day_mode_shadow_color_0d000000">#58747f8c</color>
+
+    <!--对话框背景-->
+    <color name="day_mode_dialog_bg_color_ffffff">#ffffff</color>
+
+    <!--奇葩另一套背景-->
+    <color name="day_mode_bg_f6f6f6_to_121212">#f6f6f6</color>
+    <color name="day_mode_bg_fffff_to_262626">#ffffff</color>
+
+
+    <!--滚动条的色值-->
+    <color name="day_mode_scroll_bar_color">#dddddd</color>
+
+</resources>
