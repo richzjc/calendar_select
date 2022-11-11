@@ -1,50 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="20dp">
 
-    <LinearLayout
-        android:id="@+id/week_LL"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周日" />
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周一" />
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周二" />
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周三" />
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周四" />
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周五" />
-
-        <TextView
-            style="@style/global_style_week"
-            android:text="周六" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/date_ll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="35dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -290,4 +255,42 @@
                 android:text="六" />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/week_LL"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:gravity="center_vertical"
+        android:background="#ffffff"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周日" />
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周一" />
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周二" />
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周三" />
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周四" />
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周五" />
+
+        <TextView
+            style="@style/global_style_week"
+            android:text="周六" />
+    </LinearLayout>
+
+</RelativeLayout>
