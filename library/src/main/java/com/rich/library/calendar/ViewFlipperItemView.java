@@ -120,12 +120,32 @@ public class ViewFlipperItemView extends FrameLayout {
             DayTimeEntity first = list.get(0);
             DayTimeEntity last = list.get(listSize - 1);
 
+            Calendar lastCalendar = Calendar.getInstance();
+            lastCalendar.set(Calendar.YEAR, last.year);
+            lastCalendar.set(Calendar.MONTH, last.month);
+            lastCalendar.set(Calendar.DAY_OF_MONTH, last.day);
+            int lastEndIndex = CalendarNewUtil.lastEndIndex(newCalendar, CalendarNewUtil.getDayCountOfMonth(newCalendar));
+            if (weekCount == 5) {
+                for (int i = lastEndIndex; i > 0; i--) {
+                    lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                    ((TextView) fiveLL.getChildAt(7 - i)).setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                }
+            } else if (weekCount == 6) {
+                for (int i = lastEndIndex; i > 0; i--) {
+                    lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                    ((TextView) sixLL.getChildAt(7 - i)).setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                }
+            }
+
+
             Calendar firstCalendar = Calendar.getInstance();
             firstCalendar.set(Calendar.YEAR, first.year);
             firstCalendar.set(Calendar.MONTH, first.month);
-            firstCalendar.set(Calendar.DAY_OF_YEAR, first.day);
-            for(int i = 0; i < firstStartIndex; i++){
+            firstCalendar.set(Calendar.DAY_OF_MONTH, first.day);
 
+            for (int i = 0; i < firstStartIndex; i++) {
+                firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
+                ((TextView) firstLL.getChildAt(firstStartIndex - 1 - i)).setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
             }
 
             for (int i = firstStartIndex; i < 7; i++) {

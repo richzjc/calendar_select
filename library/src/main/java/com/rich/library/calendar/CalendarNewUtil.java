@@ -129,7 +129,6 @@ public class CalendarNewUtil {
 
 
     public static int firstStartIndex(Calendar calendar) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         int preCount = 0;
@@ -155,6 +154,38 @@ public class CalendarNewUtil {
                 break;
             case 7:
                 preCount = 6;
+                break;
+        }
+
+        return preCount;
+    }
+
+    public static int lastEndIndex(Calendar calendar, int totalCount) {
+        calendar.set(Calendar.DAY_OF_MONTH, totalCount);
+
+        int preCount = 0;
+        int cweek = calendar.get(Calendar.DAY_OF_WEEK);
+        switch (cweek) {
+            case 1:
+                preCount = 6;
+                break;
+            case 2:
+                preCount = 5;
+                break;
+            case 3:
+                preCount = 4;
+                break;
+            case 4:
+                preCount = 3;
+                break;
+            case 5:
+                preCount = 2;
+                break;
+            case 6:
+                preCount = 1;
+                break;
+            case 7:
+                preCount = 0;
                 break;
         }
 
