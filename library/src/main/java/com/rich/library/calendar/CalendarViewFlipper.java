@@ -34,11 +34,12 @@ public class CalendarViewFlipper extends ViewFlipper {
     private int duration = 200;
 
     public static final int MODE_WEEK = 1;
+    public static final int MODE_SCROLL = 3;
     public static final int MODE_MONTH = 2;
     private Calendar startCalendar;
     private Calendar endCalendar;
 
-    private int currentMode = MODE_MONTH;
+    public int currentMode = MODE_MONTH;
     private DayTimeEntity selectEntity;
     private int selectWeekNumOfMonth;
     private Map<String, List<DayTimeEntity>> daytimeMap;
