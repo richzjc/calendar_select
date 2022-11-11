@@ -39,10 +39,10 @@ public class CalendarViewFlipper extends ViewFlipper {
     private Calendar startCalendar;
     private Calendar endCalendar;
 
-    public int currentMode = MODE_MONTH;
+    public int currentMode = MODE_WEEK;
     private DayTimeEntity selectEntity;
     //TODO 默认写成2； 后面应该改成当天日期的行
-    private int selectWeekNumOfMonth = 4;
+    private int selectWeekNumOfMonth = 0;
     private Map<String, List<DayTimeEntity>> daytimeMap;
 
     private Calendar curCalendar;

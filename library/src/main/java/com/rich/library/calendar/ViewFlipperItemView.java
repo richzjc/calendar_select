@@ -65,6 +65,10 @@ public class ViewFlipperItemView extends FrameLayout {
         init(context);
     }
 
+    public int getTopHeight(){
+        return weekLL.getMeasuredHeight() + firstLL.getMeasuredHeight();
+    }
+
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.global_view_calendar_flipper_item, this, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);

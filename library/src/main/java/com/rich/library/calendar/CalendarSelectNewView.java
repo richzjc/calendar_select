@@ -63,9 +63,28 @@ public class CalendarSelectNewView extends RelativeLayout {
         init(context);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        try {
+//            ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+//            int contentHeightSpec = MeasureSpec.makeMeasureSpec(50000, MeasureSpec.EXACTLY);
+//            content.measure(widthMeasureSpec, contentHeightSpec);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
     public boolean pointInView(float localX, float localY, View view) {
-        return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
-                localY < view.getBottom();
+        if(view == content){
+            return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
+                    localY < view.getBottom();
+        }else if(view == viewFlipper){
+            return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
+                    localY < view.getBottom();
+        }else{
+            return false;
+        }
     }
 
 
@@ -77,7 +96,6 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         content = new FrameLayout(getContext());
         RelativeLayout.LayoutParams contentParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        contentParams.topMargin = dip2px(220f);
         content.setBackgroundColor(Color.RED);
         content.setPadding(0, dip2px(20f), 0, 0);
         addView(content, contentParams);
@@ -85,7 +103,6 @@ public class CalendarSelectNewView extends RelativeLayout {
         handleView = new View(getContext());
         handleView.setBackgroundColor(Color.BLACK);
         FrameLayout.LayoutParams handleParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dip2px(20f));
-        handleParams.topMargin = dip2px(220f);
         addView(handleView, handleParams);
     }
 
@@ -214,7 +231,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         float contentTranslateY = content.getTranslationY();
 
-        float time = Math.abs(contentTranslateY) * 300 / maxTransY;
+        float time = Math.abs(contentTranslateY) * 200 / maxTransY;
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
@@ -255,47 +272,48 @@ public class CalendarSelectNewView extends RelativeLayout {
     }
 
     public void hide() {
-//        ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
-//        int maxTransY = itemView.getMaxTranslateY();
-//
-//        float time = Math.abs(contentTranslateY - maxTransY) * 300 / maxTransY;
-//
-//        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, -maxTransY);
-//        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, -maxTransY);
-//
-//        int itemTransY = itemView.getFlipperTransLateY();
-//
-//        ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", itemTranslateY, -itemTransY);
-//
-//        AnimatorSet set = new AnimatorSet();
-//        set.playTogether(animator, handleAnimator, flipperAnimator);
-//        set.setDuration((long) time);
-//        set.setInterpolator(new LinearInterpolator());
-//        set.addListener(new Animator.AnimatorListener() {
-//            @Override
-//            public void onAnimationStart(Animator animation) {
-//                viewFlipper.currentMode = MODE_SCROLL;
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                if (handleView.getTranslationY() != 0)
-//                    viewFlipper.currentMode = MODE_WEEK;
-//                else
-//                    viewFlipper.currentMode = MODE_MONTH;
-//            }
-//
-//            @Override
-//            public void onAnimationCancel(Animator animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animator animation) {
-//
-//            }
-//        });
-//        set.start();
+        ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+        int maxTransY = itemView.getMaxTranslateY();
+
+        float contentTranslateY = content.getTranslationY();
+        float time = Math.abs(contentTranslateY - maxTransY) * 200 / maxTransY;
+
+        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, -maxTransY);
+        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, -maxTransY);
+
+        int itemTransY = itemView.getFlipperTransLateY();
+        float itemTranslateY = itemView.dateLL.getTranslationY();
+        ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", itemTranslateY, -itemTransY);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animator, handleAnimator, flipperAnimator);
+        set.setDuration((long) time);
+        set.setInterpolator(new LinearInterpolator());
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                viewFlipper.currentMode = MODE_SCROLL;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (handleView.getTranslationY() != 0)
+                    viewFlipper.currentMode = MODE_WEEK;
+                else
+                    viewFlipper.currentMode = MODE_MONTH;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        set.start();
     }
 
     public void setCalendarRange(Calendar startCalendar, Calendar endCalendar) {
