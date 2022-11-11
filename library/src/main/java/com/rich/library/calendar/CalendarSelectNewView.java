@@ -153,16 +153,29 @@ public class CalendarSelectNewView extends RelativeLayout {
                     updateViewPosition(ev);
                     return true;
                 } else {
-                   return viewFlipper.dispatchTouchEvent(ev);
+                    return viewFlipper.dispatchTouchEvent(ev);
                 }
             } else {
                 return super.dispatchTouchEvent(ev);
             }
         } else {
             if (clickViewFlag == CLICK_VIEW_FLIPPER) {
-                if (isVerticleScroll)
+                if (isVerticleScroll) {
+                    float dy = ev.getY() - downY;
+                    if (dy > 0) {
+                        if (dy >= dip2px(20f))
+                            show();
+                        else
+                            hide();
+                    } else if (dy < 0) {
+                        if (Math.abs(dy) >= dip2px(20f))
+                            hide();
+                        else
+                            show();
+                    }
+
                     return true;
-                else
+                } else
                     return viewFlipper.dispatchTouchEvent(ev);
             } else {
                 return content.dispatchTouchEvent(ev);
@@ -185,35 +198,34 @@ public class CalendarSelectNewView extends RelativeLayout {
         handleView.setTranslationY(realContentTransY);
 
 
-        float itemPx = (itemTransY * px)/maxTransY;
+        float itemPx = (itemTransY * px) / maxTransY;
         float realItemTranslateY = itemTranslateY + itemPx;
-        if(realItemTranslateY < -itemTransY)
+        if (realItemTranslateY < -itemTransY)
             realItemTranslateY = -itemTransY;
-        else if(realItemTranslateY > 0)
+        else if (realItemTranslateY > 0)
             realItemTranslateY = 0;
 
         itemView.dateLL.setTranslationY(realItemTranslateY);
     }
 
     public void show() {
-
-    }
-
-    public void hide() {
-
         ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
         int maxTransY = itemView.getMaxTranslateY();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", 0, -maxTransY);
-        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", 0, -maxTransY);
 
+        float contentTranslateY = content.getTranslationY();
 
-        int itemTransY = itemView.getFlipperTransLateY();
+        float time = Math.abs(contentTranslateY) * 300 / maxTransY;
 
-        ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", 0, -itemTransY);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
+        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
+
+        float itemTransY = itemView.dateLL.getTranslationY();
+
+        ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", itemTransY, 0);
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animator, handleAnimator, flipperAnimator);
-        set.setDuration(300);
+        set.setDuration((long) time);
         set.setInterpolator(new LinearInterpolator());
         set.addListener(new Animator.AnimatorListener() {
             @Override
@@ -240,6 +252,50 @@ public class CalendarSelectNewView extends RelativeLayout {
             }
         });
         set.start();
+    }
+
+    public void hide() {
+//        ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+//        int maxTransY = itemView.getMaxTranslateY();
+//
+//        float time = Math.abs(contentTranslateY - maxTransY) * 300 / maxTransY;
+//
+//        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, -maxTransY);
+//        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, -maxTransY);
+//
+//        int itemTransY = itemView.getFlipperTransLateY();
+//
+//        ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", itemTranslateY, -itemTransY);
+//
+//        AnimatorSet set = new AnimatorSet();
+//        set.playTogether(animator, handleAnimator, flipperAnimator);
+//        set.setDuration((long) time);
+//        set.setInterpolator(new LinearInterpolator());
+//        set.addListener(new Animator.AnimatorListener() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                viewFlipper.currentMode = MODE_SCROLL;
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                if (handleView.getTranslationY() != 0)
+//                    viewFlipper.currentMode = MODE_WEEK;
+//                else
+//                    viewFlipper.currentMode = MODE_MONTH;
+//            }
+//
+//            @Override
+//            public void onAnimationCancel(Animator animation) {
+//
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animator animation) {
+//
+//            }
+//        });
+//        set.start();
     }
 
     public void setCalendarRange(Calendar startCalendar, Calendar endCalendar) {
