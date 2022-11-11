@@ -33,6 +33,10 @@ public class ViewFlipperItemView extends FrameLayout {
     private LinearLayout secondLL;
     private LinearLayout firstLL;
 
+    public LinearLayout dateLL;
+    public LinearLayout weekLL;
+
+    private int selectWeekNumOfMonth;
     private View sixView;
     private View fiveView;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
@@ -73,6 +77,9 @@ public class ViewFlipperItemView extends FrameLayout {
         secondLL = findViewById(R.id.second_ll);
         firstLL = findViewById(R.id.first_ll);
 
+        dateLL = findViewById(R.id.date_ll);
+        weekLL = findViewById(R.id.week_LL);
+
         sixView = findViewById(R.id.six_view);
         fiveView = findViewById(R.id.five_view);
 
@@ -91,9 +98,37 @@ public class ViewFlipperItemView extends FrameLayout {
         }
     }
 
+    private int dip2px(float dpValue) {
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        return (int) Math.ceil(dpValue * scale + 0.5f);
+    }
+
+
+    public int getMaxTranslateY() {
+        return getHeight() - secondLL.getTop() - dip2px(20f) - weekLL.getHeight();
+    }
+
+    public int getFlipperTransLateY() {
+        if (selectWeekNumOfMonth == 1) {
+            return 0;
+        } else if (selectWeekNumOfMonth == 2) {
+            return secondLL.getTop();
+        } else if (selectWeekNumOfMonth == 3) {
+            return thirdLL.getTop();
+        } else if (selectWeekNumOfMonth == 4) {
+            return forthLL.getTop();
+        } else if (selectWeekNumOfMonth == 5) {
+            return fiveLL.getTop();
+        } else if (selectWeekNumOfMonth == 6) {
+            return sixLL.getTop();
+        } else {
+            return 0;
+        }
+    }
+
 
     public void bindData(Calendar calendar, int mode, int selectWeekNumOfMonth, Map<String, List<DayTimeEntity>> map) {
-        ((TextView) findViewById(R.id.month)).setText(format.format(calendar.getTime()));
+        this.selectWeekNumOfMonth = selectWeekNumOfMonth;
         boolean flag = false;
         if (curBindCalendar == null)
             flag = true;

@@ -41,7 +41,8 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     public int currentMode = MODE_MONTH;
     private DayTimeEntity selectEntity;
-    private int selectWeekNumOfMonth;
+    //TODO 默认写成2； 后面应该改成当天日期的行
+    private int selectWeekNumOfMonth = 2;
     private Map<String, List<DayTimeEntity>> daytimeMap;
 
     private Calendar curCalendar;
@@ -116,27 +117,16 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     private boolean checkIsVerticle(MotionEvent ev) {
         float moveX = ev.getX();
-
         float moveY = ev.getY();
-
         float xDiff = Math.abs(moveX - downX);
-
         float yDiff = Math.abs(moveY - downY);
-
         double squareRoot = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-
         //滑动的角度
-
         int yAngle = Math.round((float) (Math.asin(yDiff / squareRoot) / Math.PI * 180));
-
         int xAngle = Math.round((float) (Math.asin(xDiff / squareRoot) / Math.PI * 180));
-
         boolean isMeetSlidingYAngle = yAngle > SLIDE_ANGLE;//滑动角度是否大于45du
-
         boolean isMeetSlidingXAngle = xAngle > SLIDE_ANGLE;//滑动角度是否大于45du
-
         boolean isSlideUp = moveY < downY && isMeetSlidingYAngle;
-
         boolean isSlideDown = moveY > downY && isMeetSlidingYAngle;
         return isSlideUp || isSlideDown;
     }
@@ -202,7 +192,7 @@ public class CalendarViewFlipper extends ViewFlipper {
                             getCurrentView().setTranslationX((Float) animation.getAnimatedValue());
                             getOtherView().setTranslationX((Float) animation.getAnimatedValue() + (isNext ? flipper_width : -flipper_width));
                             if (Math.abs((float) animation.getAnimatedValue()) == flipper_width) {
-                                getCurrentView().setTranslationY(0);
+                                ((ViewFlipperItemView)getCurrentView()).dateLL.setTranslationY(0);
                                 if (isNext) {
                                     nextItem(mCurrentItem + 1);
                                     showNext();

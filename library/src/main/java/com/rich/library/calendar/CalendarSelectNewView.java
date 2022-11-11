@@ -36,10 +36,16 @@ public class CalendarSelectNewView extends RelativeLayout {
     private float downY;
 
     private int CLICK_VIEW_FLIPPER = 1;
-    private int CLICK_HANDLE_VIEW = 2;
-    private int CLICK_FRAMELAYOUT = 3;
+    private int CLICK_FRAMELAYOUT = 2;
+    private boolean isVerticleScroll;
+    private boolean isFirstMove;
+    private float contentTranslateY;
+    private float itemTranslateY;
+    private boolean isClickViewFlipper;
 
-    private boolean eventResult = false;
+    private final float SLIDE_ANGLE = 45;
+
+    private int clickViewFlag = -1;
 
     public CalendarSelectNewView(Context context) {
         super(context);
@@ -88,45 +94,104 @@ public class CalendarSelectNewView extends RelativeLayout {
         return (int) Math.ceil(dpValue * scale + 0.5f);
     }
 
+    private boolean checkIsVerticle(MotionEvent ev) {
+        float moveX = ev.getX();
+        float moveY = ev.getY();
+        float xDiff = Math.abs(moveX - downX);
+        float yDiff = Math.abs(moveY - downY);
+        double squareRoot = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        //滑动的角度
+        int yAngle = Math.round((float) (Math.asin(yDiff / squareRoot) / Math.PI * 180));
+        int xAngle = Math.round((float) (Math.asin(xDiff / squareRoot) / Math.PI * 180));
+        boolean isMeetSlidingYAngle = yAngle > SLIDE_ANGLE;//滑动角度是否大于45du
+        boolean isSlideUp = moveY < downY && isMeetSlidingYAngle;
+        boolean isSlideDown = moveY > downY && isMeetSlidingYAngle;
+        return isSlideUp || isSlideDown;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (viewFlipper.currentMode == MODE_SCROLL)
+            return true;
+
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            isVerticleScroll = false;
+            isFirstMove = true;
             downX = ev.getX();
             downY = ev.getY();
-            responseActionDown(ev);
+            ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+            contentTranslateY = content.getTranslationY();
+            itemTranslateY = itemView.dateLL.getTranslationY();
+            int actionIndex = ev.getActionIndex();
+            float x = ev.getX(actionIndex);
+            float y = ev.getY(actionIndex);
+            try {
+                boolean isClickFrameLayout = pointInView(x, y, content);
+                isClickViewFlipper = pointInView(x, y, viewFlipper);
+                if (isClickViewFlipper) {
+                    clickViewFlag = CLICK_VIEW_FLIPPER;
+                    return viewFlipper.dispatchTouchEvent(ev);
+                } else if (isClickFrameLayout && viewFlipper.currentMode == MODE_MONTH) {
+                    clickViewFlag = CLICK_FRAMELAYOUT;
+                    hide();
+                    return true;
+                } else {
+                    return super.dispatchTouchEvent(ev);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+            if (isFirstMove) {
+                isFirstMove = false;
+                isVerticleScroll = checkIsVerticle(ev);
+            }
 
+            if (clickViewFlag == CLICK_VIEW_FLIPPER) {
+                if (isVerticleScroll) {
+                    updateViewPosition(ev);
+                    return true;
+                } else {
+                   return viewFlipper.dispatchTouchEvent(ev);
+                }
+            } else {
+                return super.dispatchTouchEvent(ev);
+            }
+        } else {
+            if (clickViewFlag == CLICK_VIEW_FLIPPER) {
+                if (isVerticleScroll)
+                    return true;
+                else
+                    return viewFlipper.dispatchTouchEvent(ev);
+            } else {
+                return content.dispatchTouchEvent(ev);
+            }
         }
-
         return super.dispatchTouchEvent(ev);
     }
 
-    private void responseActionDown(MotionEvent ev) {
-        int actionIndex = ev.getActionIndex();
-        float x = ev.getX(actionIndex);
-        float y = ev.getY(actionIndex);
-        try {
+    private void updateViewPosition(MotionEvent ev) {
+        float px = ev.getY() - downY;
+        ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+        int maxTransY = itemView.getMaxTranslateY();
+        int itemTransY = itemView.getFlipperTransLateY();
+        float realContentTransY = contentTranslateY + px;
+        if (Math.abs(realContentTransY) > maxTransY)
+            realContentTransY = -maxTransY;
+        else if (realContentTransY > 0)
+            realContentTransY = 0;
 
-            boolean isClickHandleView = pointInView(x, y, handleView);
-            boolean isClickFrameLayout = pointInView(x, y, content);
-            boolean isClickViewFlipper = pointInView(x, y, viewFlipper);
-            if (isClickFrameLayout && viewFlipper.currentMode == MODE_MONTH) {
-                eventResult = true;
-                hide();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        content.setTranslationY(realContentTransY);
+        handleView.setTranslationY(realContentTransY);
     }
-
 
     public void show() {
 
     }
 
     public void hide() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", 0, -dip2px(240f));
-        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", 0, -dip2px(240f));
+        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", 0, -dip2px(220f));
+        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", 0, -dip2px(220f));
 
 
         AnimatorSet set = new AnimatorSet();
