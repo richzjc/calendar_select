@@ -1,5 +1,8 @@
 package com.rich.calendar;
 
+import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
+import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
+
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -25,7 +28,7 @@ public class CalendarSelectAcitivity extends AppCompatActivity {
             Calendar endCalendar = Calendar.getInstance();
             startCalendar.add(Calendar.MONTH, -3);
             endCalendar.add(Calendar.MONTH, 3);
-            selectNewView.setCalendarRange(startCalendar, endCalendar);
+            selectNewView.setCalendarRange(startCalendar, endCalendar, MODE_WEEK);
         } else
             setContentView(R.layout.select_date_mult);
     }

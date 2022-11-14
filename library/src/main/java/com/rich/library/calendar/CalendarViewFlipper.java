@@ -29,6 +29,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     private float downX = 0f;
     private float downY = 0f;
     private final float SLIDE_ANGLE = 45;
+    
     private boolean isVerticleScroll;
     private boolean isFirstMove;
     private int duration = 200;

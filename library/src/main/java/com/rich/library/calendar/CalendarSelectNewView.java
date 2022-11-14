@@ -65,7 +65,6 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
@@ -89,13 +88,15 @@ public class CalendarSelectNewView extends RelativeLayout {
         handleView.layout(0, dip2px(61f), handleView.getMeasuredWidth(), dip2px(61f) + handleView.getMeasuredHeight());
     }
 
+    //TODO 点击事件这个方法需要验证一下
     public boolean pointInView(float localX, float localY, View view) {
         if (view == content) {
-            return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
-                    localY < view.getBottom();
+            return localX >= view.getLeft() && localY >= view.getTop() + content.getTranslationY() && localX < view.getRight() &&
+                    localY < view.getBottom() + content.getTranslationY();
         } else if (view == viewFlipper) {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
             return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
-                    localY < view.getBottom();
+                    localY < view.getBottom() - (itemView.getMaxTranslateY() - content.getTranslationY());
         } else {
             return false;
         }
@@ -221,9 +222,9 @@ public class CalendarSelectNewView extends RelativeLayout {
         int maxTransY = itemView.getMaxTranslateY();
         int itemTransY = itemView.getFlipperTransLateY();
         float realContentTransY = contentTranslateY + px;
-        if (realContentTransY < -maxTransY)
-            realContentTransY = -maxTransY;
-        else if (realContentTransY > 0)
+        if (realContentTransY > maxTransY)
+            realContentTransY = maxTransY;
+        else if (realContentTransY < 0)
             realContentTransY = 0;
         content.setTranslationY(realContentTransY);
         handleView.setTranslationY(realContentTransY);
@@ -247,8 +248,8 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         float time = Math.abs(contentTranslateY) * 200 / maxTransY;
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
-        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, maxTransY);
+        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, maxTransY);
 
         float itemTransY = itemView.dateLL.getTranslationY();
 
@@ -267,9 +268,9 @@ public class CalendarSelectNewView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (handleView.getTranslationY() != 0)
-                    viewFlipper.currentMode = MODE_WEEK;
-                else
                     viewFlipper.currentMode = MODE_MONTH;
+                else
+                    viewFlipper.currentMode = MODE_WEEK;
             }
 
             @Override
@@ -292,8 +293,8 @@ public class CalendarSelectNewView extends RelativeLayout {
         float contentTranslateY = content.getTranslationY();
         float time = Math.abs(contentTranslateY - maxTransY) * 200 / maxTransY;
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, -maxTransY);
-        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, -maxTransY);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
+        ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
 
         int itemTransY = itemView.getFlipperTransLateY();
         float itemTranslateY = itemView.dateLL.getTranslationY();
@@ -312,9 +313,9 @@ public class CalendarSelectNewView extends RelativeLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (handleView.getTranslationY() != 0)
-                    viewFlipper.currentMode = MODE_WEEK;
-                else
                     viewFlipper.currentMode = MODE_MONTH;
+                else
+                    viewFlipper.currentMode = MODE_WEEK;
             }
 
             @Override
@@ -330,7 +331,23 @@ public class CalendarSelectNewView extends RelativeLayout {
         set.start();
     }
 
-    public void setCalendarRange(Calendar startCalendar, Calendar endCalendar) {
+    public void setCalendarRange(Calendar startCalendar, Calendar endCalendar, int currentModel) {
         viewFlipper.setcalendarRange(startCalendar, endCalendar);
+        viewFlipper.currentMode = currentModel;
+        if (currentModel == MODE_WEEK) {
+            handleView.setTranslationY(0);
+            content.setTranslationY(0);
+            ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+            if (itemView != null) {
+                //TODO 这个translateY 不是0  得调整一下
+                itemView.dateLL.setTranslationY(0);
+            }
+        } else if (currentModel == MODE_MONTH) {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+            int maxY = itemView.getMaxTranslateY();
+            content.setTranslationY(maxY);
+            handleView.setTranslationY(maxY);
+            itemView.dateLL.setTranslationY(0);
+        }
     }
 }
