@@ -65,24 +65,39 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        try {
-//            ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
-//            int contentHeightSpec = MeasureSpec.makeMeasureSpec(50000, MeasureSpec.EXACTLY);
-//            content.measure(widthMeasureSpec, contentHeightSpec);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int flipperHeightSpec = MeasureSpec.makeMeasureSpec(dip2px(240f), MeasureSpec.EXACTLY);
+        viewFlipper.measure(widthMeasureSpec, flipperHeightSpec);
+
+        int handleHeightSpec = MeasureSpec.makeMeasureSpec(dip2px(20f), MeasureSpec.EXACTLY);
+        handleView.measure(widthMeasureSpec, handleHeightSpec);
+
+
+        int contentHeightSpec = MeasureSpec.makeMeasureSpec(heightSize - dip2px(61f), MeasureSpec.EXACTLY);
+        content.measure(widthMeasureSpec, contentHeightSpec);
+
+        setMeasuredDimension(widthSize, heightSize);
+    }
+
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        viewFlipper.layout(0, 0, viewFlipper.getMeasuredWidth(), viewFlipper.getMeasuredHeight());
+        content.layout(0, dip2px(61f), content.getMeasuredWidth(), dip2px(61f) + content.getMeasuredHeight());
+        handleView.layout(0, dip2px(61f), handleView.getMeasuredWidth(), dip2px(61f) + handleView.getMeasuredHeight());
     }
 
     public boolean pointInView(float localX, float localY, View view) {
-        if(view == content){
+        if (view == content) {
             return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
                     localY < view.getBottom();
-        }else if(view == viewFlipper){
+        } else if (view == viewFlipper) {
             return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
                     localY < view.getBottom();
-        }else{
+        } else {
             return false;
         }
     }
