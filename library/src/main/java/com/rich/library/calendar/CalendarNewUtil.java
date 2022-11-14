@@ -7,7 +7,6 @@ import com.rich.library.DayTimeEntity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -127,7 +126,6 @@ public class CalendarNewUtil {
     }
 
 
-
     public static int firstStartIndex(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
@@ -190,5 +188,15 @@ public class CalendarNewUtil {
         }
 
         return preCount;
+    }
+
+    public static int getNumSelectWeekOfMonth(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        int weekNumber = calendar.get(Calendar.WEEK_OF_MONTH);
+        Log.e("@@@", "weekNumber = " + weekNumber);
+        return weekNumber;
     }
 }

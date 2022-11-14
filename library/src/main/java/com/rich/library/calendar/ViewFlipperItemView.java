@@ -65,7 +65,7 @@ public class ViewFlipperItemView extends FrameLayout {
         init(context);
     }
 
-    public int getTopHeight(){
+    public int getTopHeight() {
         return weekLL.getMeasuredHeight() + firstLL.getMeasuredHeight();
     }
 
@@ -133,7 +133,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
     public void bindData(Calendar calendar, int mode, int selectWeekNumOfMonth, Map<String, List<DayTimeEntity>> map) {
         this.selectWeekNumOfMonth = selectWeekNumOfMonth;
-        boolean flag = false;
+        boolean flag;
         if (curBindCalendar == null)
             flag = true;
         else {
@@ -191,6 +191,8 @@ public class ViewFlipperItemView extends FrameLayout {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
                     TextView tv = ((TextView) fiveLL.getChildAt(7 - i));
                     tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                    DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+                    tv.setTag(entity);
                     tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 }
             } else if (weekCount == 6) {
@@ -198,6 +200,8 @@ public class ViewFlipperItemView extends FrameLayout {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
                     TextView tv = ((TextView) sixLL.getChildAt(7 - i));
                     tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                    DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+                    tv.setTag(entity);
                     tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 }
             }
@@ -212,6 +216,8 @@ public class ViewFlipperItemView extends FrameLayout {
                 firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
                 TextView tv = ((TextView) firstLL.getChildAt(firstStartIndex - 1 - i));
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+                DayTimeEntity entity = new DayTimeEntity(firstCalendar.get(Calendar.YEAR), firstCalendar.get(Calendar.MONTH), firstCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+                tv.setTag(entity);
                 tv.setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
             }
 
