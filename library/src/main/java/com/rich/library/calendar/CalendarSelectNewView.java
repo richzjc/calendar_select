@@ -93,8 +93,9 @@ public class CalendarSelectNewView extends RelativeLayout {
     //TODO 点击事件这个方法需要验证一下
     public boolean pointInView(float localX, float localY, View view) {
         if (view == content) {
-            return localX >= view.getLeft() && localY >= view.getTop() + content.getTranslationY() && localX < view.getRight() &&
+            boolean result = localX >= view.getLeft() && localY >= view.getTop() + content.getTranslationY() && localX < view.getRight() &&
                     localY < view.getBottom() + content.getTranslationY();
+            return result;
         } else if (view == viewFlipper) {
             ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
             return localX >= view.getLeft() && localY >= view.getTop() && localX < view.getRight() &&
@@ -143,8 +144,16 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (viewFlipper.currentMode == MODE_SCROLL)
+        if (viewFlipper.currentMode == MODE_SCROLL) {
+            if (pointInView(ev.getX(), ev.getY(), content)) {
+                content.clearAnimation();
+                handleView.clearAnimation();
+                ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+                itemView.dateLL.clearAnimation();
+                hide();
+            }
             return true;
+        }
 
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             isVerticleScroll = false;
@@ -170,11 +179,11 @@ public class CalendarSelectNewView extends RelativeLayout {
                 } else if (isClickFrameLayout) {
                     return content.dispatchTouchEvent(ev);
                 } else {
-                    return false;
+                    return true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return false;
+                return true;
             }
         } else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
             if (isFirstMove) {
@@ -199,12 +208,12 @@ public class CalendarSelectNewView extends RelativeLayout {
                 if (isVerticleScroll) {
                     float dy = ev.getY() - downY;
                     if (dy > 0) {
-                        if (dy >= dip2px(20f))
+                        if (dy >= dip2px(40f))
                             show();
                         else
                             hide();
                     } else if (dy < 0) {
-                        if (Math.abs(dy) >= dip2px(20f))
+                        if (Math.abs(dy) >= dip2px(40f))
                             hide();
                         else
                             show();
@@ -216,7 +225,7 @@ public class CalendarSelectNewView extends RelativeLayout {
             } else if (pointInView(ev.getX(), ev.getY(), content)) {
                 return content.dispatchTouchEvent(ev);
             } else {
-                return false;
+                return true;
             }
         }
     }
@@ -251,7 +260,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         float contentTranslateY = content.getTranslationY();
 
-        float time = Math.abs(contentTranslateY) * 200 / maxTransY;
+        float time = Math.abs(contentTranslateY) * 400f / maxTransY;
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, maxTransY);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, maxTransY);
@@ -296,7 +305,7 @@ public class CalendarSelectNewView extends RelativeLayout {
         int maxTransY = itemView.getMaxTranslateY();
 
         float contentTranslateY = content.getTranslationY();
-        float time = Math.abs(contentTranslateY - maxTransY) * 200 / maxTransY;
+        float time = Math.abs(contentTranslateY - maxTransY) * 400f / maxTransY;
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
