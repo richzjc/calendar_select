@@ -82,7 +82,6 @@ public class CalendarSelectNewView extends RelativeLayout {
         setMeasuredDimension(widthSize, heightSize);
     }
 
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         viewFlipper.layout(0, 0, viewFlipper.getMeasuredWidth(), viewFlipper.getMeasuredHeight());
