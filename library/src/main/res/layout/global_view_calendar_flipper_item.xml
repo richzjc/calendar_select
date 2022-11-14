@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="20dp">
-
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/date_ll"
@@ -15,37 +13,51 @@
         <LinearLayout
             android:id="@+id/first_ll"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="日" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="一" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="二" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="三" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="四" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="五" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="六" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <View
@@ -56,37 +68,51 @@
         <LinearLayout
             android:id="@+id/second_ll"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="日" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="一" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="二" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="三" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="四" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="五" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="六" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <View
@@ -97,37 +123,51 @@
         <LinearLayout
             android:id="@+id/third_ll"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="日" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="一" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="二" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="三" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="四" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="五" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="六" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <View
@@ -138,37 +178,51 @@
         <LinearLayout
             android:id="@+id/forth_ll"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="日" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="一" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="二" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="三" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="四" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="五" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="六" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <View
@@ -180,37 +234,51 @@
         <LinearLayout
             android:id="@+id/five_ll"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="日" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="一" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="二" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="三" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="四" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="五" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="六" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <View
@@ -222,37 +290,51 @@
         <LinearLayout
             android:id="@+id/six_ll"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="日" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="一" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="二" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="三" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="四" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="五" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-            <TextView
-                style="@style/global_style_week"
-                android:text="六" />
+            <include
+                layout="@layout/global_view_flipper_item_child"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 
@@ -260,8 +342,8 @@
         android:id="@+id/week_LL"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:gravity="center_vertical"
         android:background="#ffffff"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView

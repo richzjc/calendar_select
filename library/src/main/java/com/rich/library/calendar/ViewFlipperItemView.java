@@ -72,6 +72,7 @@ public class ViewFlipperItemView extends FrameLayout {
     private void init(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.global_view_calendar_flipper_item, this, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        params.bottomMargin = dip2px(25f);
         addView(view, params);
 
         sixLL = findViewById(R.id.six_ll);
@@ -109,7 +110,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
 
     public int getMaxTranslateY() {
-        return getHeight() - secondLL.getTop() - dip2px(20f) - weekLL.getHeight();
+        return getHeight() - getTopHeight() - dip2px(20f);
     }
 
     public int getFlipperTransLateY() {
@@ -128,6 +129,16 @@ public class ViewFlipperItemView extends FrameLayout {
         } else {
             return 0;
         }
+    }
+
+    public TextView getTextView(LinearLayout ll, int index) {
+        ViewGroup viewGroup = (ViewGroup) ll.getChildAt(index);
+        return (TextView) viewGroup.getChildAt(0);
+    }
+
+    public View dotView(LinearLayout ll, int index) {
+        ViewGroup viewGroup = (ViewGroup) ll.getChildAt(index);
+        return viewGroup.getChildAt(1);
     }
 
 
@@ -171,7 +182,6 @@ public class ViewFlipperItemView extends FrameLayout {
                 sixLL.setVisibility(View.GONE);
             }
 
-
             String key = format.format(calendar.getTime());
             List<DayTimeEntity> list = map.get(key);
             int listSize = list.size();
@@ -189,7 +199,7 @@ public class ViewFlipperItemView extends FrameLayout {
             if (weekCount == 5) {
                 for (int i = lastEndIndex; i > 0; i--) {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    TextView tv = ((TextView) fiveLL.getChildAt(7 - i));
+                    TextView tv = getTextView(fiveLL, 7 - i);
                     tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
                     tv.setTag(entity);
@@ -198,7 +208,7 @@ public class ViewFlipperItemView extends FrameLayout {
             } else if (weekCount == 6) {
                 for (int i = lastEndIndex; i > 0; i--) {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    TextView tv = ((TextView) sixLL.getChildAt(7 - i));
+                    TextView tv = getTextView(sixLL, 7 - i);
                     tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
                     tv.setTag(entity);
@@ -214,7 +224,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < firstStartIndex; i++) {
                 firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
-                TextView tv = ((TextView) firstLL.getChildAt(firstStartIndex - 1 - i));
+                TextView tv = getTextView(firstLL, firstStartIndex - 1 - i);
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 DayTimeEntity entity = new DayTimeEntity(firstCalendar.get(Calendar.YEAR), firstCalendar.get(Calendar.MONTH), firstCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
                 tv.setTag(entity);
@@ -224,7 +234,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = firstStartIndex; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = ((TextView) firstLL.getChildAt(i));
+                    TextView tv = getTextView(firstLL, i);
                     tv.setText(String.valueOf(list.get(totalCount).day));
                     tv.setTag(list.get(totalCount));
                     totalCount++;
@@ -233,7 +243,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = ((TextView) secondLL.getChildAt(i));
+                    TextView tv = getTextView(secondLL, i);
                     tv.setText(String.valueOf(list.get(totalCount).day));
                     tv.setTag(list.get(totalCount));
                     totalCount++;
@@ -242,7 +252,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = ((TextView) thirdLL.getChildAt(i));
+                    TextView tv = getTextView(thirdLL, i);
                     tv.setText(String.valueOf(list.get(totalCount).day));
                     tv.setTag(list.get(totalCount));
                     totalCount++;
@@ -251,7 +261,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = ((TextView) forthLL.getChildAt(i));
+                    TextView tv = getTextView(forthLL, i);
                     tv.setText(String.valueOf(list.get(totalCount).day));
                     tv.setTag(list.get(totalCount));
                     totalCount++;
@@ -260,7 +270,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = ((TextView) fiveLL.getChildAt(i));
+                    TextView tv = getTextView(fiveLL, i);
                     tv.setText(String.valueOf(list.get(totalCount).day));
                     tv.setTag(list.get(totalCount));
                     totalCount++;
@@ -269,7 +279,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = ((TextView) sixLL.getChildAt(i));
+                    TextView tv = getTextView(sixLL, i);
                     tv.setText(String.valueOf(list.get(totalCount).day));
                     tv.setTag(list.get(totalCount));
                     totalCount++;

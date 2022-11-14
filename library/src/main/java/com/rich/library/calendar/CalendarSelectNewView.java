@@ -68,14 +68,15 @@ public class CalendarSelectNewView extends RelativeLayout {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        int flipperHeightSpec = MeasureSpec.makeMeasureSpec(dip2px(240f), MeasureSpec.EXACTLY);
+        int flipperHeightSpec = MeasureSpec.makeMeasureSpec(dip2px(400f), MeasureSpec.EXACTLY);
         viewFlipper.measure(widthMeasureSpec, flipperHeightSpec);
 
         int handleHeightSpec = MeasureSpec.makeMeasureSpec(dip2px(20f), MeasureSpec.EXACTLY);
         handleView.measure(widthMeasureSpec, handleHeightSpec);
 
+        ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
 
-        int contentHeightSpec = MeasureSpec.makeMeasureSpec(heightSize - dip2px(61f), MeasureSpec.EXACTLY);
+        int contentHeightSpec = MeasureSpec.makeMeasureSpec(heightSize - itemView.getTopHeight(), MeasureSpec.EXACTLY);
         content.measure(widthMeasureSpec, contentHeightSpec);
 
         setMeasuredDimension(widthSize, heightSize);
@@ -83,9 +84,10 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
         viewFlipper.layout(0, 0, viewFlipper.getMeasuredWidth(), viewFlipper.getMeasuredHeight());
-        content.layout(0, dip2px(61f), content.getMeasuredWidth(), dip2px(61f) + content.getMeasuredHeight());
-        handleView.layout(0, dip2px(61f), handleView.getMeasuredWidth(), dip2px(61f) + handleView.getMeasuredHeight());
+        content.layout(0, itemView.getTopHeight(), content.getMeasuredWidth(), itemView.getTopHeight() + content.getMeasuredHeight());
+        handleView.layout(0, itemView.getTopHeight(), handleView.getMeasuredWidth(), itemView.getTopHeight() + handleView.getMeasuredHeight());
     }
 
     //TODO 点击事件这个方法需要验证一下
@@ -106,19 +108,16 @@ public class CalendarSelectNewView extends RelativeLayout {
     private void init(Context context) {
         viewFlipper = new CalendarViewFlipper(context);
         viewFlipper.setId(R.id.view_flipper);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, dip2px(240f));
-        addView(viewFlipper, params);
+        addView(viewFlipper);
 
         content = new FrameLayout(getContext());
-        RelativeLayout.LayoutParams contentParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         content.setBackgroundColor(Color.RED);
         content.setPadding(0, dip2px(20f), 0, 0);
-        addView(content, contentParams);
+        addView(content);
 
         handleView = new View(getContext());
         handleView.setBackgroundColor(Color.BLACK);
-        FrameLayout.LayoutParams handleParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, dip2px(20f));
-        addView(handleView, handleParams);
+        addView(handleView);
     }
 
 
@@ -190,9 +189,9 @@ public class CalendarSelectNewView extends RelativeLayout {
                 } else {
                     return viewFlipper.dispatchTouchEvent(ev);
                 }
-            } else if(pointInView(ev.getX(), ev.getY(), content)) {
+            } else if (pointInView(ev.getX(), ev.getY(), content)) {
                 return content.dispatchTouchEvent(ev);
-            }else{
+            } else {
                 return false;
             }
         } else {
@@ -214,9 +213,9 @@ public class CalendarSelectNewView extends RelativeLayout {
                     return true;
                 } else
                     return viewFlipper.dispatchTouchEvent(ev);
-            } else if(pointInView(ev.getX(), ev.getY(), content)){
+            } else if (pointInView(ev.getX(), ev.getY(), content)) {
                 return content.dispatchTouchEvent(ev);
-            }else{
+            } else {
                 return false;
             }
         }
