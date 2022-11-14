@@ -168,11 +168,14 @@ public class CalendarSelectNewView extends RelativeLayout {
                     clickViewFlag = CLICK_FRAMELAYOUT;
                     hide();
                     return true;
+                } else if (isClickFrameLayout) {
+                    return content.dispatchTouchEvent(ev);
                 } else {
-                    return super.dispatchTouchEvent(ev);
+                    return false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
         } else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
             if (isFirstMove) {
@@ -187,8 +190,10 @@ public class CalendarSelectNewView extends RelativeLayout {
                 } else {
                     return viewFlipper.dispatchTouchEvent(ev);
                 }
-            } else {
-                return super.dispatchTouchEvent(ev);
+            } else if(pointInView(ev.getX(), ev.getY(), content)) {
+                return content.dispatchTouchEvent(ev);
+            }else{
+                return false;
             }
         } else {
             if (clickViewFlag == CLICK_VIEW_FLIPPER) {
@@ -209,11 +214,12 @@ public class CalendarSelectNewView extends RelativeLayout {
                     return true;
                 } else
                     return viewFlipper.dispatchTouchEvent(ev);
-            } else {
+            } else if(pointInView(ev.getX(), ev.getY(), content)){
                 return content.dispatchTouchEvent(ev);
+            }else{
+                return false;
             }
         }
-        return super.dispatchTouchEvent(ev);
     }
 
     private void updateViewPosition(MotionEvent ev) {
