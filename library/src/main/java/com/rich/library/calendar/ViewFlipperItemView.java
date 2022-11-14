@@ -46,7 +46,10 @@ public class ViewFlipperItemView extends FrameLayout {
     private final OnClickListener itemClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+            DayTimeEntity clickEntity = (DayTimeEntity) v.getTag();
+            flipper.selectEntity = clickEntity;
+            invalidateSelectBg();
         }
     };
 
@@ -131,9 +134,19 @@ public class ViewFlipperItemView extends FrameLayout {
         }
     }
 
-    public TextView getTextView(LinearLayout ll, int index) {
+    public TextView getTextView(LinearLayout ll, int index, DayTimeEntity entity) {
         ViewGroup viewGroup = (ViewGroup) ll.getChildAt(index);
-        return (TextView) viewGroup.getChildAt(0);
+        viewGroup.setTag(entity);
+        TextView tv = (TextView) viewGroup.getChildAt(0);
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        if (flipper.selectEntity == null) {
+            tv.setBackground(null);
+        } else if (flipper.selectEntity.year == entity.year && flipper.selectEntity.month == entity.month && flipper.selectEntity.day == entity.day) {
+            tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
+        } else {
+            tv.setBackground(null);
+        }
+        return tv;
     }
 
     public View dotView(LinearLayout ll, int index) {
@@ -141,6 +154,35 @@ public class ViewFlipperItemView extends FrameLayout {
         return viewGroup.getChildAt(1);
     }
 
+    private void invalidateSelectBg() {
+        for (int i = 0; i < 7; i++) {
+            getTextView(firstLL, i, (DayTimeEntity) firstLL.getChildAt(i).getTag());
+        }
+
+        for (int i = 0; i < 7; i++) {
+            getTextView(secondLL, i, (DayTimeEntity) secondLL.getChildAt(i).getTag());
+        }
+
+        for (int i = 0; i < 7; i++) {
+            getTextView(thirdLL, i, (DayTimeEntity) thirdLL.getChildAt(i).getTag());
+        }
+
+        for (int i = 0; i < 7; i++) {
+            getTextView(forthLL, i, (DayTimeEntity) forthLL.getChildAt(i).getTag());
+        }
+
+        if (fiveLL.getVisibility() == View.VISIBLE) {
+            for (int i = 0; i < 7; i++) {
+                getTextView(fiveLL, i, (DayTimeEntity) fiveLL.getChildAt(i).getTag());
+            }
+        }
+
+        if (sixLL.getVisibility() == View.VISIBLE) {
+            for (int i = 0; i < 7; i++) {
+                getTextView(sixLL, i, (DayTimeEntity) sixLL.getChildAt(i).getTag());
+            }
+        }
+    }
 
     public void bindData(Calendar calendar, int mode, int selectWeekNumOfMonth, Map<String, List<DayTimeEntity>> map) {
         this.selectWeekNumOfMonth = selectWeekNumOfMonth;
@@ -199,19 +241,17 @@ public class ViewFlipperItemView extends FrameLayout {
             if (weekCount == 5) {
                 for (int i = lastEndIndex; i > 0; i--) {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    TextView tv = getTextView(fiveLL, 7 - i);
-                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
-                    tv.setTag(entity);
+                    TextView tv = getTextView(fiveLL, 7 - i, entity);
+                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 }
             } else if (weekCount == 6) {
                 for (int i = lastEndIndex; i > 0; i--) {
                     lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    TextView tv = getTextView(sixLL, 7 - i);
-                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
-                    tv.setTag(entity);
+                    TextView tv = getTextView(sixLL, 7 - i, entity);
+                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 }
             }
@@ -224,64 +264,56 @@ public class ViewFlipperItemView extends FrameLayout {
 
             for (int i = 0; i < firstStartIndex; i++) {
                 firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
-                TextView tv = getTextView(firstLL, firstStartIndex - 1 - i);
-                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 DayTimeEntity entity = new DayTimeEntity(firstCalendar.get(Calendar.YEAR), firstCalendar.get(Calendar.MONTH), firstCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
-                tv.setTag(entity);
+                TextView tv = getTextView(firstLL, firstStartIndex - 1 - i, entity);
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 tv.setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
             }
 
-
             for (int i = firstStartIndex; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = getTextView(firstLL, i);
+                    TextView tv = getTextView(firstLL, i, list.get(totalCount));
                     tv.setText(String.valueOf(list.get(totalCount).day));
-                    tv.setTag(list.get(totalCount));
                     totalCount++;
                 }
             }
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = getTextView(secondLL, i);
+                    TextView tv = getTextView(secondLL, i, list.get(totalCount));
                     tv.setText(String.valueOf(list.get(totalCount).day));
-                    tv.setTag(list.get(totalCount));
                     totalCount++;
                 }
             }
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = getTextView(thirdLL, i);
+                    TextView tv = getTextView(thirdLL, i, list.get(totalCount));
                     tv.setText(String.valueOf(list.get(totalCount).day));
-                    tv.setTag(list.get(totalCount));
                     totalCount++;
                 }
             }
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = getTextView(forthLL, i);
+                    TextView tv = getTextView(forthLL, i, list.get(totalCount));
                     tv.setText(String.valueOf(list.get(totalCount).day));
-                    tv.setTag(list.get(totalCount));
                     totalCount++;
                 }
             }
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = getTextView(fiveLL, i);
+                    TextView tv = getTextView(fiveLL, i, list.get(totalCount));
                     tv.setText(String.valueOf(list.get(totalCount).day));
-                    tv.setTag(list.get(totalCount));
                     totalCount++;
                 }
             }
 
             for (int i = 0; i < 7; i++) {
                 if (totalCount < listSize) {
-                    TextView tv = getTextView(sixLL, i);
+                    TextView tv = getTextView(sixLL, i, list.get(totalCount));
                     tv.setText(String.valueOf(list.get(totalCount).day));
-                    tv.setTag(list.get(totalCount));
                     totalCount++;
                 }
             }

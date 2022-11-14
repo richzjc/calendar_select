@@ -41,7 +41,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     private Calendar endCalendar;
 
     public int currentMode = MODE_WEEK;
-    private DayTimeEntity selectEntity;
+    public DayTimeEntity selectEntity;
     //TODO 默认写成2； 后面应该改成当天日期的行
     private int selectWeekNumOfMonth = 0;
     private Map<String, List<DayTimeEntity>> daytimeMap;
@@ -70,7 +70,6 @@ public class CalendarViewFlipper extends ViewFlipper {
     private void setUpViews() {
         removeAllViews();
         ViewFlipperItemView itemView = new ViewFlipperItemView(getContext());
-        itemView.setBackgroundColor(Color.BLUE);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(itemView, params);
 
@@ -158,7 +157,7 @@ public class CalendarViewFlipper extends ViewFlipper {
                 responseOnTouch(ev);
             }
         }
-        return true;
+        return super.dispatchTouchEvent(ev);
     }
 
 
