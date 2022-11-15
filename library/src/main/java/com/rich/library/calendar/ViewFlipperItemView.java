@@ -378,7 +378,8 @@ public class ViewFlipperItemView extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (isFirstInitFlag) {
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        if (isFirstInitFlag && flipper.currentMode == MODE_WEEK) {
             dateLL.setTranslationY(-getFlipperTransLateY());
         }
     }

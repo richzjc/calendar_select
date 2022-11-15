@@ -1,13 +1,8 @@
 package com.rich.library.calendar;
 
-import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
-
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -227,10 +222,12 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     private void initCurCalendar(Calendar curCalendar) {
         this.curCalendar = curCalendar;
+
         Calendar preCalendar = Calendar.getInstance();
         preCalendar.setTimeInMillis(curCalendar.getTimeInMillis());
         preCalendar.add(Calendar.MONTH, -1);
         this.preCalendar = preCalendar;
+
         Calendar nextCalendar = Calendar.getInstance();
         nextCalendar.setTimeInMillis(curCalendar.getTimeInMillis());
         nextCalendar.add(Calendar.MONTH, 1);
