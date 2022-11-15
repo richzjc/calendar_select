@@ -354,7 +354,7 @@ public class CalendarSelectNewView extends RelativeLayout {
             ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
             if (itemView != null) {
                 //TODO 这个translateY 不是0  得调整一下
-                itemView.dateLL.setTranslationY(0);
+                itemView.dateLL.setTranslationY(-itemView.getFlipperTransLateY());
             }
         } else if (currentModel == MODE_MONTH) {
             ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();

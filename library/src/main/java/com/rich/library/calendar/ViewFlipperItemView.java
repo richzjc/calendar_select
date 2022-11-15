@@ -135,10 +135,10 @@ public class ViewFlipperItemView extends FrameLayout {
         if (year == flipper.selectEntity.year && month == flipper.selectEntity.month)
             return getNumSelectWeekOfMonth(flipper.selectEntity.year, flipper.selectEntity.month, flipper.selectEntity.day);
 
-        if (flipper.selectEntity.year == firstDayTimeEntity.year && flipper.selectEntity.month == firstDayTimeEntity.month && flipper.selectEntity.day >= firstDayTimeEntity.day)
+        if (firstDayTimeEntity != null && flipper.selectEntity.year == firstDayTimeEntity.year && flipper.selectEntity.month == firstDayTimeEntity.month && flipper.selectEntity.day >= firstDayTimeEntity.day)
             return 1;
 
-        if (flipper.selectEntity.year == lastDayTimeEntity.year && flipper.selectEntity.month == lastDayTimeEntity.month && flipper.selectEntity.day <= lastDayTimeEntity.day)
+        if (lastDayTimeEntity != null && flipper.selectEntity.year == lastDayTimeEntity.year && flipper.selectEntity.month == lastDayTimeEntity.month && flipper.selectEntity.day <= lastDayTimeEntity.day)
             return getWeekCountOfMonth(curBindCalendar);
 
         return 0;
@@ -369,5 +369,12 @@ public class ViewFlipperItemView extends FrameLayout {
 
             }
         }
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
     }
 }
