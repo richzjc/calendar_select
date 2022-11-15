@@ -62,7 +62,6 @@ public class CalendarNewUtil {
 
 
     public static int getWeekCountOfMonth(Calendar calendar) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         int dayCount = getDayCountOfMonth(calendar);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 

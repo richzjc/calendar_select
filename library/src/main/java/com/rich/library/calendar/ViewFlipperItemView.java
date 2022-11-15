@@ -1,6 +1,7 @@
 package com.rich.library.calendar;
 
 import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
+import static com.rich.library.calendar.CalendarNewUtil.getWeekCountOfMonth;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
@@ -38,11 +39,15 @@ public class ViewFlipperItemView extends FrameLayout {
     public LinearLayout dateLL;
     public LinearLayout weekLL;
 
+    private DayTimeEntity firstDayTimeEntity;
+    private DayTimeEntity lastDayTimeEntity;
+
     private View sixView;
     private View fiveView;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
     //TODO 看看这个地方是否可以优化的， 是不是每次进来都是需要刷新数据的
     public Calendar curBindCalendar;
+
 
     private final OnClickListener itemClickListener = new OnClickListener() {
         @Override
@@ -50,7 +55,6 @@ public class ViewFlipperItemView extends FrameLayout {
             CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
             DayTimeEntity clickEntity = (DayTimeEntity) v.getTag();
             flipper.selectEntity = clickEntity;
-            flipper.selectWeekNumOfMonth = getNumSelectWeekOfMonth(clickEntity.year, clickEntity.month, clickEntity.day);
             invalidateSelectBg();
             ((ViewFlipperItemView) flipper.getOtherView()).invalidateSelectBg();
         }
@@ -120,13 +124,28 @@ public class ViewFlipperItemView extends FrameLayout {
         return getHeight() - getTopHeight() - dip2px(20f);
     }
 
+    public int getSelectWeekNumofMonth() {
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        if (curBindCalendar == null || flipper.selectEntity == null)
+            return 0;
+        int year = curBindCalendar.get(Calendar.YEAR);
+        int month = curBindCalendar.get(Calendar.MONTH);
+        if (year == flipper.selectEntity.year && month == flipper.selectEntity.month)
+            return getNumSelectWeekOfMonth(flipper.selectEntity.year, flipper.selectEntity.month, flipper.selectEntity.day);
+
+        if (flipper.selectEntity.year == firstDayTimeEntity.year && flipper.selectEntity.month == firstDayTimeEntity.month && flipper.selectEntity.day >= firstDayTimeEntity.day)
+            return 1;
+
+        if (flipper.selectEntity.year == lastDayTimeEntity.year && flipper.selectEntity.month == lastDayTimeEntity.month && flipper.selectEntity.day <= lastDayTimeEntity.day)
+            return getWeekCountOfMonth(curBindCalendar);
+
+        return 0;
+    }
+
     public int getFlipperTransLateY() {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        if (curBindCalendar != null
-                && flipper.selectEntity != null
-                && (flipper.selectEntity.year == curBindCalendar.get(Calendar.YEAR)
-                && flipper.selectEntity.month == curBindCalendar.get(Calendar.MONTH))) {
-            int selectWeekNumOfMonth = flipper.selectWeekNumOfMonth;
+        if (curBindCalendar != null && flipper.selectEntity != null) {
+            int selectWeekNumOfMonth = getSelectWeekNumofMonth();
             if (selectWeekNumOfMonth == 1) {
                 return 0;
             } else if (selectWeekNumOfMonth == 2) {
@@ -219,7 +238,7 @@ public class ViewFlipperItemView extends FrameLayout {
             CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             Calendar newCalendar = Calendar.getInstance();
             newCalendar.setTimeInMillis(calendar.getTimeInMillis());
-            int weekCount = CalendarNewUtil.getWeekCountOfMonth(newCalendar);
+            int weekCount = getWeekCountOfMonth(newCalendar);
 
             if (weekCount == 5) {
                 fiveView.setVisibility(View.VISIBLE);
@@ -259,6 +278,10 @@ public class ViewFlipperItemView extends FrameLayout {
                     TextView tv = getTextView(fiveLL, 7 - i, entity);
                     tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+
+                    if (i == 1) {
+                        lastDayTimeEntity = entity;
+                    }
                 }
             } else if (weekCount == 6) {
                 for (int i = lastEndIndex; i > 0; i--) {
@@ -267,6 +290,9 @@ public class ViewFlipperItemView extends FrameLayout {
                     TextView tv = getTextView(sixLL, 7 - i, entity);
                     tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
                     tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+                    if (i == 1) {
+                        lastDayTimeEntity = entity;
+                    }
                 }
             }
 
@@ -282,6 +308,9 @@ public class ViewFlipperItemView extends FrameLayout {
                 TextView tv = getTextView(firstLL, firstStartIndex - 1 - i, entity);
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 tv.setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
+                if (i == firstStartIndex - 1) {
+                    firstDayTimeEntity = entity;
+                }
             }
 
             for (int i = firstStartIndex; i < 7; i++) {

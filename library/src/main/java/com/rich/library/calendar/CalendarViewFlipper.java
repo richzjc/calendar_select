@@ -44,8 +44,6 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     public int currentMode = MODE_WEEK;
     public DayTimeEntity selectEntity;
-    //TODO 默认写成2； 后面应该改成当天日期的行
-    public int selectWeekNumOfMonth = 0;
     private Map<String, List<DayTimeEntity>> daytimeMap;
 
     private Calendar curCalendar;
@@ -289,7 +287,6 @@ public class CalendarViewFlipper extends ViewFlipper {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DATE);
         selectEntity = new DayTimeEntity(year, month, day, 0, 0);
-        selectWeekNumOfMonth = getNumSelectWeekOfMonth(year, month, day);
         if (daytimeMap == null)
             daytimeMap = new HashMap<>();
 
