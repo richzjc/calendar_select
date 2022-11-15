@@ -5,6 +5,7 @@ import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -51,7 +52,7 @@ public class ViewFlipperItemView extends FrameLayout {
             flipper.selectEntity = clickEntity;
             flipper.selectWeekNumOfMonth = getNumSelectWeekOfMonth(clickEntity.year, clickEntity.month, clickEntity.day);
             invalidateSelectBg();
-            ((ViewFlipperItemView)flipper.getOtherView()).invalidateSelectBg();
+            ((ViewFlipperItemView) flipper.getOtherView()).invalidateSelectBg();
         }
     };
 
@@ -104,7 +105,8 @@ public class ViewFlipperItemView extends FrameLayout {
     private void addOnclickListener(LinearLayout ll) {
         int childCount = ll.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            ll.getChildAt(i).setOnClickListener(itemClickListener);
+            FlipperItemChildLinearLayout itemChildLinearLayout = (FlipperItemChildLinearLayout) ll.getChildAt(i);
+            itemChildLinearLayout.listener = itemClickListener;
         }
     }
 
@@ -149,12 +151,16 @@ public class ViewFlipperItemView extends FrameLayout {
         viewGroup.setTag(entity);
         TextView tv = (TextView) viewGroup.getChildAt(0);
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        if (flipper.selectEntity == null) {
-            tv.setBackground(null);
-        } else if (flipper.selectEntity.year == entity.year && flipper.selectEntity.month == entity.month && flipper.selectEntity.day == entity.day) {
-            tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
-        } else {
-            tv.setBackground(null);
+        try {
+            if (flipper.selectEntity == null || entity == null) {
+                tv.setBackground(null);
+            } else if (flipper.selectEntity.year == entity.year && flipper.selectEntity.month == entity.month && flipper.selectEntity.day == entity.day) {
+                tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
+            } else {
+                tv.setBackground(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return tv;
     }

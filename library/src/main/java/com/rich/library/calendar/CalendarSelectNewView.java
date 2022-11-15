@@ -146,13 +146,13 @@ public class CalendarSelectNewView extends RelativeLayout {
     public boolean dispatchTouchEvent(MotionEvent ev) {
 
         if (viewFlipper.currentMode == MODE_SCROLL) {
-            if (pointInView(ev.getX(), ev.getY(), content)) {
-                content.clearAnimation();
-                handleView.clearAnimation();
-                ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
-                itemView.dateLL.clearAnimation();
-                hide();
-            }
+//            if (pointInView(ev.getX(), ev.getY(), content)) {
+//                content.clearAnimation();
+//                handleView.clearAnimation();
+//                ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
+//                itemView.dateLL.clearAnimation();
+//                hide();
+//            }
             return true;
         }
 
