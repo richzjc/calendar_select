@@ -47,6 +47,7 @@ public class CalendarSelectNewView extends RelativeLayout {
     private final float SLIDE_ANGLE = 45;
 
     private int clickViewFlag = -1;
+    private AnimatorSet set;
 
     public CalendarSelectNewView(Context context) {
         super(context);
@@ -90,10 +91,9 @@ public class CalendarSelectNewView extends RelativeLayout {
         handleView.layout(0, itemView.getTopHeight(), handleView.getMeasuredWidth(), itemView.getTopHeight() + handleView.getMeasuredHeight());
     }
 
-    //TODO 点击事件这个方法需要验证一下
     public boolean pointInView(float localX, float localY, View view) {
         if (view == content) {
-            boolean result = localX >= view.getLeft() && localY >= view.getTop() + content.getTranslationY() && localX < view.getRight() &&
+            boolean result = localX >= view.getLeft() && localY >= view.getTop() + content.getTranslationY() + handleView.getMeasuredHeight() && localX < view.getRight() &&
                     localY < view.getBottom() + content.getTranslationY();
             return result;
         } else if (view == viewFlipper) {
@@ -144,15 +144,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-
         if (viewFlipper.currentMode == MODE_SCROLL) {
-//            if (pointInView(ev.getX(), ev.getY(), content)) {
-//                content.clearAnimation();
-//                handleView.clearAnimation();
-//                ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
-//                itemView.dateLL.clearAnimation();
-//                hide();
-//            }
             return true;
         }
 
@@ -256,12 +248,15 @@ public class CalendarSelectNewView extends RelativeLayout {
     }
 
     public void show() {
+        if (set != null && set.isRunning())
+            set.cancel();
+
         ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
         int maxTransY = itemView.getMaxTranslateY();
 
         float contentTranslateY = content.getTranslationY();
 
-        float time = Math.abs(contentTranslateY) * 400f / maxTransY;
+        float time = Math.abs(maxTransY - contentTranslateY) * 300f / maxTransY;
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, maxTransY);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, maxTransY);
@@ -270,7 +265,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", itemTransY, 0);
 
-        AnimatorSet set = new AnimatorSet();
+        set = new AnimatorSet();
         set.playTogether(animator, handleAnimator, flipperAnimator);
         set.setDuration((long) time);
         set.setInterpolator(new LinearInterpolator());
@@ -302,11 +297,14 @@ public class CalendarSelectNewView extends RelativeLayout {
     }
 
     public void hide() {
+        if (set != null && set.isRunning())
+            set.cancel();
+
         ViewFlipperItemView itemView = (ViewFlipperItemView) viewFlipper.getCurrentView();
         int maxTransY = itemView.getMaxTranslateY();
 
         float contentTranslateY = content.getTranslationY();
-        float time = Math.abs(contentTranslateY - maxTransY) * 400f / maxTransY;
+        float time = Math.abs(contentTranslateY) * 300f / maxTransY;
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
@@ -315,8 +313,9 @@ public class CalendarSelectNewView extends RelativeLayout {
         float itemTranslateY = itemView.dateLL.getTranslationY();
         ObjectAnimator flipperAnimator = ObjectAnimator.ofFloat(itemView.dateLL, "translationY", itemTranslateY, -itemTransY);
 
-        AnimatorSet set = new AnimatorSet();
+        set = new AnimatorSet();
         set.playTogether(animator, handleAnimator, flipperAnimator);
+        Log.e("time", "time = " + time);
         set.setDuration((long) time);
         set.setInterpolator(new LinearInterpolator());
         set.addListener(new Animator.AnimatorListener() {

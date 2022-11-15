@@ -45,7 +45,6 @@ public class ViewFlipperItemView extends FrameLayout {
     private View sixView;
     private View fiveView;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
-    //TODO 看看这个地方是否可以优化的， 是不是每次进来都是需要刷新数据的
     public Calendar curBindCalendar;
 
 
@@ -57,6 +56,9 @@ public class ViewFlipperItemView extends FrameLayout {
             flipper.selectEntity = clickEntity;
             invalidateSelectBg();
             ((ViewFlipperItemView) flipper.getOtherView()).invalidateSelectBg();
+            CalendarSelectNewView newView = (CalendarSelectNewView) flipper.getParent();
+            newView.hide();
+
         }
     };
 
