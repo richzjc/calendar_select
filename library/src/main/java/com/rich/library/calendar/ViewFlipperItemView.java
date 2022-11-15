@@ -53,7 +53,7 @@ public class ViewFlipperItemView extends FrameLayout {
         public void onClick(View v) {
             CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
             DayTimeEntity clickEntity = (DayTimeEntity) v.getTag();
-            flipper.selectEntity = clickEntity;
+            flipper.setSelectEntity(clickEntity);
             invalidateSelectBg();
             ((ViewFlipperItemView) flipper.getOtherView()).invalidateSelectBg();
             CalendarSelectNewView newView = (CalendarSelectNewView) flipper.getParent();
@@ -128,17 +128,17 @@ public class ViewFlipperItemView extends FrameLayout {
 
     public int getSelectWeekNumofMonth() {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        if (curBindCalendar == null || flipper.selectEntity == null)
+        if (curBindCalendar == null || flipper.getSelectEntity() == null)
             return 0;
         int year = curBindCalendar.get(Calendar.YEAR);
         int month = curBindCalendar.get(Calendar.MONTH);
-        if (year == flipper.selectEntity.year && month == flipper.selectEntity.month)
-            return getNumSelectWeekOfMonth(flipper.selectEntity.year, flipper.selectEntity.month, flipper.selectEntity.day);
+        if (year == flipper.getSelectEntity().year && month == flipper.getSelectEntity().month)
+            return getNumSelectWeekOfMonth(flipper.getSelectEntity().year, flipper.getSelectEntity().month, flipper.getSelectEntity().day);
 
-        if (firstDayTimeEntity != null && flipper.selectEntity.year == firstDayTimeEntity.year && flipper.selectEntity.month == firstDayTimeEntity.month && flipper.selectEntity.day >= firstDayTimeEntity.day)
+        if (firstDayTimeEntity != null && flipper.getSelectEntity().year == firstDayTimeEntity.year && flipper.getSelectEntity().month == firstDayTimeEntity.month && flipper.getSelectEntity().day >= firstDayTimeEntity.day)
             return 1;
 
-        if (lastDayTimeEntity != null && flipper.selectEntity.year == lastDayTimeEntity.year && flipper.selectEntity.month == lastDayTimeEntity.month && flipper.selectEntity.day <= lastDayTimeEntity.day)
+        if (lastDayTimeEntity != null && flipper.getSelectEntity().year == lastDayTimeEntity.year && flipper.getSelectEntity().month == lastDayTimeEntity.month && flipper.getSelectEntity().day <= lastDayTimeEntity.day)
             return getWeekCountOfMonth(curBindCalendar);
 
         return 0;
@@ -146,7 +146,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
     public int getFlipperTransLateY() {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        if (curBindCalendar != null && flipper.selectEntity != null) {
+        if (curBindCalendar != null && flipper.getSelectEntity() != null) {
             int selectWeekNumOfMonth = getSelectWeekNumofMonth();
             if (selectWeekNumOfMonth == 1) {
                 return 0;
@@ -173,9 +173,9 @@ public class ViewFlipperItemView extends FrameLayout {
         TextView tv = (TextView) viewGroup.getChildAt(0);
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
         try {
-            if (flipper.selectEntity == null || entity == null) {
+            if (flipper.getSelectEntity() == null || entity == null) {
                 tv.setBackground(null);
-            } else if (flipper.selectEntity.year == entity.year && flipper.selectEntity.month == entity.month && flipper.selectEntity.day == entity.day) {
+            } else if (flipper.getSelectEntity().year == entity.year && flipper.getSelectEntity().month == entity.month && flipper.getSelectEntity().day == entity.day) {
                 tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
             } else {
                 tv.setBackground(null);

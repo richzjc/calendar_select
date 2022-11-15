@@ -20,7 +20,7 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     private int musicSize = 2;
     private int mCurrentItem = 0;
-    private float originalX;//ACTION_DOWN事件发生时的手指坐标
+    private float originalX; //ACTION_DOWN事件发生时的手指坐标
     private int flipper_width = 0;
 
     private float downX = 0f;
@@ -38,7 +38,8 @@ public class CalendarViewFlipper extends ViewFlipper {
     private Calendar endCalendar;
 
     public int currentMode = MODE_WEEK;
-    public DayTimeEntity selectEntity;
+    private DayTimeEntity selectEntity;
+    public int weekOffsetCount = 0;
     private Map<String, List<DayTimeEntity>> daytimeMap;
 
     private Calendar curCalendar;
@@ -277,13 +278,20 @@ public class CalendarViewFlipper extends ViewFlipper {
             return true;
     }
 
+    public void setSelectEntity(DayTimeEntity entity){
+        this.selectEntity = entity;
+    }
+
+    public DayTimeEntity getSelectEntity(){
+        return selectEntity;
+    }
 
     public void setcalendarRange(Calendar startCalendar, Calendar endCalendar) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DATE);
-        selectEntity = new DayTimeEntity(year, month, day, 0, 0);
+        setSelectEntity(new DayTimeEntity(year, month, day, 0, 0));
         if (daytimeMap == null)
             daytimeMap = new HashMap<>();
 
@@ -299,9 +307,11 @@ public class CalendarViewFlipper extends ViewFlipper {
         if (curTime >= startTime && curTime <= endTime) {
             ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, daytimeMap);
             initCurCalendar(currentCalendar);
+            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
         } else {
             ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap);
             initCurCalendar(startCalendar);
+            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
         }
     }
 }
