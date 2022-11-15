@@ -46,7 +46,7 @@ public class ViewFlipperItemView extends FrameLayout {
     private View fiveView;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
     public Calendar curBindCalendar;
-
+    private boolean isFirstInitFlag = true;
 
     private final OnClickListener itemClickListener = new OnClickListener() {
         @Override
@@ -222,6 +222,9 @@ public class ViewFlipperItemView extends FrameLayout {
     }
 
     public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map) {
+        if (curBindCalendar != null)
+            isFirstInitFlag = false;
+
         boolean flag;
         if (curBindCalendar == null)
             flag = true;
@@ -373,8 +376,10 @@ public class ViewFlipperItemView extends FrameLayout {
 
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (isFirstInitFlag) {
+            dateLL.setTranslationY(-getFlipperTransLateY());
+        }
     }
 }
