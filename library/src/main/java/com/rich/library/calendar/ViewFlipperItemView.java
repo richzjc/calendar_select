@@ -51,6 +51,7 @@ public class ViewFlipperItemView extends FrameLayout {
             flipper.selectEntity = clickEntity;
             flipper.selectWeekNumOfMonth = getNumSelectWeekOfMonth(clickEntity.year, clickEntity.month, clickEntity.day);
             invalidateSelectBg();
+            ((ViewFlipperItemView)flipper.getOtherView()).invalidateSelectBg();
         }
     };
 
@@ -139,7 +140,6 @@ public class ViewFlipperItemView extends FrameLayout {
             } else {
                 return 0;
             }
-
         }
         return 0;
     }
@@ -164,7 +164,7 @@ public class ViewFlipperItemView extends FrameLayout {
         return viewGroup.getChildAt(1);
     }
 
-    private void invalidateSelectBg() {
+    public void invalidateSelectBg() {
         for (int i = 0; i < 7; i++) {
             getTextView(firstLL, i, (DayTimeEntity) firstLL.getChildAt(i).getTag());
         }

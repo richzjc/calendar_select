@@ -1,5 +1,7 @@
 package com.rich.library.calendar;
 
+import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
@@ -282,6 +284,12 @@ public class CalendarViewFlipper extends ViewFlipper {
 
 
     public void setcalendarRange(Calendar startCalendar, Calendar endCalendar) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DATE);
+        selectEntity = new DayTimeEntity(year, month, day, 0, 0);
+        selectWeekNumOfMonth = getNumSelectWeekOfMonth(year, month, day);
         if (daytimeMap == null)
             daytimeMap = new HashMap<>();
 
