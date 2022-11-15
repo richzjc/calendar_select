@@ -43,7 +43,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     public int currentMode = MODE_WEEK;
     public DayTimeEntity selectEntity;
     //TODO 默认写成2； 后面应该改成当天日期的行
-    private int selectWeekNumOfMonth = 0;
+    public int selectWeekNumOfMonth = 0;
     private Map<String, List<DayTimeEntity>> daytimeMap;
 
     private Calendar curCalendar;
@@ -173,10 +173,10 @@ public class CalendarViewFlipper extends ViewFlipper {
                 getCurrentView().setTranslationX(dx);
                 if (dx > 0) {
                     getOtherView().setTranslationX(dx - flipper_width);
-                    ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
+                    ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap);
                 } else {
                     getOtherView().setTranslationX(dx + flipper_width);
-                    ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
+                    ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -295,10 +295,10 @@ public class CalendarViewFlipper extends ViewFlipper {
         long curTime = currentCalendar.getTimeInMillis();
 
         if (curTime >= startTime && curTime <= endTime) {
-            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
+            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, daytimeMap);
             initCurCalendar(currentCalendar);
         } else {
-            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, selectWeekNumOfMonth, daytimeMap);
+            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap);
             initCurCalendar(startCalendar);
         }
     }

@@ -196,7 +196,6 @@ public class CalendarNewUtil {
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         int weekNumber = calendar.get(Calendar.WEEK_OF_MONTH);
-        Log.e("@@@", "weekNumber = " + weekNumber);
         return weekNumber;
     }
 }

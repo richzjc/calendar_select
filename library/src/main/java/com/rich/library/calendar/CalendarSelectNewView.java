@@ -144,6 +144,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
         if (viewFlipper.currentMode == MODE_SCROLL) {
             if (pointInView(ev.getX(), ev.getY(), content)) {
                 content.clearAnimation();

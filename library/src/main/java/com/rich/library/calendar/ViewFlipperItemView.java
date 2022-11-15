@@ -1,5 +1,6 @@
 package com.rich.library.calendar;
 
+import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
@@ -36,7 +37,6 @@ public class ViewFlipperItemView extends FrameLayout {
     public LinearLayout dateLL;
     public LinearLayout weekLL;
 
-    private int selectWeekNumOfMonth;
     private View sixView;
     private View fiveView;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
@@ -49,6 +49,7 @@ public class ViewFlipperItemView extends FrameLayout {
             CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
             DayTimeEntity clickEntity = (DayTimeEntity) v.getTag();
             flipper.selectEntity = clickEntity;
+            flipper.selectWeekNumOfMonth = getNumSelectWeekOfMonth(clickEntity.year, clickEntity.month, clickEntity.day);
             invalidateSelectBg();
         }
     };
@@ -117,21 +118,30 @@ public class ViewFlipperItemView extends FrameLayout {
     }
 
     public int getFlipperTransLateY() {
-        if (selectWeekNumOfMonth == 1) {
-            return 0;
-        } else if (selectWeekNumOfMonth == 2) {
-            return secondLL.getTop();
-        } else if (selectWeekNumOfMonth == 3) {
-            return thirdLL.getTop();
-        } else if (selectWeekNumOfMonth == 4) {
-            return forthLL.getTop();
-        } else if (selectWeekNumOfMonth == 5) {
-            return fiveLL.getTop();
-        } else if (selectWeekNumOfMonth == 6) {
-            return sixLL.getTop();
-        } else {
-            return 0;
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        if (curBindCalendar != null
+                && flipper.selectEntity != null
+                && (flipper.selectEntity.year == curBindCalendar.get(Calendar.YEAR)
+                && flipper.selectEntity.month == curBindCalendar.get(Calendar.MONTH))) {
+            int selectWeekNumOfMonth = flipper.selectWeekNumOfMonth;
+            if (selectWeekNumOfMonth == 1) {
+                return 0;
+            } else if (selectWeekNumOfMonth == 2) {
+                return secondLL.getTop();
+            } else if (selectWeekNumOfMonth == 3) {
+                return thirdLL.getTop();
+            } else if (selectWeekNumOfMonth == 4) {
+                return forthLL.getTop();
+            } else if (selectWeekNumOfMonth == 5) {
+                return fiveLL.getTop();
+            } else if (selectWeekNumOfMonth == 6) {
+                return sixLL.getTop();
+            } else {
+                return 0;
+            }
+
         }
+        return 0;
     }
 
     public TextView getTextView(LinearLayout ll, int index, DayTimeEntity entity) {
@@ -184,8 +194,7 @@ public class ViewFlipperItemView extends FrameLayout {
         }
     }
 
-    public void bindData(Calendar calendar, int mode, int selectWeekNumOfMonth, Map<String, List<DayTimeEntity>> map) {
-        this.selectWeekNumOfMonth = selectWeekNumOfMonth;
+    public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map) {
         boolean flag;
         if (curBindCalendar == null)
             flag = true;
@@ -200,9 +209,8 @@ public class ViewFlipperItemView extends FrameLayout {
                 flag = true;
         }
         if (flag) {
-            CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             curBindCalendar = calendar;
-
+            CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             Calendar newCalendar = Calendar.getInstance();
             newCalendar.setTimeInMillis(calendar.getTimeInMillis());
             int weekCount = CalendarNewUtil.getWeekCountOfMonth(newCalendar);

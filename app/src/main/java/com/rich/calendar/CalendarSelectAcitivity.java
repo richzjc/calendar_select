@@ -1,5 +1,6 @@
 package com.rich.calendar;
 
+import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
