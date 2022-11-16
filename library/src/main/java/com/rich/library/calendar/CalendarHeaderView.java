@@ -10,9 +10,18 @@ import android.widget.TextView;
 
 import com.rich.library.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class CalendarHeaderView extends RelativeLayout {
     public TextView leftTitle;
     private View line;
+
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
+
+    public void setLeftTitle(Calendar calendar){
+        leftTitle.setText(format.format(calendar.getTime()));
+    }
 
     public CalendarHeaderView(Context context) {
         super(context);
@@ -63,6 +72,8 @@ public class CalendarHeaderView extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        super.onLayout(changed, l, t, r, b);
+        int leftPadding = Util.dip2px(15f, getContext());
+        leftTitle.layout(leftPadding, 0, leftPadding + leftTitle.getMeasuredWidth(), leftTitle.getMeasuredHeight());
+        line.layout(0, getMeasuredHeight() - line.getMeasuredHeight(), getMeasuredWidth(), getMeasuredHeight());
     }
 }

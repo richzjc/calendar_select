@@ -17,7 +17,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.rich.library.R;
 
 import java.util.Calendar;
 
@@ -101,7 +100,6 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     private void init(Context context) {
         viewFlipper = new CalendarViewFlipper(context);
-        viewFlipper.setId(R.id.view_flipper);
         addView(viewFlipper);
 
         content = new FrameLayout(getContext());

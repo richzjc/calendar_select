@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.rich.library.calendar.CalendarSelectNewView;
+import com.rich.library.calendar.CalendarTotalView;
 
 import java.util.Calendar;
 
@@ -24,7 +25,7 @@ public class CalendarSelectAcitivity extends AppCompatActivity {
             setContentView(R.layout.select_date_single);
         else if (TextUtils.equals(flag, "calendar_new")) {
             setContentView(R.layout.select_date_calendar_new);
-            CalendarSelectNewView selectNewView = findViewById(R.id.calendar_select);
+            CalendarTotalView selectNewView = findViewById(R.id.calendar_select);
             Calendar startCalendar = Calendar.getInstance();
             Calendar endCalendar = Calendar.getInstance();
             startCalendar.add(Calendar.MONTH, -3);

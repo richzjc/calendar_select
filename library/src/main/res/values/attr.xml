@@ -12,5 +12,5 @@
         </attr>
     </declare-styleable>
 
-    <item name="view_flipper"  type="id"/>
+<!--    <item name="view_flipper"  type="id"/>-->
 </resources>

@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.rich.library.calendar.CalendarSelectNewView
+    <com.rich.library.calendar.CalendarTotalView
         android:id="@+id/calendar_select"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.rich.library.calendar.CalendarSelectNewView>
+    </com.rich.library.calendar.CalendarTotalView>
 </RelativeLayout>
