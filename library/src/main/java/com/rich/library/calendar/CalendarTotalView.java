@@ -1,5 +1,6 @@
 package com.rich.library.calendar;
 
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -30,6 +31,12 @@ public class CalendarTotalView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         headerView = new CalendarHeaderView(getContext());
         selectNewView = new CalendarSelectNewView(getContext());
+        selectNewView.calendarLiveData.observeForever(new Observer<Calendar>() {
+            @Override
+            public void onChanged(@Nullable Calendar calendar) {
+                headerView.setLeftTitle(calendar);
+            }
+        });
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         addView(headerView, params);
 

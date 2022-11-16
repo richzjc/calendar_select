@@ -7,6 +7,8 @@ import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -40,6 +42,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     private int clickViewFlag = -1;
     private AnimatorSet set;
+    public MutableLiveData<Calendar> calendarLiveData = new MutableLiveData<>();
 
     public CalendarSelectNewView(Context context) {
         super(context);

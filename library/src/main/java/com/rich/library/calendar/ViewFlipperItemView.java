@@ -222,6 +222,12 @@ public class ViewFlipperItemView extends FrameLayout {
     }
 
     public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map) {
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        CalendarSelectNewView selectNewView = (CalendarSelectNewView) flipper.getParent();
+        if(flipper.getCurrentView() == this){
+            selectNewView.calendarLiveData.setValue(calendar);
+        }
+
         if (curBindCalendar != null)
             isFirstInitFlag = false;
         else
@@ -389,6 +395,7 @@ public class ViewFlipperItemView extends FrameLayout {
         }
     }
 
+    //TODO 下面这个方法有问题
     private int getWeekTranslateY() {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
         Calendar calendar = Calendar.getInstance();
