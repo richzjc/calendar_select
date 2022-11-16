@@ -230,7 +230,19 @@ public class ViewFlipperItemView extends FrameLayout {
         boolean flag;
         if (curBindCalendar == null)
             flag = true;
-        else {
+        else if (mode == MODE_WEEK) {
+            int bindYear = curBindCalendar.get(Calendar.YEAR);
+            int bindMonth = curBindCalendar.get(Calendar.MONTH);
+            int bindDay = curBindCalendar.get(Calendar.DAY_OF_MONTH);
+
+            int curYear = calendar.get(Calendar.YEAR);
+            int curMonth = calendar.get(Calendar.MONTH);
+            int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+            if (bindYear == curYear && curMonth == bindMonth && bindDay == curDay)
+                flag = false;
+            else
+                flag = true;
+        } else {
             int bindYear = curBindCalendar.get(Calendar.YEAR);
             int bindMonth = curBindCalendar.get(Calendar.MONTH);
             int curYear = calendar.get(Calendar.YEAR);
@@ -240,6 +252,7 @@ public class ViewFlipperItemView extends FrameLayout {
             else
                 flag = true;
         }
+
         if (flag) {
             curBindCalendar = calendar;
             CalendarNewUtil.initAllDayTimeEntity(map, calendar);
@@ -409,10 +422,7 @@ public class ViewFlipperItemView extends FrameLayout {
             int selectWeekNumOfMonth = 0;
             if (year == curBindYear && month == curBindMonth)
                 selectWeekNumOfMonth = getNumSelectWeekOfMonth(year, month, day);
-            else if (firstDayTimeEntity != null && year == firstDayTimeEntity.year && month == firstDayTimeEntity.month && day >= firstDayTimeEntity.day)
-                selectWeekNumOfMonth = 1;
-            else if (lastDayTimeEntity != null && year == lastDayTimeEntity.year && month == lastDayTimeEntity.month && day <= lastDayTimeEntity.day)
-                selectWeekNumOfMonth = getWeekCountOfMonth(curBindCalendar);
+
             Log.e("week", "update next:  weekNum = " + selectWeekNumOfMonth);
             if (selectWeekNumOfMonth == 1) {
                 return 0;

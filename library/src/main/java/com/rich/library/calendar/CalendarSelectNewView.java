@@ -1,7 +1,5 @@
 package com.rich.library.calendar;
 
-import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
-import static com.rich.library.calendar.CalendarNewUtil.getWeekCountOfMonth;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_SCROLL;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
@@ -11,23 +9,16 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PointF;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.rich.library.DayTimeEntity;
 import com.rich.library.R;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CalendarSelectNewView extends RelativeLayout {

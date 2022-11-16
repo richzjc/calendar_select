@@ -212,6 +212,15 @@ public class CalendarViewFlipper extends ViewFlipper {
                     });
                     animator.start();
                 } else {
+
+                    if(currentMode == MODE_WEEK) {
+                        if (isNext) {
+                            weekOffsetCount -= 7;
+                        } else {
+                            weekOffsetCount += 7;
+                        }
+                    }
+
                     //回弹
                     ValueAnimator animator = ValueAnimator.ofFloat(dx, 0);
                     animator.setDuration(duration);
@@ -237,7 +246,6 @@ public class CalendarViewFlipper extends ViewFlipper {
             calendar.add(Calendar.DATE, startWeekOffsetCount);
             calendar.add(Calendar.DATE, 7);
             weekOffsetCount = startWeekOffsetCount + 7;
-            Log.e("week", "update next:  weekOffsetCount = " + weekOffsetCount);
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
             ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
