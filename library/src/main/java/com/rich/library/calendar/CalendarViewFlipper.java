@@ -237,6 +237,7 @@ public class CalendarViewFlipper extends ViewFlipper {
             calendar.add(Calendar.DATE, startWeekOffsetCount);
             calendar.add(Calendar.DATE, 7);
             weekOffsetCount = startWeekOffsetCount + 7;
+            Log.e("week", "update next:  weekOffsetCount = " + weekOffsetCount);
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
             ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
@@ -311,7 +312,6 @@ public class CalendarViewFlipper extends ViewFlipper {
             return true;
         }
     }
-
 
     private boolean checkHasNext() {
         if (currentMode == MODE_MONTH) {

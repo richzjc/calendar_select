@@ -413,7 +413,7 @@ public class ViewFlipperItemView extends FrameLayout {
                 selectWeekNumOfMonth = 1;
             else if (lastDayTimeEntity != null && year == lastDayTimeEntity.year && month == lastDayTimeEntity.month && day <= lastDayTimeEntity.day)
                 selectWeekNumOfMonth = getWeekCountOfMonth(curBindCalendar);
-
+            Log.e("week", "update next:  weekNum = " + selectWeekNumOfMonth);
             if (selectWeekNumOfMonth == 1) {
                 return 0;
             } else if (selectWeekNumOfMonth == 2) {
@@ -441,6 +441,7 @@ public class ViewFlipperItemView extends FrameLayout {
         if (isFirstInitFlag && flipper.currentMode == MODE_WEEK) {
             dateLL.setTranslationY(-getFlipperTransLateY());
         } else if (flipper.currentMode == MODE_WEEK) {
+            Log.e("week", "update next:  onLayout ");
             dateLL.setTranslationY(-getWeekTranslateY());
         }
     }
