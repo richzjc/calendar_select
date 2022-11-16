@@ -204,10 +204,10 @@ public class CalendarSelectNewView extends RelativeLayout {
                         if (dy >= dip2px(40f))
                             show();
                         else
-                            hide();
+                            hide(false);
                     } else if (dy < 0) {
                         if (Math.abs(dy) >= dip2px(40f))
-                            hide();
+                            hide(true);
                         else
                             show();
                     }
@@ -296,7 +296,7 @@ public class CalendarSelectNewView extends RelativeLayout {
         set.start();
     }
 
-    public void hide() {
+    private void hide(boolean isNeedReLocation){
         if (set != null && set.isRunning())
             set.cancel();
 
@@ -306,7 +306,7 @@ public class CalendarSelectNewView extends RelativeLayout {
         float contentTranslateY = content.getTranslationY();
         float time = Math.abs(contentTranslateY) * 300f / maxTransY;
 
-        final boolean reLocation = (contentTranslateY > dip2px(40f));
+        final boolean reLocation = isNeedReLocation;
 
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
@@ -334,7 +334,7 @@ public class CalendarSelectNewView extends RelativeLayout {
                     viewFlipper.currentMode = MODE_WEEK;
 
                 if (viewFlipper.currentMode == MODE_WEEK && reLocation) {
-                   viewFlipper.refreshCurrent();
+                    viewFlipper.refreshCurrent();
                 }
             }
 
@@ -349,6 +349,12 @@ public class CalendarSelectNewView extends RelativeLayout {
             }
         });
         set.start();
+    }
+
+    public void hide() {
+        float contentTranslateY = content.getTranslationY();
+        final boolean reLocation = (contentTranslateY > dip2px(40f));
+        hide(reLocation);
     }
 
     public void setCalendarRange(Calendar startCalendar, Calendar endCalendar, int currentModel) {
