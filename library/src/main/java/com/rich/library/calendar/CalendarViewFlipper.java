@@ -3,6 +3,7 @@ package com.rich.library.calendar;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ViewFlipper;
 
 import com.rich.library.DayTimeEntity;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +47,9 @@ public class CalendarViewFlipper extends ViewFlipper {
     private Calendar curCalendar;
     private Calendar preCalendar;
     private Calendar nextCalendar;
+
+    public DayTimeEntity startTimeEntity;
+    public DayTimeEntity endTimeEntity;
 
     public CalendarViewFlipper(Context context) {
         super(context);
@@ -121,7 +126,6 @@ public class CalendarViewFlipper extends ViewFlipper {
         int yAngle = Math.round((float) (Math.asin(yDiff / squareRoot) / Math.PI * 180));
         int xAngle = Math.round((float) (Math.asin(xDiff / squareRoot) / Math.PI * 180));
         boolean isMeetSlidingYAngle = yAngle > SLIDE_ANGLE;//滑动角度是否大于45du
-        boolean isMeetSlidingXAngle = xAngle > SLIDE_ANGLE;//滑动角度是否大于45du
         boolean isSlideUp = moveY < downY && isMeetSlidingYAngle;
         boolean isSlideDown = moveY > downY && isMeetSlidingYAngle;
         return isSlideUp || isSlideDown;
@@ -132,6 +136,8 @@ public class CalendarViewFlipper extends ViewFlipper {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             getOtherView().setVisibility(View.VISIBLE);
             getCurrentView().setVisibility(View.VISIBLE);
+            ((ViewFlipperItemView) getOtherView()).dateLL.setTranslationY(0f);
+
             originalX = ev.getX();
             downX = ev.getX();
             downY = ev.getY();
@@ -236,46 +242,82 @@ public class CalendarViewFlipper extends ViewFlipper {
     }
 
     private boolean checkHasPre() {
-        //TODO 需要区分是月还是周
-        Calendar currentCalendar = ((ViewFlipperItemView) getCurrentView()).curBindCalendar;
-        if (currentCalendar == null || startCalendar == null || endCalendar == null)
-            return false;
+        if (currentMode == MODE_MONTH) {
+            Calendar currentCalendar = ((ViewFlipperItemView) getCurrentView()).curBindCalendar;
+            if (currentCalendar == null || startCalendar == null || endCalendar == null)
+                return false;
 
-        Calendar tempCalendar = Calendar.getInstance();
-        tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
-        tempCalendar.add(Calendar.MONTH, -1);
-        int tempYear = tempCalendar.get(Calendar.YEAR);
-        int startYear = startCalendar.get(Calendar.YEAR);
+            Calendar tempCalendar = Calendar.getInstance();
+            tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
+            tempCalendar.add(Calendar.MONTH, -1);
+            int tempYear = tempCalendar.get(Calendar.YEAR);
+            int startYear = startCalendar.get(Calendar.YEAR);
 
-        int tempMonth = tempCalendar.get(Calendar.MONTH);
-        int startMonth = startCalendar.get(Calendar.MONTH);
+            int tempMonth = tempCalendar.get(Calendar.MONTH);
+            int startMonth = startCalendar.get(Calendar.MONTH);
 
-        if ((tempYear < startYear) || (tempYear == startYear && tempMonth < startMonth))
-            return false;
-        else
+            if ((tempYear < startYear) || (tempYear == startYear && tempMonth < startMonth))
+                return false;
+            else
+                return true;
+        } else if (currentMode == MODE_WEEK) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, selectEntity.year);
+            calendar.set(Calendar.MONTH, selectEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
+
+            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.add(Calendar.DATE, -7);
+            int tempYear = calendar.get(Calendar.YEAR);
+            int tempMonth = calendar.get(Calendar.MONTH);
+            int tempDay = calendar.get(Calendar.DAY_OF_MONTH);
+            if ((tempYear < startTimeEntity.year) || (tempYear == startTimeEntity.year && tempMonth < startTimeEntity.month) || (tempYear == startTimeEntity.year && tempMonth == startTimeEntity.month && tempDay < startTimeEntity.day))
+                return false;
+            else
+                return true;
+        } else {
             return true;
+        }
     }
 
 
     private boolean checkHasNext() {
-        //TODO 需要区分是月还是周
-        Calendar currentCalendar = ((ViewFlipperItemView) getCurrentView()).curBindCalendar;
-        if (currentCalendar == null || startCalendar == null || endCalendar == null)
-            return false;
+        if (currentMode == MODE_MONTH) {
+            Calendar currentCalendar = ((ViewFlipperItemView) getCurrentView()).curBindCalendar;
+            if (currentCalendar == null || startCalendar == null || endCalendar == null)
+                return false;
 
-        Calendar tempCalendar = Calendar.getInstance();
-        tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
-        tempCalendar.add(Calendar.MONTH, +1);
-        int tempYear = tempCalendar.get(Calendar.YEAR);
-        int endYear = endCalendar.get(Calendar.YEAR);
+            Calendar tempCalendar = Calendar.getInstance();
+            tempCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
+            tempCalendar.add(Calendar.MONTH, +1);
+            int tempYear = tempCalendar.get(Calendar.YEAR);
+            int endYear = endCalendar.get(Calendar.YEAR);
 
-        int tempMonth = tempCalendar.get(Calendar.MONTH);
-        int endMonth = endCalendar.get(Calendar.MONTH);
+            int tempMonth = tempCalendar.get(Calendar.MONTH);
+            int endMonth = endCalendar.get(Calendar.MONTH);
 
-        if ((tempYear > endYear) || (tempYear == endYear && tempMonth > endMonth))
-            return false;
-        else
+            if ((tempYear > endYear) || (tempYear == endYear && tempMonth > endMonth))
+                return false;
+            else
+                return true;
+        }else if(currentMode == MODE_WEEK){
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, selectEntity.year);
+            calendar.set(Calendar.MONTH, selectEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
+
+            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.add(Calendar.DATE, 7);
+            int tempYear = calendar.get(Calendar.YEAR);
+            int tempMonth = calendar.get(Calendar.MONTH);
+            int tempDay = calendar.get(Calendar.DAY_OF_MONTH);
+            if ((tempYear > startTimeEntity.year) || (tempYear == startTimeEntity.year && tempMonth > startTimeEntity.month) || (tempYear == startTimeEntity.year && tempMonth == startTimeEntity.month && tempDay > startTimeEntity.day))
+                return false;
+            else
+                return true;
+        }else{
             return true;
+        }
     }
 
     public void setSelectEntity(DayTimeEntity entity) {
@@ -288,6 +330,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     }
 
     public void setcalendarRange(Calendar startCalendar, Calendar endCalendar) {
+        calStartEndEntity(startCalendar, endCalendar);
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -331,5 +374,23 @@ public class CalendarViewFlipper extends ViewFlipper {
         initCurCalendar(calendar);
         ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
         setSelectEntity(selectEntity);
+    }
+
+
+    public void calStartEndEntity(Calendar startCalendar, Calendar endCalendar) {
+        Calendar tempStartCalendar = Calendar.getInstance();
+        tempStartCalendar.setTimeInMillis(startCalendar.getTimeInMillis());
+        tempStartCalendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        int preIndex = CalendarNewUtil.firstStartIndex(tempStartCalendar);
+        tempStartCalendar.add(Calendar.DATE, -preIndex);
+        startTimeEntity = new DayTimeEntity(tempStartCalendar.get(Calendar.YEAR), tempStartCalendar.get(Calendar.MONTH), tempStartCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+
+        tempStartCalendar.setTimeInMillis(endCalendar.getTimeInMillis());
+        int totalCount = CalendarNewUtil.getDayCountOfMonth(tempStartCalendar);
+        tempStartCalendar.set(Calendar.DAY_OF_MONTH, totalCount);
+        int endIndex = CalendarNewUtil.lastEndIndex(tempStartCalendar, totalCount);
+        tempStartCalendar.add(Calendar.DATE, endIndex);
+        endTimeEntity = new DayTimeEntity(tempStartCalendar.get(Calendar.YEAR), tempStartCalendar.get(Calendar.MONTH), tempStartCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
     }
 }

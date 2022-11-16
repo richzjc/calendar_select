@@ -1,5 +1,7 @@
 package com.rich.library.calendar;
 
+import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
+import static com.rich.library.calendar.CalendarNewUtil.getWeekCountOfMonth;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_SCROLL;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
@@ -25,6 +27,7 @@ import com.rich.library.R;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CalendarSelectNewView extends RelativeLayout {
@@ -43,7 +46,6 @@ public class CalendarSelectNewView extends RelativeLayout {
     private float contentTranslateY;
     private float itemTranslateY;
     private boolean isClickViewFlipper;
-
     private final float SLIDE_ANGLE = 45;
 
     private int clickViewFlag = -1;
@@ -296,7 +298,7 @@ public class CalendarSelectNewView extends RelativeLayout {
         set.start();
     }
 
-    private void hide(boolean isNeedReLocation){
+    private void hide(boolean isNeedReLocation) {
         if (set != null && set.isRunning())
             set.cancel();
 
