@@ -175,10 +175,10 @@ public class CalendarViewFlipper extends ViewFlipper {
                 getCurrentView().setTranslationX(dx);
                 if (dx > 0) {
                     getOtherView().setTranslationX(dx - flipper_width);
-                    ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap);
+                    updatePreData();
                 } else {
                     getOtherView().setTranslationX(dx + flipper_width);
-                    ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+                    updateNextData();
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -217,12 +217,41 @@ public class CalendarViewFlipper extends ViewFlipper {
                         public void onAnimationUpdate(ValueAnimator animation) {
                             getCurrentView().setTranslationX((Float) animation.getAnimatedValue());
                             getOtherView().setTranslationX((Float) animation.getAnimatedValue() + (isNext ? flipper_width : -flipper_width));
-
                         }
                     });
                     animator.start();
                 }
                 break;
+        }
+    }
+
+    private void updateNextData() {
+        if (currentMode == MODE_WEEK) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, selectEntity.year);
+            calendar.set(Calendar.MONTH, selectEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
+            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.add(Calendar.DATE, 7);
+            weekOffsetCount += 7;
+            ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
+        } else {
+            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+        }
+    }
+
+    private void updatePreData() {
+        if (currentMode == MODE_WEEK) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, selectEntity.year);
+            calendar.set(Calendar.MONTH, selectEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
+            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.add(Calendar.DATE, -7);
+            weekOffsetCount -= 7;
+            ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
+        } else {
+            ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap);
         }
     }
 
@@ -300,7 +329,7 @@ public class CalendarViewFlipper extends ViewFlipper {
                 return false;
             else
                 return true;
-        }else if(currentMode == MODE_WEEK){
+        } else if (currentMode == MODE_WEEK) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, selectEntity.year);
             calendar.set(Calendar.MONTH, selectEntity.month);
@@ -311,11 +340,11 @@ public class CalendarViewFlipper extends ViewFlipper {
             int tempYear = calendar.get(Calendar.YEAR);
             int tempMonth = calendar.get(Calendar.MONTH);
             int tempDay = calendar.get(Calendar.DAY_OF_MONTH);
-            if ((tempYear > startTimeEntity.year) || (tempYear == startTimeEntity.year && tempMonth > startTimeEntity.month) || (tempYear == startTimeEntity.year && tempMonth == startTimeEntity.month && tempDay > startTimeEntity.day))
+            if ((tempYear > endTimeEntity.year) || (tempYear == endTimeEntity.year && tempMonth > endTimeEntity.month) || (tempYear == endTimeEntity.year && tempMonth == endTimeEntity.month && tempDay > endTimeEntity.day))
                 return false;
             else
                 return true;
-        }else{
+        } else {
             return true;
         }
     }

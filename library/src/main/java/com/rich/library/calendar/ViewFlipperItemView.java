@@ -376,6 +376,63 @@ public class ViewFlipperItemView extends FrameLayout {
         }
     }
 
+    private int getWeekTranslateY() {
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, flipper.getSelectEntity().year);
+        calendar.set(Calendar.MONTH, flipper.getSelectEntity().month);
+        calendar.set(Calendar.DAY_OF_MONTH, flipper.getSelectEntity().day);
+        calendar.add(Calendar.DATE, flipper.weekOffsetCount);
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        int curBindYear = curBindCalendar.get(Calendar.YEAR);
+        int curBindMonth = curBindCalendar.get(Calendar.MONTH);
+
+        boolean leftFlag = false;
+        boolean rightFlag = false;
+
+        if (year < firstDayTimeEntity.year || (year == firstDayTimeEntity.year && month < firstDayTimeEntity.month) || (year == firstDayTimeEntity.year && month == firstDayTimeEntity.month && day < firstDayTimeEntity.day))
+            leftFlag = false;
+        else
+            leftFlag = true;
+
+
+        if (year > lastDayTimeEntity.year || (year == lastDayTimeEntity.year && month > lastDayTimeEntity.month) || (year == lastDayTimeEntity.year && month == lastDayTimeEntity.month && day > lastDayTimeEntity.day))
+            rightFlag = false;
+        else
+            rightFlag = true;
+
+        if (leftFlag && rightFlag) {
+            int selectWeekNumOfMonth = 0;
+            if (year == curBindYear && month == curBindMonth)
+                selectWeekNumOfMonth = getNumSelectWeekOfMonth(flipper.getSelectEntity().year, flipper.getSelectEntity().month, flipper.getSelectEntity().day);
+            else if (firstDayTimeEntity != null && year == firstDayTimeEntity.year && month == firstDayTimeEntity.month && day >= firstDayTimeEntity.day)
+                selectWeekNumOfMonth = 1;
+            else if (lastDayTimeEntity != null && year == lastDayTimeEntity.year && month == lastDayTimeEntity.month && day <= lastDayTimeEntity.day)
+                selectWeekNumOfMonth = getWeekCountOfMonth(curBindCalendar);
+
+            if (selectWeekNumOfMonth == 1) {
+                return 0;
+            } else if (selectWeekNumOfMonth == 2) {
+                return secondLL.getTop();
+            } else if (selectWeekNumOfMonth == 3) {
+                return thirdLL.getTop();
+            } else if (selectWeekNumOfMonth == 4) {
+                return forthLL.getTop();
+            } else if (selectWeekNumOfMonth == 5) {
+                return fiveLL.getTop();
+            } else if (selectWeekNumOfMonth == 6) {
+                return sixLL.getTop();
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -383,6 +440,8 @@ public class ViewFlipperItemView extends FrameLayout {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
         if (isFirstInitFlag && flipper.currentMode == MODE_WEEK) {
             dateLL.setTranslationY(-getFlipperTransLateY());
+        } else if (flipper.currentMode == MODE_WEEK) {
+            dateLL.setTranslationY(getWeekTranslateY());
         }
     }
 }
