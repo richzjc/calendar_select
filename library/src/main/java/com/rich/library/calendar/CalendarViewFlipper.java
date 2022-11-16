@@ -26,7 +26,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     private float downX = 0f;
     private float downY = 0f;
     private final float SLIDE_ANGLE = 45;
-    
+
     private boolean isVerticleScroll;
     private boolean isFirstMove;
     private int duration = 200;
@@ -40,7 +40,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     public int currentMode = MODE_WEEK;
     private DayTimeEntity selectEntity;
     public int weekOffsetCount = 0;
-    private Map<String, List<DayTimeEntity>> daytimeMap;
+    public Map<String, List<DayTimeEntity>> daytimeMap;
 
     private Calendar curCalendar;
     private Calendar preCalendar;
@@ -188,7 +188,7 @@ public class CalendarViewFlipper extends ViewFlipper {
                             getCurrentView().setTranslationX((Float) animation.getAnimatedValue());
                             getOtherView().setTranslationX((Float) animation.getAnimatedValue() + (isNext ? flipper_width : -flipper_width));
                             if (Math.abs((float) animation.getAnimatedValue()) == flipper_width) {
-                                ((ViewFlipperItemView)getCurrentView()).dateLL.setTranslationY(0);
+                                ((ViewFlipperItemView) getCurrentView()).dateLL.setTranslationY(0);
                                 if (isNext) {
                                     nextItem(mCurrentItem + 1);
                                     showNext();
@@ -278,11 +278,12 @@ public class CalendarViewFlipper extends ViewFlipper {
             return true;
     }
 
-    public void setSelectEntity(DayTimeEntity entity){
+    public void setSelectEntity(DayTimeEntity entity) {
         this.selectEntity = entity;
+        weekOffsetCount = 0;
     }
 
-    public DayTimeEntity getSelectEntity(){
+    public DayTimeEntity getSelectEntity() {
         return selectEntity;
     }
 
@@ -313,5 +314,22 @@ public class CalendarViewFlipper extends ViewFlipper {
             initCurCalendar(startCalendar);
             ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
         }
+    }
+
+
+    public void refreshCurrent() {
+        if (daytimeMap == null)
+            daytimeMap = new HashMap<>();
+
+        ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+        itemView.curBindCalendar = null;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selectEntity.year);
+        calendar.set(Calendar.MONTH, selectEntity.month);
+        itemView.bindData(calendar, MODE_WEEK, daytimeMap);
+
+        initCurCalendar(calendar);
+        ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+        setSelectEntity(selectEntity);
     }
 }

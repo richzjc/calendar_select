@@ -1,9 +1,6 @@
 package com.rich.library.calendar;
 
-import android.util.Log;
-
 import com.rich.library.DayTimeEntity;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

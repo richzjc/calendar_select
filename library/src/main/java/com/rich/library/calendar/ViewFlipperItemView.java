@@ -224,6 +224,8 @@ public class ViewFlipperItemView extends FrameLayout {
     public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map) {
         if (curBindCalendar != null)
             isFirstInitFlag = false;
+        else
+            isFirstInitFlag = true;
 
         boolean flag;
         if (curBindCalendar == null)

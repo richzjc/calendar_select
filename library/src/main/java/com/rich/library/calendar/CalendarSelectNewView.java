@@ -306,6 +306,8 @@ public class CalendarSelectNewView extends RelativeLayout {
         float contentTranslateY = content.getTranslationY();
         float time = Math.abs(contentTranslateY) * 300f / maxTransY;
 
+        final boolean reLocation = (contentTranslateY > dip2px(40f));
+
         ObjectAnimator animator = ObjectAnimator.ofFloat(content, "translationY", contentTranslateY, 0);
         ObjectAnimator handleAnimator = ObjectAnimator.ofFloat(handleView, "translationY", contentTranslateY, 0);
 
@@ -330,6 +332,10 @@ public class CalendarSelectNewView extends RelativeLayout {
                     viewFlipper.currentMode = MODE_MONTH;
                 else
                     viewFlipper.currentMode = MODE_WEEK;
+
+                if (viewFlipper.currentMode == MODE_WEEK && reLocation) {
+                   viewFlipper.refreshCurrent();
+                }
             }
 
             @Override
