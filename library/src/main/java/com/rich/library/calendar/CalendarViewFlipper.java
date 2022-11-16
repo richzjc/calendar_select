@@ -51,6 +51,8 @@ public class CalendarViewFlipper extends ViewFlipper {
     public DayTimeEntity startTimeEntity;
     public DayTimeEntity endTimeEntity;
 
+    private int startWeekOffsetCount = 0;
+
     public CalendarViewFlipper(Context context) {
         super(context);
         setLongClickable(true);//设置可以接受事件
@@ -143,6 +145,7 @@ public class CalendarViewFlipper extends ViewFlipper {
             downY = ev.getY();
             isVerticleScroll = false;
             isFirstMove = true;
+            startWeekOffsetCount = weekOffsetCount;
         }
 
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
@@ -231,9 +234,9 @@ public class CalendarViewFlipper extends ViewFlipper {
             calendar.set(Calendar.YEAR, selectEntity.year);
             calendar.set(Calendar.MONTH, selectEntity.month);
             calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.add(Calendar.DATE, startWeekOffsetCount);
             calendar.add(Calendar.DATE, 7);
-            weekOffsetCount += 7;
+            weekOffsetCount = startWeekOffsetCount + 7;
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
             ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
@@ -246,9 +249,9 @@ public class CalendarViewFlipper extends ViewFlipper {
             calendar.set(Calendar.YEAR, selectEntity.year);
             calendar.set(Calendar.MONTH, selectEntity.month);
             calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.add(Calendar.DATE, startWeekOffsetCount);
             calendar.add(Calendar.DATE, -7);
-            weekOffsetCount -= 7;
+            weekOffsetCount = startWeekOffsetCount - 7;
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
             ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap);
