@@ -3,6 +3,7 @@ package com.rich.library.calendar;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
@@ -56,6 +57,33 @@ public class CalendarSwitchView extends LinearLayout {
         ObjectAnimator animator = ObjectAnimator.ofFloat(bgView, "translationX", currentTranslateX, endTranslateX);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(100);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if(currentMode == MODE_WEEK){
+                    weekView.setTextColor(Color.WHITE);
+                    monthView.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color2_666666));
+                }else{
+                    weekView.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color2_666666));
+                    monthView.setTextColor(Color.WHITE);
+                }
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
         animator.start();
     }
 
