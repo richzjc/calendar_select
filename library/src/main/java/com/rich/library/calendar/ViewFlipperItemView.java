@@ -2,8 +2,10 @@ package com.rich.library.calendar;
 
 import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
 import static com.rich.library.calendar.CalendarNewUtil.getWeekCountOfMonth;
+import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class ViewFlipperItemView extends FrameLayout {
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
     public Calendar curBindCalendar;
     private boolean isFirstInitFlag = true;
+    private DayTimeEntity todayEntity;
 
     private final OnClickListener itemClickListener = new OnClickListener() {
         @Override
@@ -76,6 +79,13 @@ public class ViewFlipperItemView extends FrameLayout {
     }
 
     private void init(Context context) {
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar. get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        todayEntity = new DayTimeEntity(year, month, day, 0, 0);
+
         View view = LayoutInflater.from(context).inflate(R.layout.global_view_calendar_flipper_item, this, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.bottomMargin = dip2px(25f);
@@ -161,22 +171,58 @@ public class ViewFlipperItemView extends FrameLayout {
         return 0;
     }
 
-    public TextView getTextView(LinearLayout ll, int index, DayTimeEntity entity) {
+    public TextView getTextView(LinearLayout ll, int index, DayTimeEntity dayTimeEntity) {
         ViewGroup viewGroup = (ViewGroup) ll.getChildAt(index);
-        viewGroup.setTag(entity);
+        viewGroup.setTag(dayTimeEntity);
         TextView tv = (TextView) viewGroup.getChildAt(0);
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        try {
-            if (flipper.getSelectEntity() == null || entity == null) {
-                tv.setBackground(null);
-            } else if (flipper.getSelectEntity().year == entity.year && flipper.getSelectEntity().month == entity.month && flipper.getSelectEntity().day == entity.day) {
+
+        DayTimeEntity selectEntity = flipper.getSelectEntity();
+        int mode = flipper.currentMode;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, dayTimeEntity.year);
+        calendar.set(Calendar.MONTH, dayTimeEntity.month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayTimeEntity.day);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        if(mode == MODE_WEEK){
+            if(dayTimeEntity.year == selectEntity.year && dayTimeEntity.month == selectEntity.month && dayTimeEntity.day == selectEntity.day){
+                tv.setTextColor(Color.WHITE);
                 tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
-            } else {
+            }else if(dayTimeEntity.year == todayEntity.year && dayTimeEntity.month == todayEntity.month && dayTimeEntity.day == todayEntity.day){
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_theme_color_1478f0));
+                tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_todayt));
+            }else if(dayOfWeek > 1 && dayOfWeek < 7){
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color1_333333));
+                tv.setBackground(null);
+            }else{
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 tv.setBackground(null);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        }else if(mode == MODE_MONTH){
+            boolean isInCurrent = true;
+            int curBindYear = curBindCalendar.get(Calendar.YEAR);
+            int curBindMonth = curBindCalendar.get(Calendar.MONTH);
+            isInCurrent = (curBindYear == dayTimeEntity.year) && (curBindMonth == dayTimeEntity.month);
+
+            if(dayTimeEntity.year == selectEntity.year && dayTimeEntity.month == selectEntity.month && dayTimeEntity.day == selectEntity.day){
+                tv.setTextColor(Color.WHITE);
+                tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
+            }else if(dayTimeEntity.year == todayEntity.year && dayTimeEntity.month == todayEntity.month && dayTimeEntity.day == todayEntity.day){
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_theme_color_1478f0));
+                tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_todayt));
+            }else if(dayOfWeek > 1 && dayOfWeek < 7 && isInCurrent){
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color1_333333));
+                tv.setBackground(null);
+            }else{
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+                tv.setBackground(null);
+            }
+        }else{
+            tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color1_333333));
+            tv.setBackground(null);
         }
+
         return tv;
     }
 
@@ -249,9 +295,6 @@ public class ViewFlipperItemView extends FrameLayout {
         }
         curBindCalendar = calendar;
         if (flag) {
-            int curYear = calendar.get(Calendar.YEAR);
-            int curMonth = calendar.get(Calendar.MONTH);
-            int curDay = calendar.get(Calendar.DAY_OF_MONTH);
             CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             Calendar newCalendar = Calendar.getInstance();
             newCalendar.setTimeInMillis(calendar.getTimeInMillis());
