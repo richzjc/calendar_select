@@ -413,6 +413,7 @@ public class CalendarViewFlipper extends ViewFlipper {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, selectEntity.year);
         calendar.set(Calendar.MONTH, selectEntity.month);
+        calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
         itemView.bindData(calendar, MODE_WEEK, daytimeMap);
 
         ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);

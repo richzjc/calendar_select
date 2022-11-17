@@ -232,6 +232,8 @@ public class CalendarSelectNewView extends RelativeLayout {
 
 
         float itemPx = (itemTransY * px) / maxTransY;
+
+
         float realItemTranslateY = itemTranslateY + itemPx;
         if (realItemTranslateY < -itemTransY)
             realItemTranslateY = -itemTransY;
@@ -311,7 +313,6 @@ public class CalendarSelectNewView extends RelativeLayout {
 
         set = new AnimatorSet();
         set.playTogether(animator, handleAnimator, flipperAnimator);
-        Log.e("time", "time = " + time);
         set.setDuration((long) time);
         set.setInterpolator(new LinearInterpolator());
         set.addListener(new Animator.AnimatorListener() {

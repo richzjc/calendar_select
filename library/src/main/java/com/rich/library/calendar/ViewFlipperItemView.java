@@ -2,16 +2,10 @@ package com.rich.library.calendar;
 
 import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
 import static com.rich.library.calendar.CalendarNewUtil.getWeekCountOfMonth;
-import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
-
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +48,6 @@ public class ViewFlipperItemView extends FrameLayout {
             CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
             DayTimeEntity clickEntity = (DayTimeEntity) v.getTag();
             flipper.setSelectEntity(clickEntity);
-            curBindCalendar.set(Calendar.DAY_OF_MONTH, clickEntity.day);
             invalidateSelectBg();
             ((ViewFlipperItemView) flipper.getOtherView()).invalidateSelectBg();
             CalendarSelectNewView newView = (CalendarSelectNewView) flipper.getParent();
@@ -259,7 +252,6 @@ public class ViewFlipperItemView extends FrameLayout {
             int curYear = calendar.get(Calendar.YEAR);
             int curMonth = calendar.get(Calendar.MONTH);
             int curDay = calendar.get(Calendar.DAY_OF_MONTH);
-            Log.e("week", "bindData:  curYear = " + curYear + "; month = " + curMonth + "; curDay = " +curDay);
             CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             Calendar newCalendar = Calendar.getInstance();
             newCalendar.setTimeInMillis(calendar.getTimeInMillis());
@@ -434,7 +426,6 @@ public class ViewFlipperItemView extends FrameLayout {
         if (isFirstInitFlag && flipper.currentMode == MODE_WEEK) {
             dateLL.setTranslationY(-getFlipperTransLateY());
         } else if (flipper.currentMode == MODE_WEEK) {
-            Log.e("week", "update next:  onLayout ");
             dateLL.setTranslationY(-getWeekTranslateY());
         }
     }
