@@ -287,6 +287,9 @@ public class CalendarSelectNewView extends RelativeLayout {
                     viewFlipper.currentMode = MODE_MONTH;
                 else
                     viewFlipper.currentMode = MODE_WEEK;
+
+                ViewFlipperItemView itemView1 = (ViewFlipperItemView) viewFlipper.getCurrentView();
+                itemView1.invalidateSelectBg();
             }
 
             @Override
@@ -341,6 +344,9 @@ public class CalendarSelectNewView extends RelativeLayout {
                 if (viewFlipper.currentMode == MODE_WEEK && reLocation) {
                     viewFlipper.refreshCurrent();
                 }
+
+                ViewFlipperItemView itemView1 = (ViewFlipperItemView) viewFlipper.getCurrentView();
+                itemView1.invalidateSelectBg();
             }
 
             @Override
