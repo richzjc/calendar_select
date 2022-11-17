@@ -16,10 +16,11 @@ import java.util.Calendar;
 public class CalendarHeaderView extends RelativeLayout {
     public TextView leftTitle;
     private View line;
+    private CalendarSwitchView switchView;
 
     private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
 
-    public void setLeftTitle(Calendar calendar){
+    public void setLeftTitle(Calendar calendar) {
         leftTitle.setText(format.format(calendar.getTime()));
     }
 
@@ -39,6 +40,7 @@ public class CalendarHeaderView extends RelativeLayout {
     }
 
     private void init(Context context) {
+        setBackgroundColor(getContext().getResources().getColor(R.color.day_mode_background_color1_ffffff));
         leftTitle = new TextView(context);
         leftTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
         leftTitle.setTextColor(getResources().getColor(R.color.day_mode_text_color1_333333));
@@ -48,7 +50,11 @@ public class CalendarHeaderView extends RelativeLayout {
         line = new View(getContext());
         line.setBackgroundColor(getResources().getColor(R.color.day_mode_divide_line_color_e6e6e6));
         addView(line);
+
+        switchView = new CalendarSwitchView(getContext());
+        addView(switchView);
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -65,6 +71,8 @@ public class CalendarHeaderView extends RelativeLayout {
         int lineHeightSpec = MeasureSpec.makeMeasureSpec(lineHeight, MeasureSpec.EXACTLY);
         line.measure(lineWidthSpec, lineHeightSpec);
 
+        int switchWidthSpec = MeasureSpec.makeMeasureSpec(Util.dip2px(84f, getContext()), MeasureSpec.EXACTLY);
+        switchView.measure(switchWidthSpec, tvHeightSpec);
 
         int totalHeight = tvHeight + Util.dip2px(15f, getContext());
         setMeasuredDimension(widthSize, totalHeight);
@@ -75,5 +83,7 @@ public class CalendarHeaderView extends RelativeLayout {
         int leftPadding = Util.dip2px(15f, getContext());
         leftTitle.layout(leftPadding, 0, leftPadding + leftTitle.getMeasuredWidth(), leftTitle.getMeasuredHeight());
         line.layout(0, getMeasuredHeight() - line.getMeasuredHeight(), getMeasuredWidth(), getMeasuredHeight());
+        int switchStartX = getMeasuredWidth() - leftPadding - switchView.getMeasuredWidth();
+        switchView.layout(switchStartX, 0, switchStartX + switchView.getMeasuredWidth(), switchView.getMeasuredHeight());
     }
 }
