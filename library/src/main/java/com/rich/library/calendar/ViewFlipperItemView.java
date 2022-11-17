@@ -235,13 +235,16 @@ public class ViewFlipperItemView extends FrameLayout {
             int bindMonth = curBindCalendar.get(Calendar.MONTH);
             int bindDay = curBindCalendar.get(Calendar.DAY_OF_MONTH);
 
+
             int curYear = calendar.get(Calendar.YEAR);
             int curMonth = calendar.get(Calendar.MONTH);
             int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+
             if (bindYear == curYear && curMonth == bindMonth && bindDay == curDay)
                 flag = false;
             else
                 flag = true;
+//            Log.e("week", "year = " + curYear + "; month = " + curMonth + "; day = " + curDay + "; viewId = " + this.toString() + "; flag = " + flag);
         } else {
             int bindYear = curBindCalendar.get(Calendar.YEAR);
             int bindMonth = curBindCalendar.get(Calendar.MONTH);
@@ -252,9 +255,9 @@ public class ViewFlipperItemView extends FrameLayout {
             else
                 flag = true;
         }
-
+        curBindCalendar = calendar;
         if (flag) {
-            curBindCalendar = calendar;
+            Log.e("week", "bindData" );
             CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             Calendar newCalendar = Calendar.getInstance();
             newCalendar.setTimeInMillis(calendar.getTimeInMillis());
@@ -380,51 +383,14 @@ public class ViewFlipperItemView extends FrameLayout {
                     totalCount++;
                 }
             }
+
+            requestLayout();
         }
     }
 
     private int getWeekTranslateY() {
-        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        ViewFlipperItemView itemView = (ViewFlipperItemView) flipper.getCurrentView();
-        DayTimeEntity dayTimeEntity = itemView.getFirstShowDayTimeEntity();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, dayTimeEntity.year);
-        calendar.set(Calendar.MONTH, dayTimeEntity.month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayTimeEntity.day);
-
-        ViewFlipperItemView otherView = (ViewFlipperItemView) flipper.getOtherView();
-        if (otherView.curBindCalendar.getTimeInMillis() > itemView.curBindCalendar.getTimeInMillis())
-            calendar.add(Calendar.DATE, 7);
-        else
-            calendar.add(Calendar.DATE, -7);
-
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        int curBindYear = curBindCalendar.get(Calendar.YEAR);
-        int curBindMonth = curBindCalendar.get(Calendar.MONTH);
-
-        boolean leftFlag = false;
-        boolean rightFlag = false;
-
-        if (year < firstDayTimeEntity.year || (year == firstDayTimeEntity.year && month < firstDayTimeEntity.month) || (year == firstDayTimeEntity.year && month == firstDayTimeEntity.month && day < firstDayTimeEntity.day))
-            leftFlag = false;
-        else
-            leftFlag = true;
-
-
-        if (year > lastDayTimeEntity.year || (year == lastDayTimeEntity.year && month > lastDayTimeEntity.month) || (year == lastDayTimeEntity.year && month == lastDayTimeEntity.month && day > lastDayTimeEntity.day))
-            rightFlag = false;
-        else
-            rightFlag = true;
-
-        if (leftFlag && rightFlag) {
-            int selectWeekNumOfMonth = 0;
-            if (year == curBindYear && month == curBindMonth)
-                selectWeekNumOfMonth = getNumSelectWeekOfMonth(year, month, day);
-
-            Log.e("week", "update next:  weekNum = " + selectWeekNumOfMonth);
+        if (curBindCalendar != null) {
+            int selectWeekNumOfMonth = getWeekCountOfMonth(curBindCalendar);
             if (selectWeekNumOfMonth == 1) {
                 return 0;
             } else if (selectWeekNumOfMonth == 2) {
@@ -440,31 +406,20 @@ public class ViewFlipperItemView extends FrameLayout {
             } else {
                 return 0;
             }
-        } else {
-            return 0;
         }
+        return 0;
     }
 
 
     public DayTimeEntity getFirstShowDayTimeEntity() {
-        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        if (flipper.currentMode == MODE_WEEK) {
-            float translateY = dateLL.getTranslationY();
-            if (Math.abs(translateY) < secondLL.getTop()) {
-                return (DayTimeEntity) firstLL.getChildAt(0).getTag();
-            } else if (Math.abs(translateY) < thirdLL.getTop()) {
-                return (DayTimeEntity) secondLL.getChildAt(0).getTag();
-            } else if (Math.abs(translateY) < forthLL.getTop()) {
-                return (DayTimeEntity) thirdLL.getChildAt(0).getTag();
-            } else if (Math.abs(translateY) < fiveLL.getTop()) {
-                return (DayTimeEntity) forthLL.getChildAt(0).getTag();
-            } else if (Math.abs(translateY) < sixLL.getTop()) {
-                return (DayTimeEntity) fiveLL.getChildAt(0).getTag();
-            } else {
-                return (DayTimeEntity) sixLL.getChildAt(0).getTag();
-            }
+        if(curBindCalendar != null){
+            int year = curBindCalendar.get(Calendar.YEAR);
+            int month = curBindCalendar.get(Calendar.MONTH);
+            int day = curBindCalendar.get(Calendar.DAY_OF_MONTH);
+            return new DayTimeEntity(year, month, day, 0, 0);
+        }else{
+            return null;
         }
-        return (DayTimeEntity) firstLL.getChildAt(0).getTag();
     }
 
     @Override

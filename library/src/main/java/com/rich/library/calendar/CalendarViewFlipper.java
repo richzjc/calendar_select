@@ -224,6 +224,8 @@ public class CalendarViewFlipper extends ViewFlipper {
         ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
         CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
         selectNewView.calendarLiveData.setValue(flipper.curBindCalendar);
+        ViewFlipperItemView itemView = (ViewFlipperItemView) getOtherView();
+        itemView.dateLL.setTranslationY(0f);
     }
 
     @Override
@@ -232,6 +234,8 @@ public class CalendarViewFlipper extends ViewFlipper {
         ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
         CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
         selectNewView.calendarLiveData.setValue(flipper.curBindCalendar);
+        ViewFlipperItemView itemView = (ViewFlipperItemView) getOtherView();
+        itemView.dateLL.setTranslationY(0f);
     }
 
     private void updateNextData() {
@@ -353,7 +357,6 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     public void setSelectEntity(DayTimeEntity entity) {
         this.selectEntity = entity;
-        ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
         CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, entity.year);
@@ -386,9 +389,11 @@ public class CalendarViewFlipper extends ViewFlipper {
         long curTime = currentCalendar.getTimeInMillis();
 
         if (curTime >= startTime && curTime <= endTime) {
+            currentCalendar.set(Calendar.DATE, day);
             ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, daytimeMap);
             ((ViewFlipperItemView) getOtherView()).bindData(currentCalendar, currentMode, daytimeMap);
         } else {
+            startCalendar.set(Calendar.DATE, 1);
             ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap);
             ((ViewFlipperItemView) getOtherView()).bindData(startCalendar, currentMode, daytimeMap);
         }
