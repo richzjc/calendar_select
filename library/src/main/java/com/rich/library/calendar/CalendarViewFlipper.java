@@ -41,13 +41,10 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     public int currentMode = MODE_WEEK;
     private DayTimeEntity selectEntity;
-    public int weekOffsetCount = 0;
     public Map<String, List<DayTimeEntity>> daytimeMap;
 
     public DayTimeEntity startTimeEntity;
     public DayTimeEntity endTimeEntity;
-
-    private int startWeekOffsetCount = 0;
 
     public CalendarViewFlipper(Context context) {
         super(context);
@@ -141,7 +138,6 @@ public class CalendarViewFlipper extends ViewFlipper {
             downY = ev.getY();
             isVerticleScroll = false;
             isFirstMove = true;
-            startWeekOffsetCount = weekOffsetCount;
         }
 
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
@@ -206,15 +202,6 @@ public class CalendarViewFlipper extends ViewFlipper {
                     });
                     animator.start();
                 } else {
-
-                    if (currentMode == MODE_WEEK) {
-                        if (isNext) {
-                            weekOffsetCount -= 7;
-                        } else {
-                            weekOffsetCount += 7;
-                        }
-                    }
-
                     //回弹
                     ValueAnimator animator = ValueAnimator.ofFloat(dx, 0);
                     animator.setDuration(duration);
@@ -249,13 +236,13 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     private void updateNextData() {
         if (currentMode == MODE_WEEK) {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+            DayTimeEntity firstDayTimeEntity = itemView.getFirstShowDayTimeEntity();;
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, selectEntity.year);
-            calendar.set(Calendar.MONTH, selectEntity.month);
-            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-            calendar.add(Calendar.DATE, startWeekOffsetCount);
+            calendar.set(Calendar.YEAR, firstDayTimeEntity.year);
+            calendar.set(Calendar.MONTH, firstDayTimeEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, firstDayTimeEntity.day);
             calendar.add(Calendar.DATE, 7);
-            weekOffsetCount = startWeekOffsetCount + 7;
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
             ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
@@ -268,13 +255,13 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     private void updatePreData() {
         if (currentMode == MODE_WEEK) {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+            DayTimeEntity firstDayTimeEntity = itemView.getFirstShowDayTimeEntity();;
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, selectEntity.year);
-            calendar.set(Calendar.MONTH, selectEntity.month);
-            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-            calendar.add(Calendar.DATE, startWeekOffsetCount);
+            calendar.set(Calendar.YEAR, firstDayTimeEntity.year);
+            calendar.set(Calendar.MONTH, firstDayTimeEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, firstDayTimeEntity.day);
             calendar.add(Calendar.DATE, -7);
-            weekOffsetCount = startWeekOffsetCount - 7;
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
             ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
@@ -305,16 +292,17 @@ public class CalendarViewFlipper extends ViewFlipper {
             else
                 return true;
         } else if (currentMode == MODE_WEEK) {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+            DayTimeEntity firstDayTimeEntity = itemView.getFirstShowDayTimeEntity();;
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, selectEntity.year);
-            calendar.set(Calendar.MONTH, selectEntity.month);
-            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-
-            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.set(Calendar.YEAR, firstDayTimeEntity.year);
+            calendar.set(Calendar.MONTH, firstDayTimeEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, firstDayTimeEntity.day);
             calendar.add(Calendar.DATE, -7);
             int tempYear = calendar.get(Calendar.YEAR);
             int tempMonth = calendar.get(Calendar.MONTH);
             int tempDay = calendar.get(Calendar.DAY_OF_MONTH);
+
             if ((tempYear < startTimeEntity.year) || (tempYear == startTimeEntity.year && tempMonth < startTimeEntity.month) || (tempYear == startTimeEntity.year && tempMonth == startTimeEntity.month && tempDay < startTimeEntity.day))
                 return false;
             else
@@ -344,12 +332,12 @@ public class CalendarViewFlipper extends ViewFlipper {
             else
                 return true;
         } else if (currentMode == MODE_WEEK) {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+            DayTimeEntity firstDayTimeEntity = itemView.getFirstShowDayTimeEntity();;
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.YEAR, selectEntity.year);
-            calendar.set(Calendar.MONTH, selectEntity.month);
-            calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-
-            calendar.add(Calendar.DATE, weekOffsetCount);
+            calendar.set(Calendar.YEAR, firstDayTimeEntity.year);
+            calendar.set(Calendar.MONTH, firstDayTimeEntity.month);
+            calendar.set(Calendar.DAY_OF_MONTH, firstDayTimeEntity.day);
             calendar.add(Calendar.DATE, 7);
             int tempYear = calendar.get(Calendar.YEAR);
             int tempMonth = calendar.get(Calendar.MONTH);
@@ -365,7 +353,13 @@ public class CalendarViewFlipper extends ViewFlipper {
 
     public void setSelectEntity(DayTimeEntity entity) {
         this.selectEntity = entity;
-        weekOffsetCount = 0;
+        ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
+        CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, entity.year);
+        calendar.set(Calendar.MONTH, entity.month);
+        calendar.set(Calendar.DAY_OF_MONTH, entity.day);
+        selectNewView.calendarLiveData.setValue(calendar);
     }
 
     public DayTimeEntity getSelectEntity() {

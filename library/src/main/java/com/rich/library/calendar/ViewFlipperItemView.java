@@ -380,23 +380,23 @@ public class ViewFlipperItemView extends FrameLayout {
                     totalCount++;
                 }
             }
-
-            if (mode == MODE_MONTH) {
-
-            } else if (mode == MODE_WEEK) {
-
-            }
         }
     }
 
-    //TODO 下面这个方法有问题
     private int getWeekTranslateY() {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        ViewFlipperItemView itemView = (ViewFlipperItemView) flipper.getCurrentView();
+        DayTimeEntity dayTimeEntity = itemView.getFirstShowDayTimeEntity();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, flipper.getSelectEntity().year);
-        calendar.set(Calendar.MONTH, flipper.getSelectEntity().month);
-        calendar.set(Calendar.DAY_OF_MONTH, flipper.getSelectEntity().day);
-        calendar.add(Calendar.DATE, flipper.weekOffsetCount);
+        calendar.set(Calendar.YEAR, dayTimeEntity.year);
+        calendar.set(Calendar.MONTH, dayTimeEntity.month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayTimeEntity.day);
+
+        ViewFlipperItemView otherView = (ViewFlipperItemView) flipper.getOtherView();
+        if (otherView.curBindCalendar.getTimeInMillis() > itemView.curBindCalendar.getTimeInMillis())
+            calendar.add(Calendar.DATE, 7);
+        else
+            calendar.add(Calendar.DATE, -7);
 
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -443,6 +443,28 @@ public class ViewFlipperItemView extends FrameLayout {
         } else {
             return 0;
         }
+    }
+
+
+    public DayTimeEntity getFirstShowDayTimeEntity() {
+        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
+        if (flipper.currentMode == MODE_WEEK) {
+            float translateY = dateLL.getTranslationY();
+            if (Math.abs(translateY) < secondLL.getTop()) {
+                return (DayTimeEntity) firstLL.getChildAt(0).getTag();
+            } else if (Math.abs(translateY) < thirdLL.getTop()) {
+                return (DayTimeEntity) secondLL.getChildAt(0).getTag();
+            } else if (Math.abs(translateY) < forthLL.getTop()) {
+                return (DayTimeEntity) thirdLL.getChildAt(0).getTag();
+            } else if (Math.abs(translateY) < fiveLL.getTop()) {
+                return (DayTimeEntity) forthLL.getChildAt(0).getTag();
+            } else if (Math.abs(translateY) < sixLL.getTop()) {
+                return (DayTimeEntity) fiveLL.getChildAt(0).getTag();
+            } else {
+                return (DayTimeEntity) sixLL.getChildAt(0).getTag();
+            }
+        }
+        return (DayTimeEntity) firstLL.getChildAt(0).getTag();
     }
 
     @Override
