@@ -44,6 +44,8 @@ public class CalendarSwitchView extends LinearLayout {
         init(context);
     }
 
+    ObjectAnimator animator;
+
     public void setCurrentMode(int mode) {
         if(mode == currentMode && mode != MODE_SCROLL)
             return;
@@ -56,7 +58,10 @@ public class CalendarSwitchView extends LinearLayout {
             endTranslateX = weekView.getMeasuredWidth();
         }
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(bgView, "translationX", currentTranslateX, endTranslateX);
+        if(animator != null && animator.isRunning())
+            animator.cancel();
+
+        animator = ObjectAnimator.ofFloat(bgView, "translationX", currentTranslateX, endTranslateX);
         animator.setInterpolator(new LinearInterpolator());
         animator.setDuration(100);
         animator.addListener(new Animator.AnimatorListener() {
