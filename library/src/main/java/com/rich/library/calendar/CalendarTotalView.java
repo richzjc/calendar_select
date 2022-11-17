@@ -27,6 +27,8 @@ public class CalendarTotalView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+
+
     private void init(Context context){
         setOrientation(LinearLayout.VERTICAL);
         headerView = new CalendarHeaderView(getContext());
@@ -46,5 +48,11 @@ public class CalendarTotalView extends LinearLayout {
 
     public void setCalendarRange(Calendar startCalendar, Calendar endCalendar, int currentModel) {
         selectNewView.setCalendarRange(startCalendar, endCalendar, currentModel);
+        updateMode(currentModel);
+    }
+
+
+    public void updateMode(int mode){
+        headerView.switchView.setCurrentMode(mode);
     }
 }

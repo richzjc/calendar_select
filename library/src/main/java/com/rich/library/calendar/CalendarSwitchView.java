@@ -1,13 +1,13 @@
 package com.rich.library.calendar;
 
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
+import static com.rich.library.calendar.CalendarViewFlipper.MODE_SCROLL;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -45,6 +45,8 @@ public class CalendarSwitchView extends LinearLayout {
     }
 
     public void setCurrentMode(int mode) {
+        if(mode == currentMode && mode != MODE_SCROLL)
+            return;
         this.currentMode = mode;
         float currentTranslateX = bgView.getTranslationX();
         float endTranslateX = 0;
@@ -118,7 +120,9 @@ public class CalendarSwitchView extends LinearLayout {
             public void onClick(View v) {
                 if(currentMode != MODE_WEEK){
                     setCurrentMode(MODE_WEEK);
-                    //TODO 还需要通知CalendarSelectNewView
+                    CalendarHeaderView headerView = (CalendarHeaderView) getParent();
+                    CalendarTotalView totalView = (CalendarTotalView) headerView.getParent();
+                    totalView.selectNewView.hide();
                 }
             }
         });
@@ -128,7 +132,9 @@ public class CalendarSwitchView extends LinearLayout {
             public void onClick(View v) {
                 if(currentMode != MODE_MONTH){
                     setCurrentMode(MODE_MONTH);
-                    //TODO 还需要通知CalendarSelectNewView
+                    CalendarHeaderView headerView = (CalendarHeaderView) getParent();
+                    CalendarTotalView totalView = (CalendarTotalView) headerView.getParent();
+                    totalView.selectNewView.show();
                 }
             }
         });

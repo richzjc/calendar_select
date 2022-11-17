@@ -16,7 +16,7 @@ import java.util.Calendar;
 public class CalendarHeaderView extends RelativeLayout {
     public TextView leftTitle;
     private View line;
-    private CalendarSwitchView switchView;
+    public CalendarSwitchView switchView;
 
     private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
 

@@ -39,7 +39,7 @@ public class CalendarViewFlipper extends ViewFlipper {
     private Calendar startCalendar;
     private Calendar endCalendar;
 
-    public int currentMode = MODE_WEEK;
+    private int currentMode = MODE_WEEK;
     private DayTimeEntity selectEntity;
     public Map<String, List<DayTimeEntity>> daytimeMap;
 
@@ -50,6 +50,17 @@ public class CalendarViewFlipper extends ViewFlipper {
         super(context);
         setLongClickable(true);//设置可以接受事件
         setUpViews();
+    }
+
+    public void setCurrentMode(int mode){
+        this.currentMode = mode;
+        CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
+        CalendarTotalView totalView = (CalendarTotalView) selectNewView.getParent();
+        totalView.updateMode(currentMode);
+    }
+
+    public int getCurrentMode(){
+        return currentMode;
     }
 
     public CalendarViewFlipper(Context context, AttributeSet attrs) {

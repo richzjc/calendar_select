@@ -179,7 +179,7 @@ public class ViewFlipperItemView extends FrameLayout {
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
 
         DayTimeEntity selectEntity = flipper.getSelectEntity();
-        int mode = flipper.currentMode;
+        int mode = flipper.getCurrentMode();
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, dayTimeEntity.year);
         calendar.set(Calendar.MONTH, dayTimeEntity.month);
@@ -467,9 +467,9 @@ public class ViewFlipperItemView extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        if (isFirstInitFlag && flipper.currentMode == MODE_WEEK) {
+        if (isFirstInitFlag && flipper.getCurrentMode() == MODE_WEEK) {
             dateLL.setTranslationY(-getFlipperTransLateY());
-        } else if (flipper.currentMode == MODE_WEEK) {
+        } else if (flipper.getCurrentMode() == MODE_WEEK) {
             dateLL.setTranslationY(-getWeekTranslateY());
         }
     }

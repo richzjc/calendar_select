@@ -148,7 +148,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (viewFlipper.currentMode == MODE_SCROLL) {
+        if (viewFlipper.getCurrentMode() == MODE_SCROLL) {
             return true;
         }
 
@@ -169,7 +169,7 @@ public class CalendarSelectNewView extends RelativeLayout {
                 if (isClickViewFlipper) {
                     clickViewFlag = CLICK_VIEW_FLIPPER;
                     return viewFlipper.dispatchTouchEvent(ev);
-                } else if (isClickFrameLayout && viewFlipper.currentMode == MODE_MONTH) {
+                } else if (isClickFrameLayout && viewFlipper.getCurrentMode() == MODE_MONTH) {
                     clickViewFlag = CLICK_FRAMELAYOUT;
                     hide();
                     return true;
@@ -278,15 +278,15 @@ public class CalendarSelectNewView extends RelativeLayout {
         set.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                viewFlipper.currentMode = MODE_SCROLL;
+                viewFlipper.setCurrentMode(MODE_SCROLL);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (handleView.getTranslationY() != 0)
-                    viewFlipper.currentMode = MODE_MONTH;
+                    viewFlipper.setCurrentMode(MODE_MONTH);
                 else
-                    viewFlipper.currentMode = MODE_WEEK;
+                    viewFlipper.setCurrentMode(MODE_WEEK);
 
                 ViewFlipperItemView itemView1 = (ViewFlipperItemView) viewFlipper.getCurrentView();
                 itemView1.invalidateSelectBg();
@@ -331,17 +331,17 @@ public class CalendarSelectNewView extends RelativeLayout {
         set.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                viewFlipper.currentMode = MODE_SCROLL;
+                viewFlipper.setCurrentMode(MODE_SCROLL);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (handleView.getTranslationY() != 0)
-                    viewFlipper.currentMode = MODE_MONTH;
+                    viewFlipper.setCurrentMode(MODE_MONTH);
                 else
-                    viewFlipper.currentMode = MODE_WEEK;
+                    viewFlipper.setCurrentMode(MODE_WEEK);
 
-                if (viewFlipper.currentMode == MODE_WEEK && reLocation) {
+                if (viewFlipper.getCurrentMode() == MODE_WEEK && reLocation) {
                     viewFlipper.refreshCurrent();
                 }
 
@@ -370,7 +370,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     public void setCalendarRange(Calendar startCalendar, Calendar endCalendar, int currentModel) {
         viewFlipper.setcalendarRange(startCalendar, endCalendar);
-        viewFlipper.currentMode = currentModel;
+        viewFlipper.setCurrentMode(currentModel);
         if (currentModel == MODE_WEEK) {
             handleView.setTranslationY(0);
             content.setTranslationY(0);
