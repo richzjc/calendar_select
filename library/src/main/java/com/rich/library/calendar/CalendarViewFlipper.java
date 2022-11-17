@@ -44,10 +44,6 @@ public class CalendarViewFlipper extends ViewFlipper {
     public int weekOffsetCount = 0;
     public Map<String, List<DayTimeEntity>> daytimeMap;
 
-    private Calendar curCalendar;
-    private Calendar preCalendar;
-    private Calendar nextCalendar;
-
     public DayTimeEntity startTimeEntity;
     public DayTimeEntity endTimeEntity;
 
@@ -205,8 +201,6 @@ public class CalendarViewFlipper extends ViewFlipper {
                                     previousItem(mCurrentItem - 1);
                                     showPrevious();
                                 }
-
-                                initCurCalendar(((ViewFlipperItemView) getCurrentView()).curBindCalendar);
                             }
                         }
                     });
@@ -248,6 +242,10 @@ public class CalendarViewFlipper extends ViewFlipper {
             weekOffsetCount = startWeekOffsetCount + 7;
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+            Calendar nextCalendar = Calendar.getInstance();
+            nextCalendar.setTimeInMillis(itemView.curBindCalendar.getTimeInMillis());
+            nextCalendar.add(Calendar.MONTH, 1);
             ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
         }
     }
@@ -263,23 +261,12 @@ public class CalendarViewFlipper extends ViewFlipper {
             weekOffsetCount = startWeekOffsetCount - 7;
             ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         } else {
+            ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
+            Calendar preCalendar = Calendar.getInstance();
+            preCalendar.setTimeInMillis(itemView.curBindCalendar.getTimeInMillis());
+            preCalendar.add(Calendar.MONTH, -1);
             ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap);
         }
-    }
-
-
-    private void initCurCalendar(Calendar curCalendar) {
-        this.curCalendar = curCalendar;
-
-        Calendar preCalendar = Calendar.getInstance();
-        preCalendar.setTimeInMillis(curCalendar.getTimeInMillis());
-        preCalendar.add(Calendar.MONTH, -1);
-        this.preCalendar = preCalendar;
-
-        Calendar nextCalendar = Calendar.getInstance();
-        nextCalendar.setTimeInMillis(curCalendar.getTimeInMillis());
-        nextCalendar.add(Calendar.MONTH, 1);
-        this.nextCalendar = nextCalendar;
     }
 
     private boolean checkHasPre() {
@@ -390,12 +377,10 @@ public class CalendarViewFlipper extends ViewFlipper {
 
         if (curTime >= startTime && curTime <= endTime) {
             ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, daytimeMap);
-            initCurCalendar(currentCalendar);
-            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getOtherView()).bindData(currentCalendar, currentMode, daytimeMap);
         } else {
             ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap);
-            initCurCalendar(startCalendar);
-            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getOtherView()).bindData(startCalendar, currentMode, daytimeMap);
         }
     }
 
@@ -411,8 +396,7 @@ public class CalendarViewFlipper extends ViewFlipper {
         calendar.set(Calendar.MONTH, selectEntity.month);
         itemView.bindData(calendar, MODE_WEEK, daytimeMap);
 
-        initCurCalendar(calendar);
-        ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+        ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
         setSelectEntity(selectEntity);
     }
 
