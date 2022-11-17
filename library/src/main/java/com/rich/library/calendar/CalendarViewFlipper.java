@@ -207,7 +207,7 @@ public class CalendarViewFlipper extends ViewFlipper {
                     animator.start();
                 } else {
 
-                    if(currentMode == MODE_WEEK) {
+                    if (currentMode == MODE_WEEK) {
                         if (isNext) {
                             weekOffsetCount -= 7;
                         } else {
@@ -229,6 +229,22 @@ public class CalendarViewFlipper extends ViewFlipper {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void showNext() {
+        super.showNext();
+        ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
+        CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
+        selectNewView.calendarLiveData.setValue(flipper.curBindCalendar);
+    }
+
+    @Override
+    public void showPrevious() {
+        super.showPrevious();
+        ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
+        CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
+        selectNewView.calendarLiveData.setValue(flipper.curBindCalendar);
     }
 
     private void updateNextData() {
@@ -382,6 +398,10 @@ public class CalendarViewFlipper extends ViewFlipper {
             ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap);
             ((ViewFlipperItemView) getOtherView()).bindData(startCalendar, currentMode, daytimeMap);
         }
+
+        ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
+        CalendarSelectNewView selectNewView = (CalendarSelectNewView) getParent();
+        selectNewView.calendarLiveData.setValue(flipper.curBindCalendar);
     }
 
 

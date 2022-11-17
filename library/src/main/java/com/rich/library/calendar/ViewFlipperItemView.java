@@ -222,12 +222,6 @@ public class ViewFlipperItemView extends FrameLayout {
     }
 
     public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map) {
-        CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
-        CalendarSelectNewView selectNewView = (CalendarSelectNewView) flipper.getParent();
-        if(flipper.getCurrentView() == this){
-            selectNewView.calendarLiveData.setValue(calendar);
-        }
-
         if (curBindCalendar != null)
             isFirstInitFlag = false;
         else
