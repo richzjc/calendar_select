@@ -235,7 +235,6 @@ public class ViewFlipperItemView extends FrameLayout {
             int bindMonth = curBindCalendar.get(Calendar.MONTH);
             int bindDay = curBindCalendar.get(Calendar.DAY_OF_MONTH);
 
-
             int curYear = calendar.get(Calendar.YEAR);
             int curMonth = calendar.get(Calendar.MONTH);
             int curDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -244,7 +243,6 @@ public class ViewFlipperItemView extends FrameLayout {
                 flag = false;
             else
                 flag = true;
-//            Log.e("week", "year = " + curYear + "; month = " + curMonth + "; day = " + curDay + "; viewId = " + this.toString() + "; flag = " + flag);
         } else {
             int bindYear = curBindCalendar.get(Calendar.YEAR);
             int bindMonth = curBindCalendar.get(Calendar.MONTH);
@@ -257,7 +255,10 @@ public class ViewFlipperItemView extends FrameLayout {
         }
         curBindCalendar = calendar;
         if (flag) {
-            Log.e("week", "bindData" );
+            int curYear = calendar.get(Calendar.YEAR);
+            int curMonth = calendar.get(Calendar.MONTH);
+            int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+            Log.e("week", "bindData:  curYear = " + curYear + "; month = " + curMonth + "; curDay = " +curDay);
             CalendarNewUtil.initAllDayTimeEntity(map, calendar);
             Calendar newCalendar = Calendar.getInstance();
             newCalendar.setTimeInMillis(calendar.getTimeInMillis());
@@ -390,7 +391,10 @@ public class ViewFlipperItemView extends FrameLayout {
 
     private int getWeekTranslateY() {
         if (curBindCalendar != null) {
-            int selectWeekNumOfMonth = getWeekCountOfMonth(curBindCalendar);
+            int year = curBindCalendar.get(Calendar.YEAR);
+            int month = curBindCalendar.get(Calendar.MONTH);
+            int day = curBindCalendar.get(Calendar.DAY_OF_MONTH);
+            int selectWeekNumOfMonth = getNumSelectWeekOfMonth(year, month, day);
             if (selectWeekNumOfMonth == 1) {
                 return 0;
             } else if (selectWeekNumOfMonth == 2) {
