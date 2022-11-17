@@ -258,13 +258,13 @@ public class CalendarViewFlipper extends ViewFlipper {
             calendar.set(Calendar.MONTH, firstDayTimeEntity.month);
             calendar.set(Calendar.DAY_OF_MONTH, firstDayTimeEntity.day);
             calendar.add(Calendar.DATE, 7);
-            ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap,false);
         } else {
             ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
             Calendar nextCalendar = Calendar.getInstance();
             nextCalendar.setTimeInMillis(itemView.curBindCalendar.getTimeInMillis());
             nextCalendar.add(Calendar.MONTH, 1);
-            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getOtherView()).bindData(nextCalendar, currentMode, daytimeMap, false);
         }
     }
 
@@ -277,13 +277,13 @@ public class CalendarViewFlipper extends ViewFlipper {
             calendar.set(Calendar.MONTH, firstDayTimeEntity.month);
             calendar.set(Calendar.DAY_OF_MONTH, firstDayTimeEntity.day);
             calendar.add(Calendar.DATE, -7);
-            ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap,false);
         } else {
             ViewFlipperItemView itemView = (ViewFlipperItemView) getCurrentView();
             Calendar preCalendar = Calendar.getInstance();
             preCalendar.setTimeInMillis(itemView.curBindCalendar.getTimeInMillis());
             preCalendar.add(Calendar.MONTH, -1);
-            ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getOtherView()).bindData(preCalendar, currentMode, daytimeMap, false);
         }
     }
 
@@ -401,12 +401,12 @@ public class CalendarViewFlipper extends ViewFlipper {
 
         if (curTime >= startTime && curTime <= endTime) {
             currentCalendar.set(Calendar.DATE, day);
-            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, daytimeMap);
-            ((ViewFlipperItemView) getOtherView()).bindData(currentCalendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getCurrentView()).bindData(currentCalendar, currentMode, daytimeMap, false);
+            ((ViewFlipperItemView) getOtherView()).bindData(currentCalendar, currentMode, daytimeMap, false);
         } else {
             startCalendar.set(Calendar.DATE, 1);
-            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap);
-            ((ViewFlipperItemView) getOtherView()).bindData(startCalendar, currentMode, daytimeMap);
+            ((ViewFlipperItemView) getCurrentView()).bindData(startCalendar, currentMode, daytimeMap, false);
+            ((ViewFlipperItemView) getOtherView()).bindData(startCalendar, currentMode, daytimeMap, false);
         }
 
         ViewFlipperItemView flipper = (ViewFlipperItemView) getCurrentView();
@@ -425,9 +425,9 @@ public class CalendarViewFlipper extends ViewFlipper {
         calendar.set(Calendar.YEAR, selectEntity.year);
         calendar.set(Calendar.MONTH, selectEntity.month);
         calendar.set(Calendar.DAY_OF_MONTH, selectEntity.day);
-        itemView.bindData(calendar, MODE_WEEK, daytimeMap);
+        itemView.bindData(calendar, MODE_WEEK, daytimeMap, false);
 
-        ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap);
+        ((ViewFlipperItemView) getOtherView()).bindData(calendar, currentMode, daytimeMap, false);
         setSelectEntity(selectEntity);
     }
 
@@ -447,5 +447,15 @@ public class CalendarViewFlipper extends ViewFlipper {
         int endIndex = CalendarNewUtil.lastEndIndex(tempStartCalendar, totalCount);
         tempStartCalendar.add(Calendar.DATE, endIndex);
         endTimeEntity = new DayTimeEntity(tempStartCalendar.get(Calendar.YEAR), tempStartCalendar.get(Calendar.MONTH), tempStartCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+    }
+
+    public void switchToToday(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        setSelectEntity(new DayTimeEntity(year, month, day, 0, 0));
+        ViewFlipperItemView itemview = (ViewFlipperItemView) getCurrentView();
+        itemview.bindData(calendar, currentMode, daytimeMap, true);
     }
 }

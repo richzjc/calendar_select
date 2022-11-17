@@ -4,6 +4,7 @@ import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
 import static com.rich.library.calendar.CalendarNewUtil.getWeekCountOfMonth;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
@@ -82,7 +83,7 @@ public class ViewFlipperItemView extends FrameLayout {
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar. get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         todayEntity = new DayTimeEntity(year, month, day, 0, 0);
 
@@ -185,41 +186,41 @@ public class ViewFlipperItemView extends FrameLayout {
         calendar.set(Calendar.MONTH, dayTimeEntity.month);
         calendar.set(Calendar.DAY_OF_MONTH, dayTimeEntity.day);
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        if(mode == MODE_WEEK){
-            if(dayTimeEntity.year == selectEntity.year && dayTimeEntity.month == selectEntity.month && dayTimeEntity.day == selectEntity.day){
+        if (mode == MODE_WEEK) {
+            if (dayTimeEntity.year == selectEntity.year && dayTimeEntity.month == selectEntity.month && dayTimeEntity.day == selectEntity.day) {
                 tv.setTextColor(Color.WHITE);
                 tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
-            }else if(dayTimeEntity.year == todayEntity.year && dayTimeEntity.month == todayEntity.month && dayTimeEntity.day == todayEntity.day){
+            } else if (dayTimeEntity.year == todayEntity.year && dayTimeEntity.month == todayEntity.month && dayTimeEntity.day == todayEntity.day) {
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_theme_color_1478f0));
                 tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_todayt));
-            }else if(dayOfWeek > 1 && dayOfWeek < 7){
+            } else if (dayOfWeek > 1 && dayOfWeek < 7) {
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color1_333333));
                 tv.setBackground(null);
-            }else{
+            } else {
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 tv.setBackground(null);
             }
 
-        }else if(mode == MODE_MONTH){
+        } else if (mode == MODE_MONTH) {
             boolean isInCurrent = true;
             int curBindYear = curBindCalendar.get(Calendar.YEAR);
             int curBindMonth = curBindCalendar.get(Calendar.MONTH);
             isInCurrent = (curBindYear == dayTimeEntity.year) && (curBindMonth == dayTimeEntity.month);
 
-            if(dayTimeEntity.year == selectEntity.year && dayTimeEntity.month == selectEntity.month && dayTimeEntity.day == selectEntity.day){
+            if (dayTimeEntity.year == selectEntity.year && dayTimeEntity.month == selectEntity.month && dayTimeEntity.day == selectEntity.day) {
                 tv.setTextColor(Color.WHITE);
                 tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_select));
-            }else if(dayTimeEntity.year == todayEntity.year && dayTimeEntity.month == todayEntity.month && dayTimeEntity.day == todayEntity.day){
+            } else if (dayTimeEntity.year == todayEntity.year && dayTimeEntity.month == todayEntity.month && dayTimeEntity.day == todayEntity.day) {
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_theme_color_1478f0));
                 tv.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_todayt));
-            }else if(dayOfWeek > 1 && dayOfWeek < 7 && isInCurrent){
+            } else if (dayOfWeek > 1 && dayOfWeek < 7 && isInCurrent) {
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color1_333333));
                 tv.setBackground(null);
-            }else{
+            } else {
                 tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
                 tv.setBackground(null);
             }
-        }else{
+        } else {
             tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color1_333333));
             tv.setBackground(null);
         }
@@ -262,168 +263,179 @@ public class ViewFlipperItemView extends FrameLayout {
         }
     }
 
-    public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map) {
-        if (curBindCalendar != null)
-            isFirstInitFlag = false;
-        else
-            isFirstInitFlag = true;
 
-        boolean flag;
-        if (curBindCalendar == null)
-            flag = true;
-        else if (mode == MODE_WEEK) {
-            int bindYear = curBindCalendar.get(Calendar.YEAR);
-            int bindMonth = curBindCalendar.get(Calendar.MONTH);
-            int bindDay = curBindCalendar.get(Calendar.DAY_OF_MONTH);
-
-            int curYear = calendar.get(Calendar.YEAR);
-            int curMonth = calendar.get(Calendar.MONTH);
-            int curDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-            if (bindYear == curYear && curMonth == bindMonth && bindDay == curDay)
-                flag = false;
-            else
-                flag = true;
+    public void bindData(Calendar calendar, int mode, Map<String, List<DayTimeEntity>> map, boolean forceRefresh) {
+        if (forceRefresh) {
+            curBindCalendar = calendar;
+            updateView(calendar, map);
+            return;
         } else {
-            int bindYear = curBindCalendar.get(Calendar.YEAR);
-            int bindMonth = curBindCalendar.get(Calendar.MONTH);
-            int curYear = calendar.get(Calendar.YEAR);
-            int curMonth = calendar.get(Calendar.MONTH);
-            if (bindYear == curYear && curMonth == bindMonth)
-                flag = false;
+            if (curBindCalendar != null)
+                isFirstInitFlag = false;
             else
+                isFirstInitFlag = true;
+
+            boolean flag;
+            if (curBindCalendar == null)
                 flag = true;
-        }
-        curBindCalendar = calendar;
-        if (flag) {
-            CalendarNewUtil.initAllDayTimeEntity(map, calendar);
-            Calendar newCalendar = Calendar.getInstance();
-            newCalendar.setTimeInMillis(calendar.getTimeInMillis());
-            int weekCount = getWeekCountOfMonth(newCalendar);
+            else if (mode == MODE_WEEK) {
+                int bindYear = curBindCalendar.get(Calendar.YEAR);
+                int bindMonth = curBindCalendar.get(Calendar.MONTH);
+                int bindDay = curBindCalendar.get(Calendar.DAY_OF_MONTH);
 
-            if (weekCount == 5) {
-                fiveView.setVisibility(View.VISIBLE);
-                fiveLL.setVisibility(View.VISIBLE);
-                sixView.setVisibility(View.GONE);
-                sixLL.setVisibility(View.GONE);
-            } else if (weekCount == 6) {
-                fiveView.setVisibility(View.VISIBLE);
-                fiveLL.setVisibility(View.VISIBLE);
-                sixView.setVisibility(View.VISIBLE);
-                sixLL.setVisibility(View.VISIBLE);
+                int curYear = calendar.get(Calendar.YEAR);
+                int curMonth = calendar.get(Calendar.MONTH);
+                int curDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                if (bindYear == curYear && curMonth == bindMonth && bindDay == curDay)
+                    flag = false;
+                else
+                    flag = true;
             } else {
-                fiveView.setVisibility(View.GONE);
-                fiveLL.setVisibility(View.GONE);
-                sixView.setVisibility(View.GONE);
-                sixLL.setVisibility(View.GONE);
+                int bindYear = curBindCalendar.get(Calendar.YEAR);
+                int bindMonth = curBindCalendar.get(Calendar.MONTH);
+                int curYear = calendar.get(Calendar.YEAR);
+                int curMonth = calendar.get(Calendar.MONTH);
+                if (bindYear == curYear && curMonth == bindMonth)
+                    flag = false;
+                else
+                    flag = true;
             }
-
-            String key = format.format(calendar.getTime());
-            List<DayTimeEntity> list = map.get(key);
-            int listSize = list.size();
-            int firstStartIndex = CalendarNewUtil.firstStartIndex(newCalendar);
-            int totalCount = 0;
-
-            DayTimeEntity first = list.get(0);
-            DayTimeEntity last = list.get(listSize - 1);
-
-            Calendar lastCalendar = Calendar.getInstance();
-            lastCalendar.set(Calendar.YEAR, last.year);
-            lastCalendar.set(Calendar.MONTH, last.month);
-            lastCalendar.set(Calendar.DAY_OF_MONTH, last.day);
-            int lastEndIndex = CalendarNewUtil.lastEndIndex(newCalendar, CalendarNewUtil.getDayCountOfMonth(newCalendar));
-            if (weekCount == 5) {
-                for (int i = lastEndIndex; i > 0; i--) {
-                    lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
-                    TextView tv = getTextView(fiveLL, 7 - i, entity);
-                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
-                    tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
-
-                    if (i == 1) {
-                        lastDayTimeEntity = entity;
-                    }
-                }
-            } else if (weekCount == 6) {
-                for (int i = lastEndIndex; i > 0; i--) {
-                    lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
-                    DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
-                    TextView tv = getTextView(sixLL, 7 - i, entity);
-                    tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
-                    tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
-                    if (i == 1) {
-                        lastDayTimeEntity = entity;
-                    }
-                }
+            curBindCalendar = calendar;
+            if (flag) {
+                updateView(calendar, map);
             }
-
-
-            Calendar firstCalendar = Calendar.getInstance();
-            firstCalendar.set(Calendar.YEAR, first.year);
-            firstCalendar.set(Calendar.MONTH, first.month);
-            firstCalendar.set(Calendar.DAY_OF_MONTH, first.day);
-
-            for (int i = 0; i < firstStartIndex; i++) {
-                firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
-                DayTimeEntity entity = new DayTimeEntity(firstCalendar.get(Calendar.YEAR), firstCalendar.get(Calendar.MONTH), firstCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
-                TextView tv = getTextView(firstLL, firstStartIndex - 1 - i, entity);
-                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
-                tv.setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
-                if (i == firstStartIndex - 1) {
-                    firstDayTimeEntity = entity;
-                }
-            }
-
-            for (int i = firstStartIndex; i < 7; i++) {
-                if (totalCount < listSize) {
-                    TextView tv = getTextView(firstLL, i, list.get(totalCount));
-                    tv.setText(String.valueOf(list.get(totalCount).day));
-                    totalCount++;
-                }
-            }
-
-            for (int i = 0; i < 7; i++) {
-                if (totalCount < listSize) {
-                    TextView tv = getTextView(secondLL, i, list.get(totalCount));
-                    tv.setText(String.valueOf(list.get(totalCount).day));
-                    totalCount++;
-                }
-            }
-
-            for (int i = 0; i < 7; i++) {
-                if (totalCount < listSize) {
-                    TextView tv = getTextView(thirdLL, i, list.get(totalCount));
-                    tv.setText(String.valueOf(list.get(totalCount).day));
-                    totalCount++;
-                }
-            }
-
-            for (int i = 0; i < 7; i++) {
-                if (totalCount < listSize) {
-                    TextView tv = getTextView(forthLL, i, list.get(totalCount));
-                    tv.setText(String.valueOf(list.get(totalCount).day));
-                    totalCount++;
-                }
-            }
-
-            for (int i = 0; i < 7; i++) {
-                if (totalCount < listSize) {
-                    TextView tv = getTextView(fiveLL, i, list.get(totalCount));
-                    tv.setText(String.valueOf(list.get(totalCount).day));
-                    totalCount++;
-                }
-            }
-
-            for (int i = 0; i < 7; i++) {
-                if (totalCount < listSize) {
-                    TextView tv = getTextView(sixLL, i, list.get(totalCount));
-                    tv.setText(String.valueOf(list.get(totalCount).day));
-                    totalCount++;
-                }
-            }
-
-            requestLayout();
         }
+    }
+
+    private void updateView(Calendar calendar, Map<String, List<DayTimeEntity>> map) {
+        CalendarNewUtil.initAllDayTimeEntity(map, calendar);
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.setTimeInMillis(calendar.getTimeInMillis());
+        int weekCount = getWeekCountOfMonth(newCalendar);
+
+        if (weekCount == 5) {
+            fiveView.setVisibility(View.VISIBLE);
+            fiveLL.setVisibility(View.VISIBLE);
+            sixView.setVisibility(View.GONE);
+            sixLL.setVisibility(View.GONE);
+        } else if (weekCount == 6) {
+            fiveView.setVisibility(View.VISIBLE);
+            fiveLL.setVisibility(View.VISIBLE);
+            sixView.setVisibility(View.VISIBLE);
+            sixLL.setVisibility(View.VISIBLE);
+        } else {
+            fiveView.setVisibility(View.GONE);
+            fiveLL.setVisibility(View.GONE);
+            sixView.setVisibility(View.GONE);
+            sixLL.setVisibility(View.GONE);
+        }
+
+        String key = format.format(calendar.getTime());
+        List<DayTimeEntity> list = map.get(key);
+        int listSize = list.size();
+        int firstStartIndex = CalendarNewUtil.firstStartIndex(newCalendar);
+        int totalCount = 0;
+
+        DayTimeEntity first = list.get(0);
+        DayTimeEntity last = list.get(listSize - 1);
+
+        Calendar lastCalendar = Calendar.getInstance();
+        lastCalendar.set(Calendar.YEAR, last.year);
+        lastCalendar.set(Calendar.MONTH, last.month);
+        lastCalendar.set(Calendar.DAY_OF_MONTH, last.day);
+        int lastEndIndex = CalendarNewUtil.lastEndIndex(newCalendar, CalendarNewUtil.getDayCountOfMonth(newCalendar));
+        if (weekCount == 5) {
+            for (int i = lastEndIndex; i > 0; i--) {
+                lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+                TextView tv = getTextView(fiveLL, 7 - i, entity);
+                tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+
+                if (i == 1) {
+                    lastDayTimeEntity = entity;
+                }
+            }
+        } else if (weekCount == 6) {
+            for (int i = lastEndIndex; i > 0; i--) {
+                lastCalendar.add(Calendar.DAY_OF_MONTH, 1);
+                DayTimeEntity entity = new DayTimeEntity(lastCalendar.get(Calendar.YEAR), lastCalendar.get(Calendar.MONTH), lastCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+                TextView tv = getTextView(sixLL, 7 - i, entity);
+                tv.setText(String.valueOf(lastCalendar.get(Calendar.DAY_OF_MONTH)));
+                tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+                if (i == 1) {
+                    lastDayTimeEntity = entity;
+                }
+            }
+        }
+
+
+        Calendar firstCalendar = Calendar.getInstance();
+        firstCalendar.set(Calendar.YEAR, first.year);
+        firstCalendar.set(Calendar.MONTH, first.month);
+        firstCalendar.set(Calendar.DAY_OF_MONTH, first.day);
+
+        for (int i = 0; i < firstStartIndex; i++) {
+            firstCalendar.add(Calendar.DAY_OF_MONTH, -1);
+            DayTimeEntity entity = new DayTimeEntity(firstCalendar.get(Calendar.YEAR), firstCalendar.get(Calendar.MONTH), firstCalendar.get(Calendar.DAY_OF_MONTH), 0, 0);
+            TextView tv = getTextView(firstLL, firstStartIndex - 1 - i, entity);
+            tv.setTextColor(getContext().getResources().getColor(R.color.day_mode_text_color3_999999));
+            tv.setText(String.valueOf(firstCalendar.get(Calendar.DAY_OF_MONTH)));
+            if (i == firstStartIndex - 1) {
+                firstDayTimeEntity = entity;
+            }
+        }
+
+        for (int i = firstStartIndex; i < 7; i++) {
+            if (totalCount < listSize) {
+                TextView tv = getTextView(firstLL, i, list.get(totalCount));
+                tv.setText(String.valueOf(list.get(totalCount).day));
+                totalCount++;
+            }
+        }
+
+        for (int i = 0; i < 7; i++) {
+            if (totalCount < listSize) {
+                TextView tv = getTextView(secondLL, i, list.get(totalCount));
+                tv.setText(String.valueOf(list.get(totalCount).day));
+                totalCount++;
+            }
+        }
+
+        for (int i = 0; i < 7; i++) {
+            if (totalCount < listSize) {
+                TextView tv = getTextView(thirdLL, i, list.get(totalCount));
+                tv.setText(String.valueOf(list.get(totalCount).day));
+                totalCount++;
+            }
+        }
+
+        for (int i = 0; i < 7; i++) {
+            if (totalCount < listSize) {
+                TextView tv = getTextView(forthLL, i, list.get(totalCount));
+                tv.setText(String.valueOf(list.get(totalCount).day));
+                totalCount++;
+            }
+        }
+
+        for (int i = 0; i < 7; i++) {
+            if (totalCount < listSize) {
+                TextView tv = getTextView(fiveLL, i, list.get(totalCount));
+                tv.setText(String.valueOf(list.get(totalCount).day));
+                totalCount++;
+            }
+        }
+
+        for (int i = 0; i < 7; i++) {
+            if (totalCount < listSize) {
+                TextView tv = getTextView(sixLL, i, list.get(totalCount));
+                tv.setText(String.valueOf(list.get(totalCount).day));
+                totalCount++;
+            }
+        }
+
+        requestLayout();
     }
 
     private int getWeekTranslateY() {
@@ -453,12 +465,12 @@ public class ViewFlipperItemView extends FrameLayout {
 
 
     public DayTimeEntity getFirstShowDayTimeEntity() {
-        if(curBindCalendar != null){
+        if (curBindCalendar != null) {
             int year = curBindCalendar.get(Calendar.YEAR);
             int month = curBindCalendar.get(Calendar.MONTH);
             int day = curBindCalendar.get(Calendar.DAY_OF_MONTH);
             return new DayTimeEntity(year, month, day, 0, 0);
-        }else{
+        } else {
             return null;
         }
     }

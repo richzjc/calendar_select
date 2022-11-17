@@ -17,6 +17,7 @@ public class CalendarHeaderView extends RelativeLayout {
     public TextView leftTitle;
     private View line;
     public CalendarSwitchView switchView;
+    public TextView todayView;
 
     private SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月");
 
@@ -53,6 +54,22 @@ public class CalendarHeaderView extends RelativeLayout {
 
         switchView = new CalendarSwitchView(getContext());
         addView(switchView);
+
+        todayView = new TextView(getContext());
+        todayView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
+        todayView.setTextColor(getContext().getResources().getColor(R.color.day_mode_theme_color_1478f0));
+        todayView.setGravity(Gravity.CENTER);
+        todayView.setText("今");
+        todayView.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_circle_todayt));
+        addView(todayView);
+
+        todayView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CalendarTotalView totalView = (CalendarTotalView) getParent();
+                totalView.selectNewView.switchToToday();
+            }
+        });
     }
 
 
@@ -74,6 +91,7 @@ public class CalendarHeaderView extends RelativeLayout {
         int switchWidthSpec = MeasureSpec.makeMeasureSpec(Util.dip2px(84f, getContext()), MeasureSpec.EXACTLY);
         switchView.measure(switchWidthSpec, tvHeightSpec);
 
+        todayView.measure(tvHeightSpec, tvHeightSpec);
         int totalHeight = tvHeight + Util.dip2px(15f, getContext());
         setMeasuredDimension(widthSize, totalHeight);
     }
@@ -85,5 +103,7 @@ public class CalendarHeaderView extends RelativeLayout {
         line.layout(0, getMeasuredHeight() - line.getMeasuredHeight(), getMeasuredWidth(), getMeasuredHeight());
         int switchStartX = getMeasuredWidth() - leftPadding - switchView.getMeasuredWidth();
         switchView.layout(switchStartX, 0, switchStartX + switchView.getMeasuredWidth(), switchView.getMeasuredHeight());
+        int totayStartX = getMeasuredWidth() - leftPadding - switchView.getMeasuredWidth() - leftPadding - todayView.getMeasuredWidth();
+        todayView.layout(totayStartX, 0, totayStartX + todayView.getMeasuredWidth(), todayView.getMeasuredHeight());
     }
 }

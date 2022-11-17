@@ -382,4 +382,9 @@ public class CalendarSelectNewView extends RelativeLayout {
             itemView.dateLL.setTranslationY(0);
         }
     }
+
+
+    public void switchToToday(){
+        viewFlipper.switchToToday();
+    }
 }
