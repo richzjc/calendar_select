@@ -54,6 +54,7 @@ public class ViewFlipperItemView extends FrameLayout {
             CalendarViewFlipper flipper = (CalendarViewFlipper) getParent();
             DayTimeEntity clickEntity = (DayTimeEntity) v.getTag();
             flipper.setSelectEntity(clickEntity);
+            curBindCalendar.set(Calendar.DAY_OF_MONTH, clickEntity.day);
             invalidateSelectBg();
             ((ViewFlipperItemView) flipper.getOtherView()).invalidateSelectBg();
             CalendarSelectNewView newView = (CalendarSelectNewView) flipper.getParent();
