@@ -13,12 +13,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+
+import com.rich.library.R;
 
 import java.util.Calendar;
 
@@ -26,7 +30,7 @@ public class CalendarSelectNewView extends RelativeLayout {
 
     private CalendarViewFlipper viewFlipper;
     private FrameLayout content;
-    private View handleView;
+    private LinearLayout handleView;
 
     private float downX;
     private float downY;
@@ -110,8 +114,14 @@ public class CalendarSelectNewView extends RelativeLayout {
         content.setPadding(0, dip2px(20f), 0, 0);
         addView(content);
 
-        handleView = new View(getContext());
-        handleView.setBackgroundColor(Color.BLACK);
+        handleView = new LinearLayout(getContext());
+        handleView.setBackgroundColor(getResources().getColor(R.color.day_mode_background_color1_ffffff));
+        handleView.setGravity(Gravity.CENTER);
+
+        View childView = new View(getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(Util.dip2px(30f, getContext()), Util.dip2px(4f, getContext()));
+        childView.setBackground(getContext().getResources().getDrawable(R.drawable.global_drawable_calendar_handle_bg));
+        handleView.addView(childView, params);
         addView(handleView);
     }
 

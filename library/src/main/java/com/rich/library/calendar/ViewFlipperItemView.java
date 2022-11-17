@@ -89,6 +89,7 @@ public class ViewFlipperItemView extends FrameLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.global_view_calendar_flipper_item, this, false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.bottomMargin = dip2px(25f);
+        setBackgroundColor(getContext().getResources().getColor(R.color.day_mode_background_color1_ffffff));
         addView(view, params);
 
         sixLL = findViewById(R.id.six_ll);
