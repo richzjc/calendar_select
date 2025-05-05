@@ -1,6 +1,7 @@
 # 依赖
 ---
 mavencentral()
+
 api 'io.github.richzjc:calendar_select:1.0.0'
 
 # Calendar_Select
