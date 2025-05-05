@@ -26,3 +26,72 @@ dependencies {
 }
 
 
+// 生成源码 JAR
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier = "sources"  // ✅ 替换为 archiveClassifier
+}
+
+
+// 生成源码 JAR
+task javadocJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier = "javadoc"  // ✅ 替换为 archiveClassifier
+}
+
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        // 创建一个 Maven 发布任务
+        release(MavenPublication) {
+            // 设置 groupId, artifactId, 版本等
+            groupId = 'io.github.richzjc'
+            artifactId = 'network'
+            version = '1.0.0'
+            // 指定发布 AAR 文件
+            afterEvaluate {
+                // 发布 AAR 文件
+                artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+            }
+            artifact sourcesJar     // 包含源码
+            artifact javadocJar    // 包含文
+
+            // 配置缺失的元数据
+            pom {
+                name = "network"  // 项目名称
+                description = "基于apt的注解处理器"  // 项目描述
+                url = "git@github.com:richzjc/NetworkListener.git"  // 项目URL
+
+                // 开发者信息
+                developers {
+                    developer {
+                        id = "richzjc"
+                        name = "richzjc"
+                        email = "richzjc130109@gmail.com"
+                    }
+                }
+
+                // 开源协议
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+
+                // SCM（版本控制地址）
+                scm {
+                    connection = "scm:git:git@github.com:richzjc/NetworkListener.git"
+                    developerConnection = "scm:git:ssh://github.com:richzjc/NetworkListener.git"
+                    url = "https://github.com/richzjc/NetworkListener.git"
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven { url "file://${rootDir}/repo" }
+    }
+}
