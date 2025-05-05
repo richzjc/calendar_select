@@ -7,12 +7,10 @@ import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,10 +18,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-
-import com.rich.library.R;
-
+import com.rich.library.calendar.R;
 import java.util.Calendar;
 
 public class CalendarSelectNewView extends RelativeLayout {

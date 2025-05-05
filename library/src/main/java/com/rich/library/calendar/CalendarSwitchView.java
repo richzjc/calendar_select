@@ -18,8 +18,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.rich.library.R;
-
 public class CalendarSwitchView extends LinearLayout {
 
     private int currentMode = MODE_WEEK;

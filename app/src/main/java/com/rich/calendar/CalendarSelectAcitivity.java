@@ -1,16 +1,12 @@
 package com.rich.calendar;
 
-import static com.rich.library.calendar.CalendarNewUtil.getNumSelectWeekOfMonth;
-import static com.rich.library.calendar.CalendarViewFlipper.MODE_MONTH;
 import static com.rich.library.calendar.CalendarViewFlipper.MODE_WEEK;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.rich.library.calendar.CalendarSelectNewView;
 import com.rich.library.calendar.CalendarTotalView;
 
 import java.util.Calendar;

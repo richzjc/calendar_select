@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.rich.library.calendar.R;
+
 import java.util.Calendar;
 import java.util.Map;
 

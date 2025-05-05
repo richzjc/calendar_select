@@ -7,9 +7,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.rich.library.R;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 

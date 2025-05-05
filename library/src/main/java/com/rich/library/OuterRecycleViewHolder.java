@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.rich.library.calendar.R;
+
 /**
  * Created by richzjc on 18/3/13.
  */

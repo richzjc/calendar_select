@@ -5,10 +5,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-import java.util.Calendar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.rich.library.calendar.R;
+
+import java.util.Calendar;
 
 /**
  * Created by richzjc on 18/3/13.
@@ -16,13 +16,9 @@ import butterknife.ButterKnife;
 
 public class InnerViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R2.id.left_view)
     View     leftView;
-    @BindView(R2.id.right_view)
     View     rightView;
-    @BindView(R2.id.date)
     TextView date;
-    @BindView(R2.id.dot)
     View     dot;
 
     Calendar      startCalendarDate;
@@ -34,7 +30,10 @@ public class InnerViewHolder extends RecyclerView.ViewHolder {
 
     public InnerViewHolder(View itemView, Calendar startCalendarDate, Calendar endCalendarDate, DayTimeEntity startDayTime, DayTimeEntity endDayTime) {
         super(itemView);
-        ButterKnife.bind(this, itemView);
+        leftView = itemView.findViewById(R.id.left_view);
+        rightView = itemView.findViewById(R.id.right_view);
+        date = itemView.findViewById(R.id.date);
+        dot = itemView.findViewById(R.id.dot);
         todayCalendar = Calendar.getInstance();
         tempCalendar = Calendar.getInstance();
         setCalendarZero(todayCalendar);

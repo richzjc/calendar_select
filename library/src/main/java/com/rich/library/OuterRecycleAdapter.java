@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.rich.library.calendar.R;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
