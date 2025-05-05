@@ -1,4 +1,11 @@
+# 依赖
+---
+mavencentral()
+api 'io.github.richzjc:calendar_select:1.0.0'
+
 # Calendar_Select
+---
+
 
 日历选择这个库支持单选日期以及选择时间段，
 并且可以设置第一次进入 是选中第一天，还是当天， 还是最后一天。
