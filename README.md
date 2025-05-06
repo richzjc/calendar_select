@@ -72,5 +72,7 @@ endCalendar: 该控件展示的结束月份
 startDayTime: 控制能点击的日期，只有在startDayTime 和 endDayTime之前的日期是可点击的
 
 endDayTime: 控制能点击的日期，只有在startDayTime 和 endDayTime之前的日期是可点击的
+
+【Github地址】https://github.com/richzjc/calendar_select.git
     
 **欢迎各位fork 和 star**
