@@ -1,6 +1,6 @@
 # 依赖
 ---
-mavencentral()
+远程仓库地址：`mavenCentral()`
 
 api 'io.github.richzjc:calendar_select:1.0.0'
 
@@ -18,11 +18,10 @@ api 'io.github.richzjc:calendar_select:1.0.0'
 ![](single.gif)
 
 ![](mult.gif)
-#下载
 
-    implementation 'com.richzjc:calendar_select:1.0.0'
 
 # 使用
+---
 
 **示例**
 
